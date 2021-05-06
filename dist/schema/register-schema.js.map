@@ -1,1 +1,0 @@
-{"version":3,"file":"register-schema.js","sourceRoot":"","sources":["../../src/schema/register-schema.ts"],"names":[],"mappings":";;;AAAA,yDAAsC;AAEtC,MAAM,MAAM,GAAG;IACX,wBAAI,CAAC,OAAO,CAAC,CAAC,OAAO,EAAE;IACnB,+CAA+C;IAC/C,wBAAI,CAAC,UAAU,CAAC,CAAC,QAAQ,CAAC,EAAE,GAAG,EAAE,CAAC,EAAE,CAAC,EAAE,yCAAyC;CACvF,CAAC;AAEgB,gCAAc"}
