@@ -17,10 +17,10 @@ class UserModel {
     config() {
         return __awaiter(this, void 0, void 0, function* () {
             this.db = yield promise_1.createPool({
-                host: 'localhost',
-                user: 'root',
-                password: '',
-                database: 'adogtame',
+                host: 'db4free.net',
+                user: 'abanleonardo',
+                password: 'abanjoanchris',
+                database: 'ifts11adogtame',
                 connectionLimit: 10
             });
         });
@@ -38,7 +38,7 @@ class UserModel {
     //Si no la encuentra devuelve null
     buscarId(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const encontrado = yield this.db.query('SELECT * FROM usuarios WHERE id = ?', [id]);
+            const encontrado = yield this.db.query('SELECT * FROM usuarios WHERE idUsuario = ?', [id]);
             //Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
             if (encontrado.length > 1)
                 return encontrado[0][0];
@@ -50,6 +50,17 @@ class UserModel {
     buscarNombre(nombre) {
         return __awaiter(this, void 0, void 0, function* () {
             const encontrado = yield this.db.query('SELECT * FROM usuarios WHERE nombre = ?', [nombre]);
+            //Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
+            if (encontrado.length > 1)
+                return encontrado[0][0];
+            return null;
+        });
+    }
+    //Devuelve un objeto cuya fila en la tabla usuarios coincide con nombre.
+    //Si no la encuentra devuelve null
+    buscarEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const encontrado = yield this.db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
             //Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
             if (encontrado.length > 1)
                 return encontrado[0][0];

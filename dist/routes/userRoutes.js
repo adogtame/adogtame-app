@@ -21,6 +21,8 @@ class UserRoutes {
         // Registro
         this.router.get('/signup', userController_1.default.signup);
         this.router.post('/signup', userController_1.default.addUser);
+        this.router.get('/signupOrg', userController_1.default.signupOrg);
+        this.router.post('/signupOrg', userController_1.default.addUser);
         // Home del usuario
         this.router.get('/home', userController_1.default.home);
         this.router.get('/control', userController_1.default.control);

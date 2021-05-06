@@ -22,17 +22,17 @@ class UserController {
     }
     login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { usuario, password } = req.body; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
-            const result = yield userModel_1.default.buscarNombre(usuario);
-            console.log(usuario);
+            const { id, password } = req.body; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
+            const result = yield userModel_1.default.buscarId(id);
+            console.log(id);
             console.log(password);
             console.log(result);
             if (!result) {
                 req.flash('error_session', 'Usuario y/o Password Incorrectos');
-                res.redirect("./error");
+                res.redirect("./signin");
             }
             //res.send({ "Usuario no registrado Recibido": req.body }); El profe dejo esta linea pero no valida si el user es incorrecto
-            if (result.nombre == usuario && result.password == password) {
+            if (result.idUsuario == id && result.password == password) {
                 req.session.user = result;
                 req.session.auth = true;
                 res.redirect("./home");
@@ -43,11 +43,17 @@ class UserController {
             res.redirect("./error");
         });
     }
-    // Registro
+    // Registro Usuario
     signup(req, res) {
         console.log(req.body);
         //res.send('Sign Up!!!');
         res.render("partials/signupForm");
+    }
+    // Registro Organizacion
+    signupOrg(req, res) {
+        console.log(req.body);
+        //res.send('Sign Up!!!');
+        res.render("partials/signupOrgForm");
     }
     home(req, res) {
         console.log(req.body);
