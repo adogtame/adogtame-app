@@ -13,17 +13,17 @@ class UserController {
 	}
 
     public async login(req: Request, res: Response) {
-		const { usuario, password } = req.body; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
-		const result = await userModel.buscarNombre(usuario);
-		console.log(usuario);
+		const { id, password } = req.body; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
+		const result = await userModel.buscarId(id);
+		console.log(id);
 		console.log(password);
 		console.log(result);
 		if (!result){
             req.flash('error_session', 'Usuario y/o Password Incorrectos');
-            res.redirect("./error");
+            res.redirect("./signin");
         }
 			//res.send({ "Usuario no registrado Recibido": req.body }); El profe dejo esta linea pero no valida si el user es incorrecto
-		if (result.nombre == usuario && result.password == password) {
+		if (result.idUsuario == id && result.password == password) {
 			req.session.user = result;
 			req.session.auth = true;
 			res.redirect("./home");
@@ -34,12 +34,20 @@ class UserController {
 		res.redirect("./error");
 	}
 
-	// Registro
+	// Registro Usuario
 	public signup(req: Request, res: Response) {
 		console.log(req.body);
 		//res.send('Sign Up!!!');
 		res.render("partials/signupForm");
 	}
+
+	// Registro Organizacion
+	public signupOrg(req: Request, res: Response) {
+		console.log(req.body);
+		//res.send('Sign Up!!!');
+		res.render("partials/signupOrgForm");
+	}
+
 
 	public home(req: Request, res: Response) {
 		console.log(req.body);
