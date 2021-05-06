@@ -8,10 +8,10 @@ class UserModel {
 
 	async config() {//Parametro de conexion con la BD.
 		this.db = await createPool({
-			host: 'localhost',
-			user: 'root',
-			password: '',
-			database: 'adogtame',
+			host: 'db4free.net',
+			user: 'abanleonardo',
+			password: 'abanjoanchris',
+			database: 'ifts11adogtame',
 			connectionLimit: 10
 		});
 	}
@@ -27,7 +27,7 @@ class UserModel {
 	//Devuelve un objeto cuya fila en la tabla usuarios coincide con id.
 	//Si no la encuentra devuelve null
 	async buscarId(id: string) {
-		const encontrado: any = await this.db.query('SELECT * FROM usuarios WHERE id = ?', [id]);
+		const encontrado: any = await this.db.query('SELECT * FROM usuarios WHERE idUsuario = ?', [id]);
 		//Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
 		if (encontrado.length > 1)
 			return encontrado[0][0];
@@ -37,6 +37,16 @@ class UserModel {
 	//Si no la encuentra devuelve null
 	async buscarNombre(nombre: string) {
 		const encontrado: any = await this.db.query('SELECT * FROM usuarios WHERE nombre = ?', [nombre]);
+		//Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
+		if (encontrado.length > 1)
+			return encontrado[0][0];
+		return null;
+	}
+
+	//Devuelve un objeto cuya fila en la tabla usuarios coincide con nombre.
+	//Si no la encuentra devuelve null
+	async buscarEmail(email: string) {
+		const encontrado: any = await this.db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
 		//Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
 		if (encontrado.length > 1)
 			return encontrado[0][0];
