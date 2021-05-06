@@ -16,9 +16,14 @@ class UserRoutes {
         this.router.get('/signin', userController.signin);
         this.router.post('/signin', userController.login);
 
+
         // Registro
         this.router.get('/signup', userController.signup);
         this.router.post('/signup', userController.addUser);
+        
+        this.router.get('/signupOrg', userController.signupOrg);
+        this.router.post('/signupOrg', userController.addUser);
+
 
         // Home del usuario
         this.router.get('/home',userController.home);
