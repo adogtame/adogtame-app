@@ -67,7 +67,7 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             if (!req.session.auth) {
                 //res.redirect("/");
-                req.flash('error_session', 'Debes iniciar sesion para ver esta seccion');
+                req.flash('error_session', 'Debes iniciar sesion para ver esta seccion -- Holaaaaaaaa');
                 res.redirect("./error");
             }
             //res.send('Controles');

@@ -61,7 +61,7 @@ class UserController {
 	public async control(req:Request,res:Response){
         if(!req.session.auth){
             //res.redirect("/");
-            req.flash('error_session','Debes iniciar sesion para ver esta seccion -- Hola');
+            req.flash('error_session','Debes iniciar sesion para ver esta seccion -- Holaaaaaaaa');
             res.redirect("./error");
         }
         //res.send('Controles');
