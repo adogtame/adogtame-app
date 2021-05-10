@@ -32,7 +32,7 @@ class UserController {
                 res.redirect("./signin");
             }
             //res.send({ "Usuario no registrado Recibido": req.body }); El profe dejo esta linea pero no valida si el user es incorrecto
-            if (result.idUsuario == id && result.password == password) {
+            if (result.id == id && result.password == password) {
                 req.session.user = result;
                 req.session.auth = true;
                 res.redirect("./home");
