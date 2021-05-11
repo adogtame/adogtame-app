@@ -21,8 +21,8 @@ class UserRoutes {
         this.router.get('/signup', userController.signup);
         this.router.post('/signup', userController.addUser);
         
-        this.router.get('/signupOrg', userController.signupOrg);
-        this.router.post('/signupOrg', userController.addUser);
+        this.router.get('/signupAnimal', userController.signupAnimal);
+        this.router.post('/signupAnimal', userController.addAnimal);
 
 
         // Home del usuario

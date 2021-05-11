@@ -49,14 +49,26 @@ class UserController {
 	}
 
 
-	public home(req: Request, res: Response) {
+	// Registro Animal
+	public signupAnimal(req: Request, res: Response) {
 		console.log(req.body);
-		// res.send('Bienvenido!!!');
         if(!req.session.auth){
-            res.render("partials/error");
+            res.render("partials/signinForm");
+        }
+        res.render("partials/signupAnimalForm", {mi_session:true });
+	}
+
+    public async addAnimal(req:Request,res:Response){
+	}
+
+	public async home(req: Request, res: Response) {
+		console.log(req.body);
+        if(!req.session.auth){
+            res.render("partials/signinForm");
         }
         res.render("partials/home", {mi_session:true });
 	}
+
 
 	public async control(req:Request,res:Response){
         if(!req.session.auth){

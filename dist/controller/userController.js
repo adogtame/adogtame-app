@@ -55,19 +55,32 @@ class UserController {
         //res.send('Sign Up!!!');
         res.render("partials/signupOrgForm");
     }
-    home(req, res) {
+    // Registro Animal
+    signupAnimal(req, res) {
         console.log(req.body);
-        // res.send('Bienvenido!!!');
         if (!req.session.auth) {
-            res.render("partials/error");
+            res.render("partials/signinForm");
         }
-        res.render("partials/home", { mi_session: true });
+        res.render("partials/signupAnimalForm", { mi_session: true });
+    }
+    addAnimal(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
+    home(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            if (!req.session.auth) {
+                res.render("partials/signinForm");
+            }
+            res.render("partials/home", { mi_session: true });
+        });
     }
     control(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!req.session.auth) {
                 //res.redirect("/");
-                req.flash('error_session', 'Debes iniciar sesion para ver esta seccion -- Holaaaaaaaa');
+                req.flash('error_session', 'Debes iniciar sesion para ver esta seccion -- chauuuuuuuu');
                 res.redirect("./error");
             }
             //res.send('Controles');

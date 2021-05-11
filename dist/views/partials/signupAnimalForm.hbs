@@ -1,0 +1,84 @@
+<style>
+    body {
+        background-image: url("https://image.freepik.com/vector-gratis/perros-gatos-mascotas-bolsas-adopcion-personajes_24877-23269.jpg");
+        height: 560px;
+        width: 100%;
+    }
+</style>
+
+
+<header class="p-3 mb-3 border-bottom bg-dark">
+    <div class="container-fluid">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    <a class="navbar-brand" href="/user/home"> <img src="https://i.pinimg.com/474x/f6/4a/95/f64a95a42cd5240324e3713a7ecf1aa4.jpg"
+        alt="" style="height: 35px;"> Adogtame </a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 ml-auto" style="font-size: 18px;">
+          <li><a href="/user/signupAnimal" class="nav-link px-2 link-secondary"> Adoptados <i class="fas fa-paw"></i></a></li>
+          <li><a href="/user/signupAnimal" class="nav-link px-2 link-dark"> Interes <i class="far fa-thumbs-up"></i></a></li>
+          <li><a href="/user/signupAnimal" class="nav-link px-2 link-dark"> Notificaciones <i class="far fa-bell"></i></a></li>
+        </ul>
+
+    <form class="d-flex">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
+            <li><a class="dropdown-item" href="/">New project...</a></li>
+            <li><a class="dropdown-item" href="/">Settings</a></li>
+            <li><a class="dropdown-item" href="/">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/">Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="mb-3">
+                <div class="card-header" style="background-color:darkcyan; color:lightcyan">
+                    <h3 style="text-align: center;">Registre a su Animal</h3>
+                </div>
+                <div class="card-body" style="background-color:lightcyan;">
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <div class="container-fluid">
+                                <div class="mb-3">
+                                    <div class="mb-3">
+                                        <label for=""> <strong> Nombre</strong> </label>
+                                        <input type="text" minlength="4" name="nombre" placeholder="Ingrese su Usuario"
+                                            class="form-control" autofocus required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="perfiles" class="for"> <strong> Selecccione un genero </strong></label> <br>
+                                        <select name="tipo_genero" id="generos" class="btn btn-info">
+                                            <option value="hembra">Hembra</option>
+                                            <option value="macho">Macho</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for=""> <strong> Edad</strong> </label>
+                                        <input type="number" min="1" max="20" name="edad" placeholder="Ingrese su Edad"
+                                            class="form-control" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <button class="btn btn-success btn-block">Enviar</button>
+                                        <input type="reset" value="Limpiar campos" class="btn btn-danger btn-block">
+                                    </div>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
