@@ -14,8 +14,8 @@
         alt="" style="height: 35px;"> Adogtame </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 ml-auto" style="font-size: 18px;">
-          <li><a href="/user/signupAnimal" class="nav-link px-2 link-secondary"> Adoptados <i class="fas fa-paw"></i></a></li>
-          <li><a href="/user/signupAnimal" class="nav-link px-2 link-dark"> Interes <i class="far fa-thumbs-up"></i></a></li>
+          <li><a href="/user/adoptados" class="nav-link px-2 link-secondary"> Adoptados <i class="fas fa-paw"></i></a></li>
+          <li><a href="/user/signupAnimal" class="nav-link px-2 link-dark"> Solicitudes enviadas  <i class="far fa-thumbs-up"></i></a></li>
           <li><a href="/user/signupAnimal" class="nav-link px-2 link-dark"> Notificaciones <i class="far fa-bell"></i></a></li>
         </ul>
 
@@ -43,7 +43,7 @@
 
 <div class="container p-4">
     <div class="row">
-        <div class="col-md-4 mx-auto">
+        <div class="col-md-5 mx-auto">
             <div class="mb-3">
                 <div class="card-header" style="background-color:darkcyan; color:lightcyan">
                     <h3 style="text-align: center;">Registre a su Animal</h3>
@@ -55,7 +55,7 @@
                                 <div class="mb-3">
                                     <div class="mb-3">
                                         <label for=""> <strong> Nombre</strong> </label>
-                                        <input type="text" minlength="4" name="nombre" placeholder="Ingrese su Usuario"
+                                        <input type="text" minlength="4" name="nombre" placeholder="Ingrese su Nombre"
                                             class="form-control" autofocus required>
                                     </div>
                                     <div class="mb-3">
@@ -75,6 +75,24 @@
                                         <input type="text" minlength="4" name="raza" placeholder="Ingrese su Raza"
                                             class="form-control" required>
                                     </div>
+                                    <div class="mb-3">
+                                        <label for=""> <strong> Peso</strong> </label>
+                                        <input type="text" name="peso" placeholder="Ingrese su Peso en KG"
+                                            class="form-control" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                    <label for="formFileMultiple" class="form-label "> <b> Seleccione las imagenes</b> </label>
+                                    <input class="form-control btn btn-secondary" type="file" id="formFileMultiple" multiple>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for=""> <strong> Fecha de nacimiento</strong> </label>
+                                        <input type="date" name="fechaNacimiento" placeholder="Ingrese su fecha de nacimiento"
+                                            class="form-control" required>
+                                    </div>
+
+
                                     <div class="mb-3">
                                         <button class="btn btn-success btn-block">Enviar</button>
                                         <input type="reset" value="Limpiar campos" class="btn btn-danger btn-block">

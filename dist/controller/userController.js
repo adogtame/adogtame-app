@@ -76,6 +76,12 @@ class UserController {
             res.render("partials/home", { mi_session: true });
         });
     }
+    adoptados(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            res.render("partials/adoptados");
+        });
+    }
     control(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!req.session.auth) {

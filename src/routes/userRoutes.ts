@@ -32,7 +32,7 @@ class UserRoutes {
         this.router.get('/salir',userController.endSession);
         this.router.get('/error',userController.showError);
         this.router.get('/delete/:id',userController.delete);
-
+        this.router.get('/adoptados',userController.adoptados);
 
 
         // CRUD

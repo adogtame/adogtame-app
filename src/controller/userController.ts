@@ -70,6 +70,11 @@ class UserController {
 	}
 
 
+	public async adoptados(req: Request, res: Response) {
+		console.log(req.body);
+            res.render("partials/adoptados");
+	}
+
 	public async control(req:Request,res:Response){
         if(!req.session.auth){
             //res.redirect("/");

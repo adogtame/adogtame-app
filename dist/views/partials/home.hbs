@@ -1,115 +1,63 @@
+<style>
+  body {
+    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+  }
+
+  .disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+</style>
+
+
 <header class="p-3 mb-3 border-bottom bg-dark">
-    <div class="container-fluid">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-    <a class="navbar-brand" href="/user/home"> <img src="https://i.pinimg.com/474x/f6/4a/95/f64a95a42cd5240324e3713a7ecf1aa4.jpg"
-        alt="" style="height: 35px;"> Adogtame </a>
+  <div class="container-fluid">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <a class="navbar-brand" href="/user/home"> <img
+          src="https://i.pinimg.com/474x/f6/4a/95/f64a95a42cd5240324e3713a7ecf1aa4.jpg" alt="" style="height: 35px;">
+        Adogtame </a>
 
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 ml-auto" style="font-size: 18px;">
-          <li><a href="/user/home" class="nav-link px-2 link-secondary"> Adoptados <i class="fas fa-paw"></i></a></li>
-          <li><a href="/user/signupAnimal" class="nav-link px-2 link-dark"> Registrar Animal <i class="fas fa-paw"></i></a></li>
-          <li><a href="/user/home" class="nav-link px-2 link-dark"> Interes <i class="far fa-thumbs-up"></i></a></li>
-          <li><a href="/user/home" class="nav-link px-2 link-dark"> Notificaciones <i class="far fa-bell"></i></a></li>
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 ml-auto"
+        style="font-size: 18px;">
+        <li><a href="/user/adoptados" class="nav-link px-2 link-secondary"> Adoptados <i class="fas fa-paw"></i></a>
+        </li>
+        <li><a href="/user/signupAnimal" class="nav-link px-2 link-dark"> Registrar Animal <i
+              class="fas fa-paw"></i></a></li>
+        <li><a href="/user/home" class="nav-link px-2 link-dark"> Solicitudes enviadas <i
+              class="far fa-thumbs-up"></i></a></li>
+        <li><a href="/user/home" class="nav-link px-2 link-dark"> Notificaciones <i class="far fa-bell"></i></a></li>
+      </ul>
+
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+
+      <div class="dropdown text-end">
+        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+        </a>
+        <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
+          <li><a class="dropdown-item" href="/">New project...</a></li>
+          <li><a class="dropdown-item" href="/">Settings</a></li>
+          <li><a class="dropdown-item" href="/">Profile</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="/">Sign out</a></li>
         </ul>
-
-    <form class="d-flex">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
-
-        <div class="dropdown text-end">
-          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-          </a>
-          <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
-            <li><a class="dropdown-item" href="/">New project...</a></li>
-            <li><a class="dropdown-item" href="/">Settings</a></li>
-            <li><a class="dropdown-item" href="/">Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="/">Sign out</a></li>
-          </ul>
-        </div>
       </div>
     </div>
-  </header>
+  </div>
+</header>
 
 <section id="img-fondo" style="float: right; width: 80%">
 
   <div class="card-group">
-    <div class="card" style="text-align: center; margin:20px">
-      <img
-        src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_curiosidad__small/public/articulos/perro-infecciones.jpg"
-        class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Pipi</h5>
-        <p class="card-text"><strong> Edad:</strong> 3 meses <br> <strong>Sexo:</strong> Hembra <br> <strong>Tamaño:
-          </strong> Mediano</p>
-        <a href="/"> <i class="far fa-heart">Me gusta </i> </a><br>
-        <a href="/"> <i class="far fa-thumbs-up">Tengo interes</i> </a>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        <button class="btn btn-success btn-block">Ver mas fotos</button>
 
-      </div>
-    </div>
     <div class="card" style="text-align: center; margin:20px">
-      <img
-        src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_curiosidad__small/public/articulos/perro-infecciones.jpg"
-        class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Luna </h5>
-        <p class="card-text"><strong> Edad:</strong> 3 meses <br> <strong>Sexo:</strong> Hembra <br> <strong>Tamaño:
-          </strong> Mediano</p>
-        <a href="/"> <i class="far fa-heart">Me gusta </i> </a><br>
-        <a href="/"> <i class="far fa-thumbs-up">Tengo interes</i> </a>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        <button class="btn btn-success btn-block">Ver mas fotos</button>
-      </div>
-    </div>
-    <div class="card" style="text-align: center; margin:20px">
-      <img
-        src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_curiosidad__small/public/articulos/perro-infecciones.jpg"
-        class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Lobo</h5>
-        <p class="card-text"><strong> Edad:</strong> 3 meses <br> <strong>Sexo:</strong> Hembra <br> <strong>Tamaño:
-          </strong> Mediano</p>
-        <a href="/"> <i class="far fa-heart">Me gusta </i> </a><br>
-        <a href="/"> <i class="far fa-thumbs-up">Tengo interes</i> </a>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        <button class="btn btn-success btn-block">Ver mas fotos</button>
-      </div>
-    </div>
-  </div>
-  <br>
-  <div class="card-group">
-    <div class="card" style="text-align: center; margin:20px">
-      <img
-        src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_curiosidad__small/public/articulos/perro-infecciones.jpg"
-        class="card-img-top" alt="...">
-      <div class="card-body" style="text-align: center; padding:25px; margin:25px">
-        <h5 class="card-title">Pepe</h5>
-        <p class="card-text"><strong> Edad:</strong> 3 meses <br> <strong>Sexo:</strong> Hembra <br> <strong>Tamaño:
-          </strong> Mediano</p>
-        <a href="/"> <i class="far fa-heart">Me gusta </i> </a><br>
-        <a href="/"> <i class="far fa-thumbs-up">Tengo interes</i> </a>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        <button class="btn btn-success btn-block">Ver mas fotos</button>
-      </div>
-    </div>
-    <div class="card" style="text-align: center; margin:20px">
-      <img
-        src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_curiosidad__small/public/articulos/perro-infecciones.jpg"
-        class="card-img-top" alt="...">
-      <div class="card-body" style="text-align: center; padding:25px; margin:25px">
-        <h5 class="card-title">Pipo</h5>
-        <p class="card-text"><strong> Edad:</strong> 3 meses <br> <strong>Sexo:</strong> Hembra <br> <strong>Tamaño:
-          </strong> Mediano</p>
-        <a href="/"> <i class="far fa-heart">Me gusta </i> </a><br>
-        <a href="/"> <i class="far fa-thumbs-up">Tengo interes</i> </a>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        <button class="btn btn-success btn-block">Ver mas fotos</button>
-      </div>
-    </div>
-    <div class="card" style="text-align: center; margin:20px">
+      <a href="/" style="text-align: left; font-size:40px; margin-left:25px;"> <i class="far fa-heart"></i></a>
       <img
         src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_curiosidad__small/public/articulos/perro-infecciones.jpg"
         class="card-img-top" alt="...">
@@ -117,69 +65,170 @@
         <h5 class="card-title">Rocko</h5>
         <p class="card-text"><strong> Edad:</strong> 3 meses <br> <strong>Sexo:</strong> Hembra <br> <strong>Tamaño:
           </strong> Mediano</p>
-        <a href="/"> <i class="far fa-heart">Me gusta </i> </a><br>
-        <a href="/"> <i class="far fa-thumbs-up">Tengo interes</i> </a>
         <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        <button class="btn btn-success btn-block">Ver mas fotos</button>
+        <button class="btn btn-primary btn-block" style="font-size:20px;"> <i class="fas fa-images"> <b> Ver mas
+              fotos</b> </i> </button>
+        <a href="/" class="btn btn-success btn-block disabled" style="font-size:20px;"> <i class="far fa-thumbs-up"> <b>
+              Solicitud enviada</b></i></a>
       </div>
     </div>
-  </div>
-</section>
-<aside style="float: left; width: 18%; margin:10px;">
 
-  <div class="list-group" style="text-align: center;">
-    <Span class="p-3 mb-2 bg-primary text-white">Mascotas</Span>
-    <label class="list-group-item">
+    <div class="card" style="text-align: center; margin:20px">
+      <a href="/" style="text-align: left; font-size:40px; margin-left:25px;"> <i class="far fa-heart"></i></a>
+      <img
+        src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_curiosidad__small/public/articulos/perro-infecciones.jpg"
+        class="card-img-top" alt="...">
+      <div class="card-body" style="text-align: center; padding:25px; margin:25px">
+        <h5 class="card-title">Rocko</h5>
+        <p class="card-text"><strong> Edad:</strong> 3 meses <br> <strong>Sexo:</strong> Hembra <br> <strong>Tamaño:
+          </strong> Mediano</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        <button class="btn btn-primary btn-block" style="font-size:20px;"> <i class="fas fa-images"> <b> Ver mas
+              fotos</b> </i> </button>
+        <a href="/" class="btn btn-success btn-block" style="font-size:20px;"> <i class="far fa-thumbs-up"> <b> Quiero
+              adoptar</b></i> </a>
+      </div>
+    </div>
+
+    <div class="card" style="text-align: center; margin:20px">
+      <a href="/" style="text-align: left; font-size:40px; margin-left:25px;"> <i class="far fa-heart"></i></a>
+      <img
+        src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_curiosidad__small/public/articulos/perro-infecciones.jpg"
+        class="card-img-top" alt="...">
+      <div class="card-body" style="text-align: center; padding:25px; margin:25px">
+        <h5 class="card-title">Rocko</h5>
+        <p class="card-text"><strong> Edad:</strong> 3 meses <br> <strong>Sexo:</strong> Hembra <br> <strong>Tamaño:
+          </strong> Mediano</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        <button class="btn btn-primary btn-block" style="font-size:20px;"> <i class="fas fa-images"> <b> Ver mas
+              fotos</b> </i> </button>
+        <a href="/" class="btn btn-success btn-block" style="font-size:20px;"> <i class="far fa-thumbs-up"> <b> Quiero
+              adoptar</b></i> </a>
+      </div>
+    </div>
+
+  </div>
+
+  <br>
+
+  <div class="card-group">
+
+    <div class="card" style="text-align: center; margin:20px">
+      <a href="/" style="text-align: left; font-size:40px; margin-left:25px;"> <i class="far fa-heart"></i></a>
+      <img
+        src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_curiosidad__small/public/articulos/perro-infecciones.jpg"
+        class="card-img-top" alt="...">
+      <div class="card-body" style="text-align: center; padding:25px; margin:25px">
+        <h5 class="card-title">Rocko</h5>
+        <p class="card-text"><strong> Edad:</strong> 3 meses <br> <strong>Sexo:</strong> Hembra <br> <strong>Tamaño:
+          </strong> Mediano</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        <button class="btn btn-primary btn-block" style="font-size:20px;"> <i class="fas fa-images"> <b> Ver mas
+              fotos</b> </i> </button>
+        <a href="/" class="btn btn-success btn-block" style="font-size:20px;"> <i class="far fa-thumbs-up"> <b> Quiero
+              adoptar</b></i> </a>
+      </div>
+    </div>
+
+    <div class="card" style="text-align: center; margin:20px">
+      <a href="/" style="text-align: left; font-size:40px; margin-left:25px;"> <i class="far fa-heart"></i></a>
+      <img
+        src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_curiosidad__small/public/articulos/perro-infecciones.jpg"
+        class="card-img-top" alt="...">
+      <div class="card-body" style="text-align: center; padding:25px; margin:25px">
+        <h5 class="card-title">Rocko</h5>
+        <p class="card-text"><strong> Edad:</strong> 3 meses <br> <strong>Sexo:</strong> Hembra <br> <strong>Tamaño:
+          </strong> Mediano</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        <button class="btn btn-primary btn-block" style="font-size:20px;"> <i class="fas fa-images"> <b> Ver mas
+              fotos</b> </i> </button>
+        <a href="/" class="btn btn-success btn-block" style="font-size:20px;"> <i class="far fa-thumbs-up"> <b> Quiero
+              adoptar</b></i> </a>
+      </div>
+    </div>
+
+    <div class="card" style="text-align: center; margin:20px">
+      <a href="/" style="text-align: left; font-size:40px; margin-left:25px;"> <i class="far fa-heart"></i></a>
+      <img
+        src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_curiosidad__small/public/articulos/perro-infecciones.jpg"
+        class="card-img-top" alt="...">
+      <div class="card-body" style="text-align: center; padding:25px; margin:25px">
+        <h5 class="card-title">Rocko</h5>
+        <p class="card-text"><strong> Edad:</strong> 3 meses <br> <strong>Sexo:</strong> Hembra <br> <strong>Tamaño:
+          </strong> Mediano</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        <button class="btn btn-primary btn-block" style="font-size:20px;"> <i class="fas fa-images"> <b> Ver mas
+              fotos</b> </i> </button>
+        <a href="/" class="btn btn-success btn-block" style="font-size:20px;"> <i class="far fa-thumbs-up"> <b> Quiero
+              adoptar</b></i> </a>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<aside style="float: left; width: 12%; margin:10px;">
+
+  <ul class="list-group" style="text-align: center;">
+    <Span class="p-3 mb-2 bg-primary text-white"> <b> Mascotas</b> </Span>
+    <li class="list-group-item">
       <input class="form-check-input me-1" type="checkbox" value="">
       Perros
-    </label>
-    <label class="list-group-item">
+    </li>
+    <li class="list-group-item">
       <input class="form-check-input me-1" type="checkbox" value="">
       Gatos
-    </label>
+    </li>
+  </ul>
 
-    <Span class="p-3 mb-2 bg-primary text-white">Edad</Span>
-    <label class="list-group-item">
+  <ul class="list-group" style="text-align: center;">
+    <Span class="p-3 mb-2 bg-primary text-white"> Edad</Span>
+    <li class="list-group-item">
       <input class="form-check-input me-1" type="checkbox" value="">
       0 a 3 meses
-    </label>
-    <label class="list-group-item">
+    </li>
+    <li class="list-group-item">
       <input class="form-check-input me-1" type="checkbox" value="">
       3 meses a 1 año
-    </label>
-    <label class="list-group-item">
+    </li>
+    <li class="list-group-item">
       <input class="form-check-input me-1" type="checkbox" value="">
       1 año a 5 años
-    </label>
-    <label class="list-group-item">
+    </li>
+    <li class="list-group-item">
       <input class="form-check-input me-1" type="checkbox" value="">
       + de 5 años
-    </label>
+    </li>
+  </ul>
 
+  <ul class="list-group" style="text-align: center;">
     <Span class="p-3 mb-2 bg-primary text-white">Sexo</Span>
-    <label class="list-group-item">
+    <li class="list-group-item">
       <input class="form-check-input me-1" type="checkbox" value="">
       Macho
-    </label>
-    <label class="list-group-item">
+    </li>
+    <li class="list-group-item">
       <input class="form-check-input me-1" type="checkbox" value="">
       Hembra
-    </label>
+    </li>
+  </ul>
 
+  <ul class="list-group" style="text-align: center;">
     <Span class="p-3 mb-2 bg-primary text-white">Tamaño</Span>
-    <label class="list-group-item">
+    <li class="list-group-item">
       <input class="form-check-input me-1" type="checkbox" value="">
       Pequeño
-    </label>
-    <label class="list-group-item">
+    </li>
+    <li class="list-group-item">
       <input class="form-check-input me-1" type="checkbox" value="">
       Mediano
-    </label>
-    <label class="list-group-item">
+    </li>
+    <li class="list-group-item">
       <input class="form-check-input me-1" type="checkbox" value="">
       Grande
-    </label>
-    <button class="btn btn-outline-primary " type="submit">Aplicar </button>
-  </div>
-
+    </li>
+  </ul>
+  <br>
+  <button class="btn btn-outline-info btn btn-block" type="submit"> <b>Aplicar</b> </button>
 </aside>
