@@ -33,6 +33,8 @@ class UserRoutes {
         this.router.get('/error',userController.showError);
         this.router.get('/delete/:id',userController.delete);
         this.router.get('/adoptados',userController.adoptados);
+        this.router.get('/solicitudesEnviadas',userController.solicitudesEnviadas);
+        this.router.get('/solicitudesRecibidas',userController.solicitudesRecibidas);
 
 
         // CRUD

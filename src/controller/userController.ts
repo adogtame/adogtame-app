@@ -75,6 +75,17 @@ class UserController {
             res.render("partials/adoptados");
 	}
 
+	public async solicitudesEnviadas(req: Request, res: Response) {
+		console.log(req.body);
+            res.render("partials/solicitudesEnviadas");
+	}
+
+    public async solicitudesRecibidas(req: Request, res: Response) {
+		console.log(req.body);
+            res.render("partials/solicitudesRecibidas");
+	}
+
+
 	public async control(req:Request,res:Response){
         if(!req.session.auth){
             //res.redirect("/");
