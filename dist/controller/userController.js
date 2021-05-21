@@ -82,6 +82,18 @@ class UserController {
             res.render("partials/adoptados");
         });
     }
+    solicitudesEnviadas(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            res.render("partials/solicitudesEnviadas");
+        });
+    }
+    solicitudesRecibidas(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            res.render("partials/solicitudesRecibidas");
+        });
+    }
     control(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!req.session.auth) {

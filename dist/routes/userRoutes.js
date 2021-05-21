@@ -31,6 +31,8 @@ class UserRoutes {
         this.router.get('/error', userController_1.default.showError);
         this.router.get('/delete/:id', userController_1.default.delete);
         this.router.get('/adoptados', userController_1.default.adoptados);
+        this.router.get('/solicitudesEnviadas', userController_1.default.solicitudesEnviadas);
+        this.router.get('/solicitudesRecibidas', userController_1.default.solicitudesRecibidas);
         // CRUD
         this.router.get('/list', userController_1.default.list);
         this.router.get('/find/:id', userController_1.default.find);
