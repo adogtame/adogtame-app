@@ -55,74 +55,72 @@
 </header>
 
 <div class="container">
-  <div class="card mb-3" style="max-width: 1000px; ">
+  <div class="card mb-3" style="max-width: 1000px; background-color: lightseagreen; " >
     <div class="row g-0">
       <div class="col-md-6">
         <img
           src="https://www.ecestaticos.com/image/clipping/79776773aab795837282c7d4947abaf7/por-que-nos-parece-que-los-perros-sonrien-una-historia-de-30-000-anos.jpg"
-          alt="..." style="width: 500px; height: 400px">
+          alt="Imagen de la mascota" style="width: 500px; height: 400px; margin-top:80px; margin-left: 15px;">
       </div>
-
-      <div class="col-md-6">
+      <div class="col-md-6" >
         <div class="card-body">
-          <h5 class="card-title" style="text-align: center;">¡A cruzar los dedos!</h5>
+          <h2 class="card-title" style="text-align: center;">¡A cruzar los dedos!</h2>
           <form action="">
             <div class="form-group row">
               <div class="col-sm-6">
-                <input type="text" name="nombre" id="nombre" class="form-control" value="Rocko" disabled>
+                <label for="" style="float: left;"> <b> Nombre</b> </label>
+                <input type="text" name="nombre" id="nombre" class="form-control" value="Rocko" readonly>
               </div>
                 <div class="col-sm-6">
-                <input type="text" name="raza" id="raza" class="form-control" value="Cruza" disabled>
+                  <label for="" style="float: left;"> <b> Raza</b> </label>
+                <input type="text" name="raza" id="raza" class="form-control" value="Cruza" readonly>
               </div>
             </div>
             <div class="form-group row">
               <div class="col-sm-6">
-                <input type="date" name="fechaNacimiento" id="fechaNacimiento" class="form-control" value="2020-08-10"
-                  disabled>
-              </div>
-              <div class="col-sm-6">
-                <input type="text" name="edad" id="edad" class="form-control" value="2 años"
-                  disabled>
-              </div>
-            </div>
-
-            <div class="form-group row">
-              <div class="col-sm-6">
-                <input type="text" name="tamaño" id="tamaño" class="form-control" value="Mediano" disabled>
-              </div>
-              <div class="col-sm-6">
-                <input type="text" name="peso" id="peso" class="form-control" value="2 kg" disabled>
-              </div>
-            </div>
-            <div class="form-group row">
-              <div class="col-sm-6">
-                <input type="text" name="castrado" id="castrado" class="form-control" value="Sin castrar" disabled>
-              </div>
-              <div class="col-sm-6">
-                <input type="text" name="vacunado" id="vacunado" class="form-control" value="Sin vacunar" disabled>
-              </div>
-            </div>
-
-            <div class="form-group row">
-              <div class="col-sm-6">
+                <label for="" style="float: left;"> <b> Localidad</b> </label>
                 <input type="text" name="localidad" id="localidad" class="form-control" value="Lomas de Zamora"
-                  disabled>
+                  readonly>
               </div>
               <div class="col-sm-6">
-                <input type="text" name="convivencia" id="convivencia" class="form-control" value="Convive con otros perros" disabled>
+                <label for="" style="float: left;"> <b> Edad</b> </label>
+                <input type="text" name="edad" id="edad" class="form-control" value="2 años"
+                  readonly>
               </div>
             </div>
-
-
-
-
 
             <div class="form-group row">
-              <label for="estado" class="col-form-label col-sm-4" style="text-align: right;"> <b>Estado:</b> </label>
               <div class="col-sm-6">
-                <input type="text" name="estado" id="estado" class="form-control" value="En espera" disabled>
+                <label for="" style="float: left;"> <b> Tamaño</b> </label>
+                <input type="text" name="tamaño" id="tamaño" class="form-control" value="Mediano" readonly>
+              </div>
+              <div class="col-sm-6">
+                <label for="" style="float: left;"> <b> Peso</b> </label>
+                <input type="text" name="peso" id="peso" class="form-control" value="2 kg" readonly>
               </div>
             </div>
+            <div class="form-group row">
+              <div class="col-sm-6">
+                <label for="" style="float: left;"> <b> Castrado</b> </label>
+                <input type="text" name="castrado" id="castrado" class="form-control" value="Sin castrar" readonly>
+              </div>
+              <div class="col-sm-6">
+                <label for="" style="float: left;"> <b> Vacunado</b> </label>
+                <input type="text" name="vacunado" id="vacunado" class="form-control" value="Sin vacunar" readonly>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-sm-6">
+                <label for="" style="float: left;"> <b> Convive con otros animales</b> </label>
+                <input type="text" name="convivencia" id="convivencia" class="form-control" value="Convive con otros perros" readonly>
+              </div>
+              <div class="col-sm-6">
+                <label for="estado"> <b>Estado:</b> </label>
+                <input type="text" name="estado" id="estado" class="form-control" value="En espera" readonly>
+              </div>
+            </div>
+
           </form>
         </div>
       </div>
