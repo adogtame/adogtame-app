@@ -39,11 +39,20 @@ class UserRoutes {
 
         // CRUD
 		this.router.get('/list',userController.list);
+		this.router.get('/listAnimals',userController.listAnimals);
+		this.router.get('/listAnimalsUser/:id',userController.listAnimalsUser);
+
+
 		this.router.get('/find/:id',userController.find);
+		this.router.get('/findAnimal/:id',userController.findAnimal);
 		this.router.post('/add',userController.addUser);
 		this.router.put('/update/:id',userController.update);
 		this.router.delete('/delete/:id',userController.delete);
 
+        //
+		this.router.post('/dToken',userController.dToken);
+
+        
         // FIN DEL CRUD
         
     }

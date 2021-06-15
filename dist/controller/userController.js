@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const userModel_1 = __importDefault(require("../models/userModel"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 class UserController {
     // Login
     signin(req, res) {
@@ -28,20 +29,40 @@ class UserController {
             console.log(password);
             console.log(result);
             if (!result) {
-                req.flash('error_session', 'Usuario y/o Password Incorrectos');
-                res.redirect("./signin");
+                return res.status(404).json({ message: "Usuario no registrado" });
+                //req.flash('error_session', 'Usuario y/o Password Incorrectos');
+                //res.redirect("./signin");
             }
             //res.send({ "Usuario no registrado Recibido": req.body }); El profe dejo esta linea pero no valida si el user es incorrecto
             if (result.id == id && result.password == password) {
+                const token = jsonwebtoken_1.default.sign({ _id: result.id }, "secretKey");
+                console.log(result.id);
                 req.session.user = result;
                 req.session.auth = true;
-                res.redirect("./home");
+                res.status(200).json({ message: "Bienvenido " + result.id, token: token });
+                //res.redirect("./home");
                 return;
             }
             //res.send({ "Usuario y/o contraseña incorrectos": req.body });
-            req.flash('error_session', 'Usuario y/o Password Incorrectos');
-            res.redirect("./error");
+            //req.flash('error_session', 'Usuario y/o Password Incorrectos');
+            //res.redirect("./error");
+            return res.status(403).json({ message: "Usuario y/o contraseña incorrectos" });
         });
+    }
+    dToken(req, res) {
+        //const { token } = req.params;
+        const token = req.body.token;
+        console.log(token);
+        // const decoded = jwtDecode<JwtPayload>(token); // Returns with the JwtPayload type
+        // console.log(decoded);
+        const decoded = jsonwebtoken_1.default.verify(token, "secretKey");
+        var userId = decoded;
+        console.log(userId);
+        console.log(decoded);
+        return res.json({ user: decoded._id });
+        // return res.send({
+        //      user: (<any>decoded)._id
+        // });
     }
     // Registro Usuario
     signup(req, res) {
@@ -62,10 +83,6 @@ class UserController {
             res.render("partials/signinForm");
         }
         res.render("partials/signupAnimalForm", { mi_session: true });
-    }
-    addAnimal(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-        });
     }
     home(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -152,6 +169,25 @@ class UserController {
             //res.send('Listado de usuarios!!!');
         });
     }
+    listAnimals(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const animales = yield userModel_1.default.listarAnimales();
+            console.log(animales);
+            return res.json(animales);
+            //res.send('Listado de animales!!!');
+        });
+    }
+    listAnimalsUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const { id } = req.params;
+            const animales = yield userModel_1.default.listarAnimalesUser(id);
+            console.log(animales);
+            return res.json(animales);
+            //res.send('Listado de animales!!!');
+        });
+    }
     find(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(req.params.id);
@@ -159,7 +195,17 @@ class UserController {
             const usuario = yield userModel_1.default.buscarId(id);
             if (usuario)
                 return res.json(usuario);
-            res.status(404).json({ text: "User doesn't exists" });
+            return res.status(404).json({ text: "User doesn't exists" });
+        });
+    }
+    findAnimal(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.params.id);
+            const { id } = req.params;
+            const animal = yield userModel_1.default.buscarIdAnimal(id);
+            if (animal)
+                return res.json(animal);
+            return res.status(404).json({ text: "animal doesn't exists" });
         });
     }
     addUser(req, res) {
@@ -170,10 +216,21 @@ class UserController {
             const busqueda = yield userModel_1.default.buscarNombre(usuario.nombre);
             if (!busqueda) {
                 const result = yield userModel_1.default.crear(usuario);
-                res.redirect("./signin");
-                return res.json({ message: 'User saved!!' });
+                // res.redirect("./signin");
+                return res.status(200).json({ message: 'User saved!!' });
+                //return res.json({ message: 'User saved!!' });
             }
-            return res.json({ message: 'User exists!!' });
+            //return res.json({ message: 'User exists!!' });
+            return res.status(403).json({ message: 'User exists!!' });
+        });
+    }
+    addAnimal(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const animal = req.body;
+            console.log(req.body);
+            const result = yield userModel_1.default.crearAnimal(animal);
+            // res.redirect("./signin");
+            return res.status(200).json({ message: 'Animal saved!!' });
         });
     }
     update(req, res) {

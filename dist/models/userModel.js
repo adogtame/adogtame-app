@@ -34,11 +34,38 @@ class UserModel {
             return usuarios[0];
         });
     }
+    listarAnimales() {
+        return __awaiter(this, void 0, void 0, function* () {
+            //const db=this.connection;
+            const animales = yield this.db.query('SELECT * FROM animal');
+            //console.log(usuarios[0]);
+            //devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
+            return animales[0];
+        });
+    }
+    listarAnimalesUser(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //const db=this.connection;
+            const animales = yield this.db.query('SELECT * FROM animal WHERE idDador = ?', [id]);
+            //console.log(usuarios[0]);
+            //devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
+            return animales[0];
+        });
+    }
     //Devuelve un objeto cuya fila en la tabla usuarios coincide con id.
     //Si no la encuentra devuelve null
     buscarId(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const encontrado = yield this.db.query('SELECT * FROM usuario WHERE id = ?', [id]);
+            //Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
+            if (encontrado.length > 1)
+                return encontrado[0][0];
+            return null;
+        });
+    }
+    buscarIdAnimal(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const encontrado = yield this.db.query('SELECT * FROM animal WHERE id = ?', [id]);
             //Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
             if (encontrado.length > 1)
                 return encontrado[0][0];
@@ -71,6 +98,13 @@ class UserModel {
     crear(usuario) {
         return __awaiter(this, void 0, void 0, function* () {
             const result = (yield this.db.query('INSERT INTO usuario SET ?', [usuario]))[0].affectedRows;
+            console.log(result);
+            return result;
+        });
+    }
+    crearAnimal(animal) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = (yield this.db.query('INSERT INTO animal SET ?', [animal]))[0].affectedRows;
             console.log(result);
             return result;
         });

@@ -35,10 +35,15 @@ class UserRoutes {
         this.router.get('/solicitudesRecibidas', userController_1.default.solicitudesRecibidas);
         // CRUD
         this.router.get('/list', userController_1.default.list);
+        this.router.get('/listAnimals', userController_1.default.listAnimals);
+        this.router.get('/listAnimalsUser/:id', userController_1.default.listAnimalsUser);
         this.router.get('/find/:id', userController_1.default.find);
+        this.router.get('/findAnimal/:id', userController_1.default.findAnimal);
         this.router.post('/add', userController_1.default.addUser);
         this.router.put('/update/:id', userController_1.default.update);
         this.router.delete('/delete/:id', userController_1.default.delete);
+        //
+        this.router.post('/dToken', userController_1.default.dToken);
         // FIN DEL CRUD
     }
 }
