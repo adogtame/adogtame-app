@@ -94,10 +94,11 @@ class UserModel {
 		const result = (await this.db.query('INSERT INTO animal SET ?', [animal]))[0].affectedRows;
 
 		
-		const result2 = (await this.db.query('SELECT id FROM animal order by id desc limit 1'))[0].affectedRows;
-
-		console.log(result2);
-		return result2[0];
+		const result2 = (await this.db.query('SELECT id FROM animal order by id desc limit 1'))[0][0];
+		const { id } = result2;
+		console.log("El result ",result2);
+		console.log("El id", id);
+		return id;
 	}
 
 	async buscarAnimal(nombre: string, dador: string) {
