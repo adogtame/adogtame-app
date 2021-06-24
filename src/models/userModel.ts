@@ -51,6 +51,8 @@ class UserModel {
 		return null;
 	}
 
+
+
 	async buscarIdAnimal(id: string) {
 		const encontrado: any = await this.db.query('SELECT * FROM animal WHERE id = ?', [id]);
 		//Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
@@ -84,15 +86,27 @@ class UserModel {
 		const result = (await this.db.query('INSERT INTO usuario SET ?', [usuario]))[0].affectedRows;
 		console.log(result);
 		return result;
+
 	}
+
 
 	async crearAnimal(animal: object) {
 		const result = (await this.db.query('INSERT INTO animal SET ?', [animal]))[0].affectedRows;
-		console.log(result);
-		return result;
+
+		
+		const result2 = (await this.db.query('SELECT id FROM animal order by id desc limit 1'))[0].affectedRows;
+
+		console.log(result2);
+		return result2[0];
 	}
 
-
+	async buscarAnimal(nombre: string, dador: string) {
+		const encontrado: any = await this.db.query('SELECT * FROM animal WHERE nombre = ? and idDador = ?', [nombre, dador]);
+		//Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
+		if (encontrado.length > 1)
+			return encontrado[0][0];
+		return null;
+	}
 	//Devuelve 1 si logro actualizar el usuario indicado por id
 	async actualizar(usuario: object, id: string) {
 		const result = (await this.db.query('UPDATE usuario SET ? WHERE id = ?', [usuario, id]))[0].affectedRows;
@@ -106,6 +120,77 @@ class UserModel {
 		console.log(user);
 		return user;
 	}
+
+
+
+
+
+	//Cesar Jueves
+	async crearComentario(comentario: object) {
+		const result = (await this.db.query('INSERT INTO comentarios_usuarios SET ?', [comentario]))[0].affectedRows;
+		console.log(result);
+		return result;
+	}
+	
+	async listarComentarios(id: string) {//Devuelve todas las filas de la tabla usuario
+		//const db=this.connection;
+		const comentarios = await this.db.query('SELECT * FROM comentarios_usuarios WHERE idAnimal = ?', [id]);
+		//console.log(usuarios[0]);
+		//devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
+		return comentarios[0];
+	}
+
+	async listUsuariosLikes(id: string) {//Devuelve todas las filas de la tabla usuario
+		//const db=this.connection;
+		const comentarios = await this.db.query('SELECT * FROM usuario_comentario_like WHERE idUsuario = ?', [id]);
+		//console.log(usuarios[0]);
+		//devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
+		return comentarios[0];
+	}
+
+	
+	async updateLikeComentario(usuario: object, id: string) {
+		
+		const result = (await this.db.query('UPDATE comentarios_usuarios SET likes = likes + 1 WHERE id = ?', [id]))[0].affectedRows;
+		
+		const result2 = (await this.db.query('INSERT INTO usuario_comentario_like SET ?', [usuario]))[0].affectedRows;
+				
+		console.log(result);
+		return result;
+	}
+
+	async updateDislikeComentario(usuario: object, id: string) {
+		
+		const result = (await this.db.query('UPDATE comentarios_usuarios SET dislikes = dislikes + 1 WHERE id = ?', [id]))[0].affectedRows;
+		
+		const result2 = (await this.db.query('INSERT INTO usuario_comentario_like SET ?', [usuario]))[0].affectedRows;
+				
+		console.log(result);
+		return result;
+	}
+
+	async updateLikeQuitarComentario(idUsuario: string, idComentario: string) {
+		
+		const result = (await this.db.query('UPDATE comentarios_usuarios SET likes = likes - 1 WHERE id = ?', [idComentario]))[0].affectedRows;
+		
+		const result2 = (await this.db.query('DELETE FROM usuario_comentario_like WHERE idUsuario = ? and idComentario = ?', [idUsuario, idComentario]))[0].affectedRows;
+			
+		
+		console.log(result);
+		return result;
+	}
+
+	async updateDislikeQuitarComentario(idUsuario: object, idComentario: string) {
+		
+		const result = (await this.db.query('UPDATE comentarios_usuarios SET dislikes = dislikes - 1 WHERE id = ?', [idComentario]))[0].affectedRows;
+		
+		const result2 = (await this.db.query('DELETE FROM usuario_comentario_like WHERE idUsuario = ? and idComentario = ?', [idUsuario, idComentario]))[0].affectedRows;
+		
+		console.log(result);
+		return result;
+	}
+
+
 }
 
 //Exportamos el enrutador con 
