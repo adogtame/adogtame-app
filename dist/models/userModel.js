@@ -105,8 +105,20 @@ class UserModel {
     crearAnimal(animal) {
         return __awaiter(this, void 0, void 0, function* () {
             const result = (yield this.db.query('INSERT INTO animal SET ?', [animal]))[0].affectedRows;
-            console.log(result);
-            return result;
+            const result2 = (yield this.db.query('SELECT id FROM animal order by id desc limit 1'))[0][0];
+            const { id } = result2;
+            console.log("El result ", result2);
+            console.log("El id", id);
+            return id;
+        });
+    }
+    buscarAnimal(nombre, dador) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const encontrado = yield this.db.query('SELECT * FROM animal WHERE nombre = ? and idDador = ?', [nombre, dador]);
+            //Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
+            if (encontrado.length > 1)
+                return encontrado[0][0];
+            return null;
         });
     }
     //Devuelve 1 si logro actualizar el usuario indicado por id
@@ -123,6 +135,64 @@ class UserModel {
             const user = (yield this.db.query('DELETE FROM usuario WHERE id = ?', [id]))[0].affectedRows;
             console.log(user);
             return user;
+        });
+    }
+    //Cesar Jueves
+    crearComentario(comentario) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = (yield this.db.query('INSERT INTO comentarios_usuarios SET ?', [comentario]))[0].affectedRows;
+            console.log(result);
+            return result;
+        });
+    }
+    listarComentarios(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //const db=this.connection;
+            const comentarios = yield this.db.query('SELECT * FROM comentarios_usuarios WHERE idAnimal = ?', [id]);
+            //console.log(usuarios[0]);
+            //devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
+            return comentarios[0];
+        });
+    }
+    listUsuariosLikes(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //const db=this.connection;
+            const comentarios = yield this.db.query('SELECT * FROM usuario_comentario_like WHERE idUsuario = ?', [id]);
+            //console.log(usuarios[0]);
+            //devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
+            return comentarios[0];
+        });
+    }
+    updateLikeComentario(usuario, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = (yield this.db.query('UPDATE comentarios_usuarios SET likes = likes + 1 WHERE id = ?', [id]))[0].affectedRows;
+            const result2 = (yield this.db.query('INSERT INTO usuario_comentario_like SET ?', [usuario]))[0].affectedRows;
+            console.log(result);
+            return result;
+        });
+    }
+    updateDislikeComentario(usuario, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = (yield this.db.query('UPDATE comentarios_usuarios SET dislikes = dislikes + 1 WHERE id = ?', [id]))[0].affectedRows;
+            const result2 = (yield this.db.query('INSERT INTO usuario_comentario_like SET ?', [usuario]))[0].affectedRows;
+            console.log(result);
+            return result;
+        });
+    }
+    updateLikeQuitarComentario(idUsuario, idComentario) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = (yield this.db.query('UPDATE comentarios_usuarios SET likes = likes - 1 WHERE id = ?', [idComentario]))[0].affectedRows;
+            const result2 = (yield this.db.query('DELETE FROM usuario_comentario_like WHERE idUsuario = ? and idComentario = ?', [idUsuario, idComentario]))[0].affectedRows;
+            console.log(result);
+            return result;
+        });
+    }
+    updateDislikeQuitarComentario(idUsuario, idComentario) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = (yield this.db.query('UPDATE comentarios_usuarios SET dislikes = dislikes - 1 WHERE id = ?', [idComentario]))[0].affectedRows;
+            const result2 = (yield this.db.query('DELETE FROM usuario_comentario_like WHERE idUsuario = ? and idComentario = ?', [idUsuario, idComentario]))[0].affectedRows;
+            console.log(result);
+            return result;
         });
     }
 }

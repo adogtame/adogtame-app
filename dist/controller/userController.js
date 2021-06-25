@@ -23,23 +23,23 @@ class UserController {
     }
     login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id, password } = req.body; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
-            const result = yield userModel_1.default.buscarId(id);
-            console.log(id);
+            const { email, password } = req.body; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
+            const result = yield userModel_1.default.buscarEmail(email);
+            console.log(email);
             console.log(password);
             console.log(result);
             if (!result) {
-                return res.status(404).json({ message: "Usuario no registrado" });
+                return res.status(404).json({ message: "Usuario no registrado, no esta supuestamente" });
                 //req.flash('error_session', 'Usuario y/o Password Incorrectos');
                 //res.redirect("./signin");
             }
             //res.send({ "Usuario no registrado Recibido": req.body }); El profe dejo esta linea pero no valida si el user es incorrecto
-            if (result.id == id && result.password == password) {
+            if (result.email == email && result.password == password) {
                 const token = jsonwebtoken_1.default.sign({ _id: result.id }, "secretKey");
                 console.log(result.id);
                 req.session.user = result;
                 req.session.auth = true;
-                res.status(200).json({ message: "Bienvenido " + result.id, token: token });
+                res.status(200).json({ message: result.id, token: token });
                 //res.redirect("./home");
                 return;
             }
@@ -57,7 +57,7 @@ class UserController {
         // console.log(decoded);
         const decoded = jsonwebtoken_1.default.verify(token, "secretKey");
         var userId = decoded;
-        console.log(userId);
+        console.log("Q onda, el usuario cual es", userId);
         console.log(decoded);
         return res.json({ user: decoded._id });
         // return res.send({
@@ -198,6 +198,16 @@ class UserController {
             return res.status(404).json({ text: "User doesn't exists" });
         });
     }
+    findUserWithMail(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.params.id);
+            const { mail } = req.params;
+            const usuario = yield userModel_1.default.buscarEmail(mail);
+            if (usuario)
+                return res.json(usuario);
+            return res.status(404).json({ text: "User doesn't exists" });
+        });
+    }
     findAnimal(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(req.params.id);
@@ -217,7 +227,9 @@ class UserController {
             if (!busqueda) {
                 const result = yield userModel_1.default.crear(usuario);
                 // res.redirect("./signin");
-                return res.status(200).json({ message: 'User saved!!' });
+                const user = yield userModel_1.default.buscarEmail(usuario.email);
+                const token = jsonwebtoken_1.default.sign({ _id: user.id }, "secretKey");
+                return res.status(200).json({ message: user, token: token });
                 //return res.json({ message: 'User saved!!' });
             }
             //return res.json({ message: 'User exists!!' });
@@ -227,10 +239,18 @@ class UserController {
     addAnimal(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const animal = req.body;
-            console.log(req.body);
-            const result = yield userModel_1.default.crearAnimal(animal);
-            // res.redirect("./signin");
-            return res.status(200).json({ message: 'Animal saved!!' });
+            console.log("Q onda cuantos son", req.body);
+            const Nombre = animal.nombre;
+            const user = animal.idDador;
+            const busqueda = yield userModel_1.default.buscarAnimal(animal.nombre, animal.idDador);
+            if (!busqueda) {
+                const result = yield userModel_1.default.crearAnimal(animal);
+                //Hace falta pasar el id del nuevo animal creado, asi lo devolvemos para poder ir a ese perfil de animal
+                console.log("EL id aca ", result);
+                // res.redirect("./signin");   
+                return res.json({ id: result });
+            }
+            return res.status(403).json({ message: 'animal exists!!' });
         });
     }
     update(req, res) {
@@ -239,6 +259,7 @@ class UserController {
             const { id } = req.params;
             const result = yield userModel_1.default.actualizar(req.body, id);
             //res.send('Usuario '+ req.params.id +' actualizado!!!');
+            //creo hay q cambiar por res.status.json
             return res.json({ text: 'updating a user ' + id });
         });
     }
@@ -250,6 +271,86 @@ class UserController {
             const result = yield userModel_1.default.eliminar(id);
             //return res.json({ text: 'deleting a user ' + id });
             res.redirect('../control');
+        });
+    }
+    //FIN CRUD
+    //Cesar Jueves
+    addComentario(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const comentario = req.body;
+            console.log(req.body);
+            if (comentario) {
+                const result = yield userModel_1.default.crearComentario(comentario);
+                // res.redirect("./signin");
+                return res.status(200).json({ message: 'Comentario saved!!' });
+                //return res.json({ message: 'User saved!!' });
+            }
+            //return res.json({ message: 'User exists!!' });
+            return res.status(403).json({ message: 'error' });
+        });
+    }
+    listComentarios(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const { id } = req.params;
+            const comentarios = yield userModel_1.default.listarComentarios(id);
+            console.log(comentarios);
+            return res.json(comentarios);
+            //res.send('Listado de usuarios!!!');
+        });
+    }
+    listUsuariosLikes(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const { id } = req.params;
+            const likes = yield userModel_1.default.listUsuariosLikes(id);
+            console.log(likes);
+            return res.json(likes);
+            //res.send('Listado de usuarios!!!');
+        });
+    }
+    updateLikeDislikeComentario(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const usuario = req.body;
+            if (usuario.like_dislike == "quitarDislike") {
+                console.log(req.body);
+                const { idComentario } = req.params;
+                const idUsuario = usuario.idUsuario;
+                const result = yield userModel_1.default.updateDislikeQuitarComentario(idUsuario, idComentario);
+                return res.status(200).json({ text: 'updating comentario ' + idComentario });
+            }
+            else {
+                if (usuario.like_dislike == "quitarLike") {
+                    console.log(req.body);
+                    const { idComentario } = req.params;
+                    const idUsuario = usuario.idUsuario;
+                    const result = yield userModel_1.default.updateLikeQuitarComentario(idUsuario, idComentario);
+                    return res.status(200).json({ text: 'updating comentario ' + idComentario });
+                }
+                else {
+                    if (usuario.like_dislike == "dislike") {
+                        console.log(req.body);
+                        const { idComentario } = req.params;
+                        console.log(req.params);
+                        console.log(idComentario);
+                        const result = yield userModel_1.default.updateDislikeComentario(usuario, idComentario);
+                        //res.send('Usuario '+ req.params.id +' actualizado!!!');
+                        return res.status(200).json({ text: 'updating comentario ' + idComentario });
+                    }
+                    else {
+                        if (usuario.like_dislike == "like") {
+                            console.log(req.body);
+                            const { idComentario } = req.params;
+                            const result = yield userModel_1.default.updateLikeComentario(usuario, idComentario);
+                            //res.send('Usuario '+ req.params.id +' actualizado!!!');
+                            return res.status(200).json({ text: 'updating comentario ' + idComentario });
+                        }
+                        else {
+                            return res.status(404).json({ text: 'MAL ' });
+                        }
+                    }
+                }
+            }
         });
     }
 }

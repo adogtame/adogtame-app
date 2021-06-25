@@ -45,6 +45,12 @@ class UserRoutes {
         //
         this.router.post('/dToken', userController_1.default.dToken);
         // FIN DEL CRUD
+        //Cesar Jueves
+        this.router.post('/comentario', userController_1.default.addComentario);
+        this.router.get('/listComentarios/:id', userController_1.default.listComentarios);
+        this.router.get('/listUsuariosLikes/:id', userController_1.default.listUsuariosLikes);
+        this.router.put('/updateLikeDislikeComentario/:idComentario', userController_1.default.updateLikeDislikeComentario);
+        this.router.get('/findUserWithMail/:mail', userController_1.default.findUserWithMail);
     }
 }
 //Exportamos el enrutador con 
