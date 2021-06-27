@@ -141,7 +141,7 @@ class UserModel {
 	
 	async listarComentarios(id: string) {//Devuelve todas las filas de la tabla usuario
 		//const db=this.connection;
-		const comentarios = await this.db.query('SELECT * FROM comentarios_usuarios WHERE idAnimal = ?', [id]);
+		const comentarios = await this.db.query('SELECT * FROM comentarios_usuarios WHERE idAnimal = ? order by id DESC', [id]);
 		//console.log(usuarios[0]);
 		//devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
 		return comentarios[0];
@@ -149,7 +149,7 @@ class UserModel {
 
 	async listUsuariosLikes(id: string) {//Devuelve todas las filas de la tabla usuario
 		//const db=this.connection;
-		const comentarios = await this.db.query('SELECT * FROM usuario_comentario_like WHERE idUsuario = ?', [id]);
+		const comentarios = await this.db.query('SELECT * FROM usuario_comentario_like WHERE idUsuario = ? order by idComentario DESC', [id]);
 		//console.log(usuarios[0]);
 		//devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
 		return comentarios[0];
@@ -196,6 +196,27 @@ class UserModel {
 		console.log(result);
 		return result;
 	}
+
+
+
+
+
+
+
+
+	//APARTADO ADMIN
+
+	
+	async eliminarComentario(id: string) {
+		const RES2 = (await this.db.query('DELETE FROM usuario_comentario_like WHERE idComentario = ?', [id]))[0].affectedRows;
+		const RES = (await this.db.query('DELETE FROM comentarios_usuarios WHERE ID = ?', [id]))[0].affectedRows;
+
+		console.log(RES);
+		return RES;
+	}
+
+
+
 
 
 }

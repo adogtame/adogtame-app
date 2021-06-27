@@ -69,6 +69,24 @@ class UserRoutes {
 		this.router.put('/updateLikeDislikeComentario/:idComentario',userController.updateLikeDislikeComentario);
 
 		this.router.get('/findUserWithMail/:mail',userController.findUserWithMail);
+
+
+
+
+
+        //APARTADO ADMIN
+        //Para no crear otro objeto q sea admin lo metemos en user
+
+
+
+        this.router.get('/deleteComentario/:id',userController.deleteComentario);	
+
+
+        
+        //
+
+
+
     }
 }
 
