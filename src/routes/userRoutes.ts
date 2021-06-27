@@ -76,7 +76,7 @@ class UserRoutes {
 
 
 
-        this.router.get('/deleteComentario/:id',userController.deleteComentario);	
+        this.router.delete('/deleteComentario/:id',userController.deleteComentario);	
 
 
         
