@@ -440,6 +440,34 @@ class UserController {
 
     }
 
+
+
+
+
+
+
+
+
+    //APARTADO ADMIN
+
+
+    public async deleteComentario(req: Request, res: Response) {
+		console.log(req.body);
+		//res.send('Usuario '+ req.params.id +' Eliminado!!!');
+		const { id } = req.params; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
+		const result = await userModel.eliminarComentario(id);
+		//return res.json({ text: 'deleting a user ' + id });
+		//res.redirect('../abmProductos');
+
+		res.status(200).json({ text: "Articulo eliminado correctamente" });
+	}
+
+
+
+
+
+
+
 }
 
 const userController = new UserController();
