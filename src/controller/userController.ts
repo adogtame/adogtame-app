@@ -459,7 +459,7 @@ class UserController {
 		//return res.json({ text: 'deleting a user ' + id });
 		//res.redirect('../abmProductos');
 
-		res.status(200).json({ text: "Articulo eliminado correctamente" });
+		res.status(200).json({ text: "Comentario eliminado correctamente" });
 	}
 
 
