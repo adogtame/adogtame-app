@@ -7,6 +7,7 @@ import path from "path";
 import userRoutes from "./routes/userRoutes";
 import session from "express-session";
 import flash from "connect-flash";
+import nodemailer from "nodemailer";
 import { body, validationResult } from 'express-validator';
 import express, { Request, Response, Application } from 'express'
 import { validateLocaleAndSetLanguage } from 'typescript';
