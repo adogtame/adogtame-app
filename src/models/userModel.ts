@@ -143,7 +143,7 @@ class UserModel {
 
 	async listUsuariosLikes(id: string) {//Devuelve todas las filas de la tabla usuario
 		//const db=this.connection;
-		const comentarios = await this.db.query('SELECT * FROM usuario_comentario_like WHERE idUsuario = ?', [id]);
+		const comentarios = await this.db.query('SELECT * FROM usuario_comentario_like WHERE idUsuario = ? order by idComentario DESC', [id]);
 		//console.log(usuarios[0]);
 		//devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
 		return comentarios[0];
