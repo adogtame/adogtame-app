@@ -3,6 +3,7 @@ import userModel from '../models/userModel';
 import flash from "connect-flash";
 import jwt from "jsonwebtoken";
 import jwtDecode, { JwtPayload } from "jwt-decode";
+import nodemailer from "nodemailer";
 
 class UserController {
 
@@ -16,9 +17,14 @@ class UserController {
     public async login(req: Request, res: Response) {
         const { email, password } = req.body; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
         const result = await userModel.buscarEmail(email);
+		const { confirmado } = result;
         console.log(email);
         console.log(password);
         console.log(result);
+		if(!confirmado) {
+			console.log('Usuario no confirmado');
+			return res.status(404).json({ message: "Debes verificar tu cuenta primero para poder ingresar. Por favor, revisa tu e-mail"});
+		}
         if (!result) {
 
             return res.status(404).json({ message: "Usuario no registrado, no esta supuestamente" });
@@ -236,17 +242,57 @@ class UserController {
 
     public async addUser(req: Request, res: Response) {
         const usuario = req.body;
+		const {nombre, email, nro_celular } = req.body;
         delete usuario.repassword;
         console.log(req.body);
         const busqueda = await userModel.buscarNombre(usuario.nombre);
         if (!busqueda) {
-            const result = await userModel.crear(usuario);
+
+			const transporter = nodemailer.createTransport({
+				service:'gmail',
+				auth: {
+					type: "OAuth2",
+					user: "christianbogarin@gmail.com",
+					clientId: "813392039318-bgaesokpjaiefg7h4go6gs8nuhgb1ur5.apps.googleusercontent.com",
+					clientSecret: "RDDrDR1rgfGI_cfG0e3lKz_4",
+					refreshToken: "1//04eaSkZEEfe51CgYIARAAGAQSNwF-L9IrmoTr0gCqboJQ5De8cYJxX3O02e7qNJi7Aunqp0R06T5I5LKncOfk3qOtfXSrmhiNZ8E"
+				}
+			});
+			
+			const result = await userModel.crear(usuario);
             // res.redirect("./signin");
             
             const user = await userModel.buscarEmail(usuario.email);
 
-            const token: string = jwt.sign({ _id: user.id }, "secretKey");
-            
+            const token = jwt.sign(
+				{ _id: user.id }, 
+				"secretKey",
+				{
+					expiresIn: '1d',
+				},
+				(err, emailToken) => {
+					const url = `http://adogtame-frontend.herokuapp.com/user/confirmar/${emailToken}`;
+
+					var contentHTML = `
+						<h1>Completa tu registro - Adogtame App</h1>
+						<h3>Hola ${nombre},</h3>
+							
+						<p>Por favor haz click en el siguiente link, o copialo en la barra de direcciones de tu navegador
+						para completar el proceso de registro:</p>
+						<a href="${url}">${url}</a>
+					`;
+
+					const info = transporter.sendMail({
+						from: "'Adogtame App' <adogtamesa@gmail.com>",
+						to: email,
+						subject: "Confirmacion de registro Adogtame App",
+						html: contentHTML
+					});
+
+					console.log('Message sent, info => ', info);
+				},
+			);
+			console.log('token result => ', token);
             return res.status(200).json({ message: user, token: token });
             //return res.json({ message: 'User saved!!' });
         }
@@ -254,6 +300,16 @@ class UserController {
         return res.status(403).json({ message: 'User exists!!' });
 
     }
+
+	public async confirmarRegistro(req: Request, res: Response) {
+		try {
+			const jwtPayload = jwt.verify(req.params.token, 'christianbogarin@gmail.com');
+			console.log('jwtPayload', jwtPayload);
+			await userModel.confirmarUsuario(true, 'id');
+		} catch (e) {
+			res.send('error');
+		}
+	}
 
     public async addAnimal(req: Request, res: Response) {
         const animal = req.body;

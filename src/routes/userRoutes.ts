@@ -36,6 +36,9 @@ class UserRoutes {
         this.router.get('/solicitudesEnviadas',userController.solicitudesEnviadas);
         this.router.get('/solicitudesRecibidas',userController.solicitudesRecibidas);
 
+		//Confirmacion de registro via nodemailer
+		this.router.get('/confirmar/:token',userController.confirmarRegistro);
+
 
         // CRUD
 		this.router.get('/list',userController.list);
