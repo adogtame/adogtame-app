@@ -15,44 +15,56 @@ class UserController {
     }
 
     public async login(req: Request, res: Response) {
-		console.log('SERVIDOR -> DENTRO DE LOGIN');
+        console.log('SERVIDOR -> DENTRO DE LOGIN');
         const { email, password } = req.body; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
         const result = await userModel.buscarEmail(email);
-		
+
         console.log(email);
         console.log(password);
         console.log(result);
-		
+
         if (!result) {
 
             return res.status(404).json({ message: "Usuario no registrado, no esta supuestamente" });
             //req.flash('error_session', 'Usuario y/o Password Incorrectos');
             //res.redirect("./signin");
         }
-		const  confirmado  = result.confirmado;
+        else {
 
-		console.log('Servidor confirmado => ', confirmado);
-		if(confirmado == 0) {
-			console.log('Usuario no confirmado');
-			return res.status(404).json({ message: "Debes verificar tu cuenta primero para poder ingresar. Por favor, revisa tu e-mail"});
-		}
-        //res.send({ "Usuario no registrado Recibido": req.body }); El profe dejo esta linea pero no valida si el user es incorrecto
-        if (result.email == email && result.password == password) {
+            const confirmado = result.confirmado;
 
-            const token: string = jwt.sign({ _id: result.id }, "secretKey");
+            console.log('Servidor confirmado => ', confirmado);
+            if (confirmado == 0) {
+                console.log('Usuario no confirmado');
+                return res.status(404).json({ message: "Debes verificar tu cuenta primero para poder ingresar. Por favor, revisa tu e-mail" });
+            }
+            else {
 
-            console.log(result.id);
-            req.session.user = result;
-            req.session.auth = true;
-            res.status(200).json({ message: result.id, token: token });
-            //res.redirect("./home");
-            return;
+
+                //res.send({ "Usuario no registrado Recibido": req.body }); El profe dejo esta linea pero no valida si el user es incorrecto
+                if (result.email == email && result.password == password) {
+
+                    const token: string = jwt.sign({ _id: result.id }, "secretKey");
+
+                    console.log(result.id);
+                    req.session.user = result;
+                    req.session.auth = true;
+                    res.status(200).json({ message: result.id, token: token });
+                    //res.redirect("./home");
+                    return;
+                }
+                else {
+
+                    //res.send({ "Usuario y/o contraseña incorrectos": req.body });
+                    //req.flash('error_session', 'Usuario y/o Password Incorrectos');
+                    //res.redirect("./error");
+
+                    return res.status(403).json({ message: "Usuario y/o contraseña incorrectos" });
+
+                }
+            }
+
         }
-        //res.send({ "Usuario y/o contraseña incorrectos": req.body });
-        //req.flash('error_session', 'Usuario y/o Password Incorrectos');
-        //res.redirect("./error");
-
-        return res.status(403).json({ message: "Usuario y/o contraseña incorrectos" });
     }
 
     public dToken(req: Request, res: Response) {
@@ -248,39 +260,39 @@ class UserController {
 
     public async addUser(req: Request, res: Response) {
         const usuario = req.body;
-		const {nombre, email, nro_celular } = req.body;
+        const { nombre, email, nro_celular } = req.body;
         delete usuario.repassword;
         console.log(req.body);
         const busqueda = await userModel.buscarNombre(usuario.nombre);
         if (!busqueda) {
 
-			const transporter = nodemailer.createTransport({
-				service:'gmail',
-				auth: {
-					type: "OAuth2",
-					user: "christianbogarin@gmail.com",
-					clientId: "813392039318-bgaesokpjaiefg7h4go6gs8nuhgb1ur5.apps.googleusercontent.com",
-					clientSecret: "RDDrDR1rgfGI_cfG0e3lKz_4",
-					refreshToken: "1//04eaSkZEEfe51CgYIARAAGAQSNwF-L9IrmoTr0gCqboJQ5De8cYJxX3O02e7qNJi7Aunqp0R06T5I5LKncOfk3qOtfXSrmhiNZ8E"
-				}
-			});
-			
-			const result = await userModel.crear(usuario);
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    type: "OAuth2",
+                    user: "christianbogarin@gmail.com",
+                    clientId: "813392039318-bgaesokpjaiefg7h4go6gs8nuhgb1ur5.apps.googleusercontent.com",
+                    clientSecret: "RDDrDR1rgfGI_cfG0e3lKz_4",
+                    refreshToken: "1//04eaSkZEEfe51CgYIARAAGAQSNwF-L9IrmoTr0gCqboJQ5De8cYJxX3O02e7qNJi7Aunqp0R06T5I5LKncOfk3qOtfXSrmhiNZ8E"
+                }
+            });
+
+            const result = await userModel.crear(usuario);
             // res.redirect("./signin");
-            
+
             const user = await userModel.buscarEmail(usuario.email);
-			console.log('Servidor user => ', user);
-            
-			const token: string = jwt.sign(
-				{ _id: user.id },
-				"secretKey",
-				{
-					expiresIn: '1d',
-				}
-			);
-			
-					const url = `http://localhost:4200/usuarios/verificar/${token}`;
-					var contentHTML = `
+            console.log('Servidor user => ', user);
+
+            const token: string = jwt.sign(
+                { _id: user.id },
+                "secretKey",
+                {
+                    expiresIn: '1d',
+                }
+            );
+
+            const url = `http://localhost:4200/usuarios/verificar/${token}`;
+            var contentHTML = `
 						<h1>Completa tu registro - Adogtame App</h1>
 						<h2>Hola ${nombre}!</h2>
 							
@@ -297,16 +309,16 @@ class UserController {
 						</p>
 					`;
 
-					const info = await transporter.sendMail({
-						from: "'Adogtame App' <adogtamesa@gmail.com>",
-						to: email,
-						subject: "Confirmacion de registro Adogtame App",
-						html: contentHTML
-					});
+            const info = await transporter.sendMail({
+                from: "'Adogtame App' <adogtamesa@gmail.com>",
+                to: email,
+                subject: "Confirmacion de registro Adogtame App",
+                html: contentHTML
+            });
 
-					console.log('Message sent, info => ', info);
-			
-			console.log('token result => ', token);
+            console.log('Message sent, info => ', info);
+
+            console.log('token result => ', token);
             return res.status(200).json({ message: user, token: token });
             //return res.json({ message: 'User saved!!' });
         }
@@ -315,44 +327,44 @@ class UserController {
 
     }
 
-	public async confirmarRegistro(req: Request, res: Response) {
-		try {
-			const jwtPayload = jwt.verify(req.params.token, 'secretKey');
-			console.log('jwtPayload', jwtPayload);
-			interface JWTPayload {
-				_id: string;
-			}
-			const id = (jwtPayload as JWTPayload)._id;
-			console.log('Servidor id => ', id);
-			const result = await userModel.confirmarUsuario(1, id);
-			return res.status(200).json({message: result});
-		} catch (e) {
-			console.log('Servidor entro en el catch');
-			res.send('error');
-		}
-	}
+    public async confirmarRegistro(req: Request, res: Response) {
+        try {
+            const jwtPayload = jwt.verify(req.params.token, 'secretKey');
+            console.log('jwtPayload', jwtPayload);
+            interface JWTPayload {
+                _id: string;
+            }
+            const id = (jwtPayload as JWTPayload)._id;
+            console.log('Servidor id => ', id);
+            const result = await userModel.confirmarUsuario(1, id);
+            return res.status(200).json({ message: result });
+        } catch (e) {
+            console.log('Servidor entro en el catch');
+            res.send('error');
+        }
+    }
 
     public async addAnimal(req: Request, res: Response) {
         const animal = req.body;
 
-        console.log("Q onda cuantos son",req.body);
+        console.log("Q onda cuantos son", req.body);
 
         const Nombre = animal.nombre;
         const user = animal.idDador;
 
-        const busqueda = await userModel.buscarAnimal(animal.nombre,animal.idDador);
+        const busqueda = await userModel.buscarAnimal(animal.nombre, animal.idDador);
         if (!busqueda) {
 
             const result = await userModel.crearAnimal(animal);
 
 
             //Hace falta pasar el id del nuevo animal creado, asi lo devolvemos para poder ir a ese perfil de animal
-    
-            
-            console.log("EL id aca ",result);
+
+
+            console.log("EL id aca ", result);
             // res.redirect("./signin");   
-            return res.json({ id: result});
-    
+            return res.json({ id: result });
+
 
         }
 
@@ -360,7 +372,7 @@ class UserController {
         return res.status(403).json({ message: 'animal exists!!' });
 
 
-    
+
 
     }
 
@@ -529,15 +541,15 @@ class UserController {
 
 
     public async deleteComentario(req: Request, res: Response) {
-		console.log(req.body);
-		//res.send('Usuario '+ req.params.id +' Eliminado!!!');
-		const { id } = req.params; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
-		const result = await userModel.eliminarComentario(id);
-		//return res.json({ text: 'deleting a user ' + id });
-		//res.redirect('../abmProductos');
+        console.log(req.body);
+        //res.send('Usuario '+ req.params.id +' Eliminado!!!');
+        const { id } = req.params; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
+        const result = await userModel.eliminarComentario(id);
+        //return res.json({ text: 'deleting a user ' + id });
+        //res.redirect('../abmProductos');
 
-		res.status(200).json({ text: "Comentario eliminado correctamente" });
-	}
+        res.status(200).json({ text: "Comentario eliminado correctamente" });
+    }
 
 
 
