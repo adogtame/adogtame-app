@@ -19,8 +19,8 @@ class UserController {
         const { email, password } = req.body; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
         const result = await userModel.buscarEmail(email);
 
-        console.log(email);
-        console.log(password);
+        console.log("Este es el email", email);
+        console.log("Este es el password", password);
         console.log("Este es el result", result);
 
         if (!result) {
