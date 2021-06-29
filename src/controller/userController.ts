@@ -46,7 +46,7 @@ class UserController {
 
                     const token: string = jwt.sign({ _id: result.id }, "secretKey");
 
-                    console.log(result.id);
+                    console.log("Este es el id del usuario", result.id);
                     req.session.user = result;
                     req.session.auth = true;
                     res.status(200).json({ message: result.id, token: token });
