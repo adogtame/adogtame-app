@@ -89,11 +89,11 @@ class UserModel {
 
 	}
 
-	async confirmarUsuario(confirmado: Boolean, id: string) {
-		const result = (await this.db.query('UPDATE usuario SET confirmado = ? Where Id = ?', [confirmado, id]));
+	async confirmarUsuario(confirmado: number, id: string) {
+		console.log('confirmado => ', confirmado, 'id => ', id);
+		const result = (await this.db.query('UPDATE usuario SET confirmado = ? Where Id = ?', [confirmado, id]))[0].affectedRows;
 		console.log('Confirmar usuario result =>', result);
 		return result;
-
 	}
 
 	async crearAnimal(animal: object) {
