@@ -15,6 +15,7 @@ class UserController {
     }
 
     public async login(req: Request, res: Response) {
+		console.log('SERVIDOR -> DENTRO DE LOGIN');
         const { email, password } = req.body; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
         const result = await userModel.buscarEmail(email);
 		
