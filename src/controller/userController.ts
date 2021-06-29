@@ -21,7 +21,7 @@ class UserController {
 
         console.log(email);
         console.log(password);
-        console.log(result);
+        console.log("Este es el result", result);
 
         if (!result) {
 
