@@ -29,7 +29,8 @@ class UserController {
             //req.flash('error_session', 'Usuario y/o Password Incorrectos');
             //res.redirect("./signin");
         }
-		const { confirmado } = result;
+		const  confirmado  = result.confirmado;
+
 		console.log('Servidor confirmado => ', confirmado);
 		if(confirmado == 0) {
 			console.log('Usuario no confirmado');
@@ -37,6 +38,7 @@ class UserController {
 		}
         //res.send({ "Usuario no registrado Recibido": req.body }); El profe dejo esta linea pero no valida si el user es incorrecto
         if (result.email == email && result.password == password) {
+
             const token: string = jwt.sign({ _id: result.id }, "secretKey");
 
             console.log(result.id);
