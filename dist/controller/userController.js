@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const userModel_1 = __importDefault(require("../models/userModel"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const nodemailer_1 = __importDefault(require("nodemailer"));
 class UserController {
     // Login
     signin(req, res) {
@@ -23,30 +24,43 @@ class UserController {
     }
     login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log('SERVIDOR -> DENTRO DE LOGIN');
             const { email, password } = req.body; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
             const result = yield userModel_1.default.buscarEmail(email);
-            console.log(email);
-            console.log(password);
-            console.log(result);
+            console.log("Este es el email", email);
+            console.log("Este es el password", password);
+            console.log("Este es el result", result);
             if (!result) {
                 return res.status(404).json({ message: "Usuario no registrado, no esta supuestamente" });
                 //req.flash('error_session', 'Usuario y/o Password Incorrectos');
                 //res.redirect("./signin");
             }
-            //res.send({ "Usuario no registrado Recibido": req.body }); El profe dejo esta linea pero no valida si el user es incorrecto
-            if (result.email == email && result.password == password) {
-                const token = jsonwebtoken_1.default.sign({ _id: result.id }, "secretKey");
-                console.log(result.id);
-                req.session.user = result;
-                req.session.auth = true;
-                res.status(200).json({ message: result.id, token: token });
-                //res.redirect("./home");
-                return;
+            else {
+                const confirmado = result.confirmado;
+                console.log('Servidor confirmado => ', confirmado);
+                if (confirmado == 0) {
+                    console.log('Usuario no confirmado');
+                    return res.status(404).json({ message: "Debes verificar tu cuenta primero para poder ingresar. Por favor, revisa tu e-mail" });
+                }
+                else {
+                    //res.send({ "Usuario no registrado Recibido": req.body }); El profe dejo esta linea pero no valida si el user es incorrecto
+                    if (result.email == email && result.password == password) {
+                        const token = jsonwebtoken_1.default.sign({ _id: result.id }, "secretKey");
+                        console.log("Este es el id del usuario", result.id);
+                        req.session.user = result;
+                        req.session.auth = true;
+                        res.status(200).json({ message: result.id, token: token });
+                        //res.redirect("./home");
+                        return;
+                    }
+                    else {
+                        //res.send({ "Usuario y/o contraseña incorrectos": req.body });
+                        //req.flash('error_session', 'Usuario y/o Password Incorrectos');
+                        //res.redirect("./error");
+                        return res.status(403).json({ message: "Usuario y/o contraseña incorrectos" });
+                    }
+                }
             }
-            //res.send({ "Usuario y/o contraseña incorrectos": req.body });
-            //req.flash('error_session', 'Usuario y/o Password Incorrectos');
-            //res.redirect("./error");
-            return res.status(403).json({ message: "Usuario y/o contraseña incorrectos" });
         });
     }
     dToken(req, res) {
@@ -221,19 +235,74 @@ class UserController {
     addUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const usuario = req.body;
+            const { nombre, email, nro_celular } = req.body;
             delete usuario.repassword;
             console.log(req.body);
             const busqueda = yield userModel_1.default.buscarNombre(usuario.nombre);
             if (!busqueda) {
+                const transporter = nodemailer_1.default.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        type: "OAuth2",
+                        user: "christianbogarin@gmail.com",
+                        clientId: "813392039318-bgaesokpjaiefg7h4go6gs8nuhgb1ur5.apps.googleusercontent.com",
+                        clientSecret: "RDDrDR1rgfGI_cfG0e3lKz_4",
+                        refreshToken: "1//04eaSkZEEfe51CgYIARAAGAQSNwF-L9IrmoTr0gCqboJQ5De8cYJxX3O02e7qNJi7Aunqp0R06T5I5LKncOfk3qOtfXSrmhiNZ8E"
+                    }
+                });
                 const result = yield userModel_1.default.crear(usuario);
                 // res.redirect("./signin");
                 const user = yield userModel_1.default.buscarEmail(usuario.email);
-                const token = jsonwebtoken_1.default.sign({ _id: user.id }, "secretKey");
+                console.log('Servidor user => ', user);
+                const token = jsonwebtoken_1.default.sign({ _id: user.id }, "secretKey", {
+                    expiresIn: '1d',
+                });
+                const url = `http://localhost:4200/usuarios/verificar/${token}`;
+                var contentHTML = `
+						<h1>Completa tu registro - Adogtame App</h1>
+						<h2>Hola ${nombre}!</h2>
+							
+						<p>Por favor haz click en el siguiente link, o copialo en la barra de direcciones de tu navegador
+						para completar el proceso de registro:</p>
+						<a href="${url}">${url}</a>
+						<img src="https://st2.depositphotos.com/1606449/7516/i/950/depositphotos_75163555-stock-photo-cats-and-dogs-hanging-paws.jpg"/>
+						<p><h3><b>Adogtame S.A.</b></h3><br/>
+						<b>Nuestro sitio web:</b> <a href="https://adogtame-frontend.herokuapp.com/">Adogtame Web</a><br/>
+						<b>Nuestras redes:</b> <img src="http://assets.stickpng.com/images/580b57fcd9996e24bc43c521.png" width="32" heigth="32"/>
+						<img src="https://images.vexels.com/media/users/3/223136/isolated/lists/984f500cf9de4519b02b354346eb72e0-facebook-icon-redes-sociales.png" width="32" height="32"/>
+						<img src="https://image.similarpng.com/very-thumbnail/2020/06/Logo-Twitter-icon-transparent-PNG.png" width="32" height="32"/><br/>
+						<b>Contacto:</b> adogtamesa@gmail.com - (54) 11 9999 5555
+						</p>
+					`;
+                const info = yield transporter.sendMail({
+                    from: "'Adogtame App' <adogtamesa@gmail.com>",
+                    to: email,
+                    subject: "Confirmacion de registro Adogtame App",
+                    html: contentHTML
+                });
+                console.log('Message sent, info => ', info);
+                console.log('token result => ', token);
                 return res.status(200).json({ message: user, token: token });
                 //return res.json({ message: 'User saved!!' });
             }
             //return res.json({ message: 'User exists!!' });
             return res.status(403).json({ message: 'User exists!!' });
+        });
+    }
+    confirmarRegistro(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const jwtPayload = jsonwebtoken_1.default.verify(req.params.token, 'secretKey');
+                console.log('jwtPayload', jwtPayload);
+                const id = jwtPayload._id;
+                console.log('Servidor id => ', id);
+                const result = yield userModel_1.default.confirmarUsuario(1, id);
+                return res.status(200).json({ message: result });
+            }
+            catch (e) {
+                console.log('Servidor entro en el catch');
+                res.send('error');
+            }
         });
     }
     addAnimal(req, res) {
@@ -351,6 +420,18 @@ class UserController {
                     }
                 }
             }
+        });
+    }
+    //APARTADO ADMIN
+    deleteComentario(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            //res.send('Usuario '+ req.params.id +' Eliminado!!!');
+            const { id } = req.params; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
+            const result = yield userModel_1.default.eliminarComentario(id);
+            //return res.json({ text: 'deleting a user ' + id });
+            //res.redirect('../abmProductos');
+            res.status(200).json({ text: "Comentario eliminado correctamente" });
         });
     }
 }

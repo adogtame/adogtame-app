@@ -102,6 +102,14 @@ class UserModel {
             return result;
         });
     }
+    confirmarUsuario(confirmado, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('confirmado => ', confirmado, 'id => ', id);
+            const result = (yield this.db.query('UPDATE usuario SET confirmado = ? Where Id = ?', [confirmado, id]))[0].affectedRows;
+            console.log('Confirmar usuario result =>', result);
+            return result;
+        });
+    }
     crearAnimal(animal) {
         return __awaiter(this, void 0, void 0, function* () {
             const result = (yield this.db.query('INSERT INTO animal SET ?', [animal]))[0].affectedRows;
@@ -148,7 +156,7 @@ class UserModel {
     listarComentarios(id) {
         return __awaiter(this, void 0, void 0, function* () {
             //const db=this.connection;
-            const comentarios = yield this.db.query('SELECT * FROM comentarios_usuarios WHERE idAnimal = ?', [id]);
+            const comentarios = yield this.db.query('SELECT * FROM comentarios_usuarios WHERE idAnimal = ? order by id DESC', [id]);
             //console.log(usuarios[0]);
             //devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
             return comentarios[0];
@@ -157,7 +165,7 @@ class UserModel {
     listUsuariosLikes(id) {
         return __awaiter(this, void 0, void 0, function* () {
             //const db=this.connection;
-            const comentarios = yield this.db.query('SELECT * FROM usuario_comentario_like WHERE idUsuario = ?', [id]);
+            const comentarios = yield this.db.query('SELECT * FROM usuario_comentario_like WHERE idUsuario = ? order by idComentario DESC', [id]);
             //console.log(usuarios[0]);
             //devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
             return comentarios[0];
@@ -193,6 +201,15 @@ class UserModel {
             const result2 = (yield this.db.query('DELETE FROM usuario_comentario_like WHERE idUsuario = ? and idComentario = ?', [idUsuario, idComentario]))[0].affectedRows;
             console.log(result);
             return result;
+        });
+    }
+    //APARTADO ADMIN
+    eliminarComentario(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const RES2 = (yield this.db.query('DELETE FROM usuario_comentario_like WHERE idComentario = ?', [id]))[0].affectedRows;
+            const RES = (yield this.db.query('DELETE FROM comentarios_usuarios WHERE ID = ?', [id]))[0].affectedRows;
+            console.log(RES);
+            return RES;
         });
     }
 }

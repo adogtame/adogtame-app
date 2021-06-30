@@ -33,6 +33,8 @@ class UserRoutes {
         this.router.get('/adoptados', userController_1.default.adoptados);
         this.router.get('/solicitudesEnviadas', userController_1.default.solicitudesEnviadas);
         this.router.get('/solicitudesRecibidas', userController_1.default.solicitudesRecibidas);
+        //Confirmacion de registro via nodemailer
+        this.router.get('/confirmar/:token', userController_1.default.confirmarRegistro);
         // CRUD
         this.router.get('/list', userController_1.default.list);
         this.router.get('/listAnimals', userController_1.default.listAnimals);
@@ -51,6 +53,10 @@ class UserRoutes {
         this.router.get('/listUsuariosLikes/:id', userController_1.default.listUsuariosLikes);
         this.router.put('/updateLikeDislikeComentario/:idComentario', userController_1.default.updateLikeDislikeComentario);
         this.router.get('/findUserWithMail/:mail', userController_1.default.findUserWithMail);
+        //APARTADO ADMIN
+        //Para no crear otro objeto q sea admin lo metemos en user
+        this.router.delete('/deleteComentario/:id', userController_1.default.deleteComentario);
+        //
     }
 }
 //Exportamos el enrutador con 
