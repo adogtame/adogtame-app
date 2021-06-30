@@ -291,7 +291,7 @@ class UserController {
                 }
             );
 
-            const url = `http://localhost:4200/usuarios/verificar/${token}`;
+            const url = `http://adogtameweb.herokuapp.com/usuarios/verificar/${token}`;
             var contentHTML = `
 						<h1>Completa tu registro - Adogtame App</h1>
 						<h2>Hola ${nombre}!</h2>
