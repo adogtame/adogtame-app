@@ -43,6 +43,41 @@ class UserModel {
             return animales[0];
         });
     }
+    listAnimalsFiltrado(incluye, excluye) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //const db=this.connection;
+            var animales = [];
+            console.log("Model i", incluye);
+            console.log("Model e", excluye);
+            if (incluye.length == 0) {
+                console.log("Incluye null");
+                if (excluye.length == 0) {
+                    console.log("Ambas null");
+                    animales = yield this.db.query('SELECT * FROM animal');
+                }
+                else {
+                    console.log("Excluye tiene");
+                    animales = yield this.db.query('SELECT * FROM animal WHERE tipo NOT IN (?)', [excluye]);
+                }
+            }
+            else {
+                console.log("Incluye tiene");
+                if (excluye.length == 0) {
+                    console.log("Excluye null");
+                    animales = yield this.db.query('SELECT * FROM animal WHERE tipo IN (?)', [incluye]);
+                }
+                else {
+                    console.log("Ambas tienen");
+                    animales = yield this.db.query('SELECT * FROM animal WHERE tipo IN (?) and id NOT IN (SELECT id FROM animal WHERE tipo IN (?));', [incluye, excluye]);
+                }
+            }
+            console.log(animales[0]);
+            //	
+            //console.log(usuarios[0]);
+            //devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
+            return animales[0];
+        });
+    }
     listarAnimalesUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
             //const db=this.connection;

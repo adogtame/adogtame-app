@@ -32,6 +32,55 @@ class UserModel {
 		return animales[0];
 	}
 
+	async listAnimalsFiltrado(incluye: any, excluye: any) {//Devuelve todas las filas de la tabla usuario
+		//const db=this.connection;
+		var animales:any =[];
+		console.log("Model i",incluye);
+		console.log("Model e",excluye);
+		if(incluye.length==0){
+
+
+			console.log("Incluye null");
+
+			if(excluye.length==0){
+
+				console.log("Ambas null");
+				animales = await this.db.query('SELECT * FROM animal');
+			}
+			else
+			{
+				console.log("Excluye tiene");
+				animales = await this.db.query('SELECT * FROM animal WHERE tipo NOT IN (?)', [excluye]);
+		
+			}
+
+		}
+		else
+		{
+
+			console.log("Incluye tiene");
+			if(excluye.length==0){
+				
+				console.log("Excluye null");
+				animales = await this.db.query('SELECT * FROM animal WHERE tipo IN (?)', [incluye]);
+					
+			}
+			else
+			{
+				
+				console.log("Ambas tienen");
+				animales = await this.db.query('SELECT * FROM animal WHERE tipo IN (?) and id NOT IN (SELECT id FROM animal WHERE tipo IN (?));', [incluye, excluye]);
+			}
+
+
+		}
+		console.log(animales[0]);
+		//	
+		//console.log(usuarios[0]);
+		//devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
+		return animales[0];
+	}
+
 	async listarAnimalesUser(id: string) {//Devuelve todas las filas de la tabla usuario
 		//const db=this.connection;
 		const animales = await this.db.query('SELECT * FROM animal WHERE idDador = ?', [id]);

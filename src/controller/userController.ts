@@ -218,6 +218,94 @@ class UserController {
         //res.send('Listado de animales!!!');
     }
 
+    public async listAnimalsFiltrado(req: Request, res: Response) {
+        console.log(req.body);
+        const filtro  = req.body.filtro;
+        console.log("q aaaaa", filtro);
+        var incluye:any=[];
+        var excluye:any=[];
+
+        if(filtro.perroF==true){
+
+            if(filtro.perroE==true){
+
+                
+                excluye.push("perro");
+
+                if(filtro.gatoF==false){
+                
+                    excluye.push("gato");
+                }
+
+            }
+            else
+            {                
+                incluye.push("perro");
+            }
+            
+        }
+        else
+        {
+
+            if(filtro.perroE==true){
+
+                
+                excluye.push("perro");
+
+            }
+
+
+        }
+
+        if(filtro.gatoF==true){
+            
+            if(filtro.gatoE==true){
+
+                excluye.push("gato");
+
+                if(filtro.perroF==false){
+                
+                    excluye.push("perro");
+                }
+
+            }
+            else
+            {
+
+                incluye.push("gato");
+            }
+            
+        }
+        else
+        {
+            if(filtro.gatoE==true){
+
+                excluye.push("gato");
+                
+            }
+            
+        }
+    
+        // if(filtro.gatoE==false && filtro.perroE==false){
+
+        //     excluye.push("Vacio");
+            
+        // }
+
+        // if(filtro.gatoF==false && filtro.perroF==false){
+
+        //     incluye.push("Vacio");
+            
+        // }
+
+        console.log(incluye);
+        console.log(excluye);
+        const animales = await userModel.listAnimalsFiltrado(incluye, excluye);
+        console.log(animales);
+        return res.json(animales);
+        //res.send('Listado de animales!!!');
+    }
+
     public async listAnimalsUser(req: Request, res: Response) {
         console.log(req.body);
         const { id } = req.params;
@@ -348,9 +436,6 @@ class UserController {
         const animal = req.body;
 
         console.log("Q onda cuantos son", req.body);
-
-        const Nombre = animal.nombre;
-        const user = animal.idDador;
 
         const busqueda = await userModel.buscarAnimal(animal.nombre, animal.idDador);
         if (!busqueda) {

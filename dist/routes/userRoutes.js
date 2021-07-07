@@ -38,6 +38,7 @@ class UserRoutes {
         // CRUD
         this.router.get('/list', userController_1.default.list);
         this.router.get('/listAnimals', userController_1.default.listAnimals);
+        this.router.post('/listAnimalsFiltrado', userController_1.default.listAnimalsFiltrado);
         this.router.get('/listAnimalsUser/:id', userController_1.default.listAnimalsUser);
         this.router.get('/find/:id', userController_1.default.find);
         this.router.get('/findAnimal/:id', userController_1.default.findAnimal);

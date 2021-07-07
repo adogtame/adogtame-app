@@ -192,6 +192,59 @@ class UserController {
             //res.send('Listado de animales!!!');
         });
     }
+    listAnimalsFiltrado(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const filtro = req.body.filtro;
+            console.log("q aaaaa", filtro);
+            var incluye = [];
+            var excluye = [];
+            if (filtro.perroF == true) {
+                if (filtro.perroE == true) {
+                    excluye.push("perro");
+                    if (filtro.gatoF == false) {
+                        excluye.push("gato");
+                    }
+                }
+                else {
+                    incluye.push("perro");
+                }
+            }
+            else {
+                if (filtro.perroE == true) {
+                    excluye.push("perro");
+                }
+            }
+            if (filtro.gatoF == true) {
+                if (filtro.gatoE == true) {
+                    excluye.push("gato");
+                    if (filtro.perroF == false) {
+                        excluye.push("perro");
+                    }
+                }
+                else {
+                    incluye.push("gato");
+                }
+            }
+            else {
+                if (filtro.gatoE == true) {
+                    excluye.push("gato");
+                }
+            }
+            // if(filtro.gatoE==false && filtro.perroE==false){
+            //     excluye.push("Vacio");
+            // }
+            // if(filtro.gatoF==false && filtro.perroF==false){
+            //     incluye.push("Vacio");
+            // }
+            console.log(incluye);
+            console.log(excluye);
+            const animales = yield userModel_1.default.listAnimalsFiltrado(incluye, excluye);
+            console.log(animales);
+            return res.json(animales);
+            //res.send('Listado de animales!!!');
+        });
+    }
     listAnimalsUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(req.body);
@@ -309,8 +362,6 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const animal = req.body;
             console.log("Q onda cuantos son", req.body);
-            const Nombre = animal.nombre;
-            const user = animal.idDador;
             const busqueda = yield userModel_1.default.buscarAnimal(animal.nombre, animal.idDador);
             if (!busqueda) {
                 const result = yield userModel_1.default.crearAnimal(animal);
