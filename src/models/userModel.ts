@@ -403,6 +403,45 @@ class UserModel {
 
 
 
+	//interes
+
+	async mostrarInteres(idAnimal: string, idInteresado: string) {
+		
+		const interes={idAnimal: idAnimal, idInteresado: idInteresado}
+		const result = (await this.db.query('INSERT INTO animal_interesado SET ?', [interes]))[0].affectedRows;
+				
+		console.log(result);
+		return result;
+	}
+
+	async quitarInteres(idAnimal: string, idInteresado: string) {
+		
+		const result = (await this.db.query('DELETE FROM animal_interesado WHERE idAnimal = ? and idInteresado = ?', [idAnimal, idInteresado]))[0].affectedRows;
+			
+				
+		console.log(result);
+		return result;
+	}
+
+	
+	async cargarInteres(idAnimal: string, idUsuario: string) {
+		
+		console.log("idAnimal y idUsuario",idAnimal,idUsuario);
+		
+		const encontrado = await this.db.query('SELECT COUNT(1) as interes FROM animal_interesado WHERE idAnimal = ? and idInteresado = ?', [idAnimal, idUsuario]);
+	
+		
+		
+		//'SELECT * FROM animal
+		console.log("q onda el result del model",encontrado[0][0]);
+		console.log("q onda el result del model",encontrado[0][0].interes);
+		return encontrado[0][0].interes;
+	
+
+	}
+	//
+
+
 
 
 	//Cesar Jueves

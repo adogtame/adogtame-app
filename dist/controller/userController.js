@@ -461,6 +461,42 @@ class UserController {
         });
     }
     //FIN CRUD
+    //Interes
+    mostrarInteres(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const idInteresado = req.body.idInteresado;
+            console.log(req.body);
+            console.log("El id del interesado", idInteresado);
+            const { idAnimal } = req.params;
+            console.log("El id del animal", idAnimal);
+            const result = yield userModel_1.default.mostrarInteres(idAnimal, idInteresado);
+            return res.status(200).json({ text: 'Mostrando Interes de' + idInteresado });
+        });
+    }
+    quitarInteres(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const idInteresado = req.body.idInteresado;
+            console.log(req.body);
+            console.log("El id del interesado", idInteresado);
+            const { idAnimal } = req.params;
+            console.log("El id del animal", idAnimal);
+            const result = yield userModel_1.default.quitarInteres(idAnimal, idInteresado);
+            return res.status(200).json({ text: 'Mostrando Interes de' + idInteresado });
+        });
+    }
+    cargarInteres(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const idUsuario = req.body.idUsuario;
+            console.log(req.body);
+            console.log("El id del Usuario", idUsuario);
+            const { idAnimal } = req.params;
+            console.log("El id del animal", idAnimal);
+            const result = yield userModel_1.default.cargarInteres(idAnimal, idUsuario);
+            console.log("El pinche result", result);
+            return res.json(result);
+        });
+    }
+    //
     //Cesar Jueves
     addComentario(req, res) {
         return __awaiter(this, void 0, void 0, function* () {

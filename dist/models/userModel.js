@@ -265,6 +265,33 @@ class UserModel {
             return user;
         });
     }
+    //interes
+    mostrarInteres(idAnimal, idInteresado) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const interes = { idAnimal: idAnimal, idInteresado: idInteresado };
+            const result = (yield this.db.query('INSERT INTO animal_interesado SET ?', [interes]))[0].affectedRows;
+            console.log(result);
+            return result;
+        });
+    }
+    quitarInteres(idAnimal, idInteresado) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = (yield this.db.query('DELETE FROM animal_interesado WHERE idAnimal = ? and idInteresado = ?', [idAnimal, idInteresado]))[0].affectedRows;
+            console.log(result);
+            return result;
+        });
+    }
+    cargarInteres(idAnimal, idUsuario) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("idAnimal y idUsuario", idAnimal, idUsuario);
+            const encontrado = yield this.db.query('SELECT COUNT(1) as interes FROM animal_interesado WHERE idAnimal = ? and idInteresado = ?', [idAnimal, idUsuario]);
+            //'SELECT * FROM animal
+            console.log("q onda el result del model", encontrado[0][0]);
+            console.log("q onda el result del model", encontrado[0][0].interes);
+            return encontrado[0][0].interes;
+        });
+    }
+    //
     //Cesar Jueves
     crearComentario(comentario) {
         return __awaiter(this, void 0, void 0, function* () {

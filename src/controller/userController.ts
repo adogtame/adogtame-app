@@ -598,6 +598,71 @@ class UserController {
     //FIN CRUD
 
 
+    //Interes
+
+    public async mostrarInteres(req: Request, res: Response) {
+
+
+        const idInteresado = req.body.idInteresado;
+
+
+
+        console.log(req.body);
+        console.log("El id del interesado", idInteresado);
+        const { idAnimal } = req.params;
+        console.log("El id del animal", idAnimal);
+        const result = await userModel.mostrarInteres(idAnimal, idInteresado);
+
+        return res.status(200).json({ text: 'Mostrando Interes de' + idInteresado });
+
+
+
+    }
+
+
+    public async quitarInteres(req: Request, res: Response) {
+
+
+        const idInteresado = req.body.idInteresado;
+
+
+
+        console.log(req.body);
+        console.log("El id del interesado", idInteresado);
+        const { idAnimal } = req.params;
+        console.log("El id del animal", idAnimal);
+        const result = await userModel.quitarInteres(idAnimal, idInteresado);
+
+        return res.status(200).json({ text: 'Mostrando Interes de' + idInteresado });
+
+
+
+    }
+    
+
+    public async cargarInteres(req: Request, res: Response) {
+
+
+        const idUsuario = req.body.idUsuario;
+
+
+
+        console.log(req.body);
+        console.log("El id del Usuario", idUsuario);
+        const { idAnimal } = req.params;
+        console.log("El id del animal", idAnimal);
+        const result = await userModel.cargarInteres(idAnimal, idUsuario);
+
+        console.log("El pinche result",result);
+        return res.json(result);
+
+
+
+    }
+
+    //
+
+
 
 
 
