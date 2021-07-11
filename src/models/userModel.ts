@@ -451,9 +451,9 @@ class UserModel {
 		
 		
 		//SELECT * FROM animal
-		console.log("q onda el result del model",encontrado[0][0]);
+		console.log("q onda el result del model",encontrado[0]);
 
-		return encontrado[0][0];
+		return encontrado[0];
 	
 
 	}
