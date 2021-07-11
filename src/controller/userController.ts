@@ -660,6 +660,22 @@ class UserController {
 
     }
 
+
+    public async cargarInteresados(req: Request, res: Response) {
+
+
+        const { idAnimal } = req.params;
+        console.log("El id del animal", idAnimal);
+        const result = await userModel.cargarInteresados(idAnimal);
+
+        console.log("El result",result);
+        return res.json(result);
+
+
+
+    }
+
+
     //
 
 

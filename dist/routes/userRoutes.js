@@ -37,6 +37,7 @@ class UserRoutes {
         this.router.post('/mostrarInteres/:idAnimal', userController_1.default.mostrarInteres);
         this.router.post('/quitarInteres/:idAnimal', userController_1.default.quitarInteres);
         this.router.post('/cargarInteres/:idAnimal', userController_1.default.cargarInteres);
+        this.router.get('/cargarInteresados/:idAnimal', userController_1.default.cargarInteresados);
         //
         //Confirmacion de registro via nodemailer
         this.router.get('/confirmar/:token', userController_1.default.confirmarRegistro);

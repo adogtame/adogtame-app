@@ -41,6 +41,8 @@ class UserRoutes {
 		this.router.post('/mostrarInteres/:idAnimal',userController.mostrarInteres);
 		this.router.post('/quitarInteres/:idAnimal',userController.quitarInteres);
 		this.router.post('/cargarInteres/:idAnimal',userController.cargarInteres);
+		this.router.get('/cargarInteresados/:idAnimal',userController.cargarInteresados);
+        
         //
 
 		//Confirmacion de registro via nodemailer

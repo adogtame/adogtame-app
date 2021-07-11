@@ -291,6 +291,15 @@ class UserModel {
             return encontrado[0][0].interes;
         });
     }
+    cargarInteresados(idAnimal) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("idAnimal y idUsuario", idAnimal);
+            const encontrado = yield this.db.query('SELECT u.id, u.nombre, u.apellido, u.email FROM usuario as u inner join animal_interesado as i on i.idInteresado=u.id WHERE idAnimal = ?', [idAnimal]);
+            //SELECT * FROM animal
+            console.log("q onda el result del model", encontrado[0][0]);
+            return encontrado[0][0];
+        });
+    }
     //
     //Cesar Jueves
     crearComentario(comentario) {

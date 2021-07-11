@@ -496,6 +496,15 @@ class UserController {
             return res.json(result);
         });
     }
+    cargarInteresados(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idAnimal } = req.params;
+            console.log("El id del animal", idAnimal);
+            const result = yield userModel_1.default.cargarInteresados(idAnimal);
+            console.log("El result", result);
+            return res.json(result);
+        });
+    }
     //
     //Cesar Jueves
     addComentario(req, res) {

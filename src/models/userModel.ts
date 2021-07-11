@@ -439,6 +439,25 @@ class UserModel {
 	
 
 	}
+
+
+
+	async cargarInteresados(idAnimal: string) {
+		
+		console.log("idAnimal y idUsuario",idAnimal);
+		
+		const encontrado = await this.db.query('SELECT u.id, u.nombre, u.apellido, u.email FROM usuario as u inner join animal_interesado as i on i.idInteresado=u.id WHERE idAnimal = ?', [idAnimal]);
+	
+		
+		
+		//SELECT * FROM animal
+		console.log("q onda el result del model",encontrado[0][0]);
+
+		return encontrado[0][0];
+	
+
+	}
+
 	//
 
 
