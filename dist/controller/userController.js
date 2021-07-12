@@ -501,7 +501,7 @@ class UserController {
             const { idAnimal } = req.params;
             console.log("El id del animal", idAnimal);
             const result = yield userModel_1.default.cargarInteresados(idAnimal);
-            console.log("El result", result);
+            console.log("El result  ", result);
             return res.json(result);
         });
     }

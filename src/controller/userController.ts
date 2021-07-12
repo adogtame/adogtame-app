@@ -661,6 +661,7 @@ class UserController {
     }
 
 
+
     public async cargarInteresados(req: Request, res: Response) {
 
 
@@ -668,7 +669,7 @@ class UserController {
         console.log("El id del animal", idAnimal);
         const result = await userModel.cargarInteresados(idAnimal);
 
-        console.log("El result",result);
+        console.log("El result  ",result);
         return res.json(result);
 
 
