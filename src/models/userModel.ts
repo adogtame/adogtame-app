@@ -446,7 +446,7 @@ class UserModel {
 		
 		console.log("idAnimal y idUsuario",idAnimal);
 		
-		const encontrado = await this.db.query('SELECT u.id, u.nombre, u.apellido, u.email FROM usuario as u inner join animal_interesado as i on i.idInteresado=u.id WHERE idAnimal = ?', [idAnimal]);
+		const encontrado = await this.db.query('SELECT u.id, u.nombre, u.apellido, u.email, u.nro_celular FROM usuario as u inner join animal_interesado as i on i.idInteresado=u.id WHERE idAnimal = ?', [idAnimal]);
 	
 		
 		
