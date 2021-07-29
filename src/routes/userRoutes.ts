@@ -36,6 +36,16 @@ class UserRoutes {
         this.router.get('/solicitudesEnviadas',userController.solicitudesEnviadas);
         this.router.get('/solicitudesRecibidas',userController.solicitudesRecibidas);
 
+
+        //Notificaciones
+
+		    //Buscar los id de animal de los animales del usuario logueado y interesados de ese animal
+		    this.router.get('/notificacionesListarInteresadosDeAnimalNoVistos/:id',userController.notificacionesListarInteresadosDeAnimalNoVistos);
+        
+
+        //
+
+
         //Interes
         
 		this.router.post('/mostrarInteres/:idAnimal',userController.mostrarInteres);

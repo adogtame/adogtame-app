@@ -43,6 +43,17 @@ class UserModel {
             return animales[0];
         });
     }
+    //Notificaciones
+    notificacionesListarInteresadosDeAnimalNoVistos(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //const db=this.connection;
+            const animales = yield this.db.query('SELECT u.nombre as nombreI, u.apellido as apellidoI, ai.idInteresado, ai.idAnimal, ai.fecha_interes FROM animal_interesado as ai inner join animal as a ON a.id = ai.idAnimal inner join usuario as u on u.id=ai.idInteresado WHERE a.idDador = ? and ai.visto = 0', [id]);
+            //console.log(usuarios[0]);
+            //devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
+            return animales[0];
+        });
+    }
+    //
     listAnimalsFiltrado(incluyeTipo, excluyeTipo, incluyeTamano, excluyeTamano) {
         return __awaiter(this, void 0, void 0, function* () {
             //const db=this.connection;

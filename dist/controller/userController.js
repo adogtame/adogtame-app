@@ -173,7 +173,18 @@ class UserController {
         res.render("partials/error");
         //res.send({ "Usuario y/o contraseña incorrectos flash": req.body });
     }
-    //CRUD 
+    //Notificaciones
+    notificacionesListarInteresadosDeAnimalNoVistos(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const { id } = req.params;
+            const animales = yield userModel_1.default.notificacionesListarInteresadosDeAnimalNoVistos(id);
+            console.log(animales);
+            return res.json(animales);
+        });
+    }
+    //
+    //
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(req.body);

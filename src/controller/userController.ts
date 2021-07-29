@@ -198,10 +198,22 @@ class UserController {
     }
 
 
+    //Notificaciones
+
+        public async notificacionesListarInteresadosDeAnimalNoVistos(req: Request, res: Response) {
+            console.log(req.body);
+            const { id } = req.params;
+            const animales = await userModel.notificacionesListarInteresadosDeAnimalNoVistos(id);
+            console.log(animales);
+            return res.json(animales);
+            
+        }
+    //
 
 
 
-    //CRUD 
+
+    //
     public async list(req: Request, res: Response) {
         console.log(req.body);
         const usuarios = await userModel.listar();

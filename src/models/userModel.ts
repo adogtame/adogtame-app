@@ -32,6 +32,27 @@ class UserModel {
 		return animales[0];
 	}
 
+
+	//Notificaciones
+
+	
+		
+		async notificacionesListarInteresadosDeAnimalNoVistos(id: string) {//Devuelve todas las filas de la tabla usuario
+			//const db=this.connection;
+			const animales = await this.db.query('SELECT u.nombre as nombreI, u.apellido as apellidoI, ai.idInteresado, ai.idAnimal, ai.fecha_interes FROM animal_interesado as ai inner join animal as a ON a.id = ai.idAnimal inner join usuario as u on u.id=ai.idInteresado WHERE a.idDador = ? and ai.visto = 0', [id]);
+			//console.log(usuarios[0]);
+			//devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
+			return animales[0];
+		}
+	
+		
+	
+
+	//
+
+
+
+
 	async listAnimalsFiltrado(incluyeTipo: any, excluyeTipo: any, incluyeTamano: any, excluyeTamano: any) {//Devuelve todas las filas de la tabla usuario
 		//const db=this.connection;
 		var animales:any =[];
@@ -387,6 +408,7 @@ class UserModel {
 			return encontrado[0][0];
 		return null;
 	}
+
 	//Devuelve 1 si logro actualizar el usuario indicado por id
 	async actualizar(usuario: object, id: string) {
 		const result = (await this.db.query('UPDATE usuario SET ? WHERE id = ?', [usuario, id]))[0].affectedRows;
