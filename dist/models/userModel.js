@@ -276,6 +276,15 @@ class UserModel {
             return user;
         });
     }
+    //Adopcion animal
+    comenzarAdopcion(adopcionData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("idAnimal y idUsuario", adopcionData.data);
+            const result = (yield this.db.query('INSERT INTO proceso_adopcion SET ?', [adopcionData.data]))[0].affectedRows;
+            return result;
+        });
+    }
+    //
     //interes
     mostrarInteres(idAnimal, idInteresado) {
         return __awaiter(this, void 0, void 0, function* () {

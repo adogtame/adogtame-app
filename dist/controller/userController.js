@@ -113,6 +113,20 @@ class UserController {
             res.render("partials/adoptados");
         });
     }
+    //adopcion animal
+    comenzarAdopcion(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const adopcionData = req.body;
+            console.log(req.body);
+            // console.log("El id del Interesado", idInteresado);
+            // const { idAnimal } = req.params;
+            // console.log("El id del animal", idAnimal);
+            const result = yield userModel_1.default.comenzarAdopcion({ data: adopcionData });
+            console.log("El result", result);
+            return res.json(result);
+        });
+    }
+    //
     solicitudesEnviadas(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(req.body);

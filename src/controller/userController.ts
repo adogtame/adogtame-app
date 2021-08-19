@@ -132,6 +132,31 @@ class UserController {
         res.render("partials/adoptados");
     }
 
+
+    //adopcion animal
+    public async comenzarAdopcion(req: Request, res: Response) {
+
+
+        const adopcionData = req.body;
+
+
+
+        console.log(req.body);
+        // console.log("El id del Interesado", idInteresado);
+        // const { idAnimal } = req.params;
+        // console.log("El id del animal", idAnimal);
+        const result = await userModel.comenzarAdopcion({data: adopcionData});
+
+        console.log("El result",result);
+        return res.json(result);
+
+
+
+    }
+    //
+
+
+
     public async solicitudesEnviadas(req: Request, res: Response) {
         console.log(req.body);
         res.render("partials/solicitudesEnviadas");

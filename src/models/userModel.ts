@@ -424,6 +424,28 @@ class UserModel {
 	}
 
 
+	//Adopcion animal
+	async comenzarAdopcion(adopcionData: any) {
+		
+		console.log("idAnimal y idUsuario", adopcionData.data);
+		
+		
+
+		const result = (await this.db.query('INSERT INTO proceso_adopcion SET ?', [adopcionData.data]))[0].affectedRows;
+
+		
+		
+		
+		return result;
+	
+
+	}
+
+
+	//
+
+
+
 
 	//interes
 

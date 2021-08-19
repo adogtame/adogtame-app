@@ -43,9 +43,12 @@ class UserRoutes {
         this.router.post('/cargarInteres/:idAnimal', userController_1.default.cargarInteres);
         this.router.get('/cargarInteresados/:idAnimal', userController_1.default.cargarInteresados);
         //   
+        //Adopcion animal        
+        this.router.post('/comenzarAdopcion', userController_1.default.comenzarAdopcion);
+        //
         //Confirmacion de registro via nodemailer
         this.router.get('/confirmar/:token', userController_1.default.confirmarRegistro);
-        // CRUD
+        // 
         this.router.get('/list', userController_1.default.list);
         this.router.get('/listAnimals', userController_1.default.listAnimals);
         this.router.post('/listAnimalsFiltrado', userController_1.default.listAnimalsFiltrado);

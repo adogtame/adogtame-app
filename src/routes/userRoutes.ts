@@ -54,13 +54,15 @@ class UserRoutes {
 		this.router.get('/cargarInteresados/:idAnimal',userController.cargarInteresados);
         
         //   
-
+        //Adopcion animal        
+		this.router.post('/comenzarAdopcion',userController.comenzarAdopcion);
+        //
 
 		//Confirmacion de registro via nodemailer
 		this.router.get('/confirmar/:token',userController.confirmarRegistro);
 
 
-        // CRUD
+        // 
 		this.router.get('/list',userController.list);
 		this.router.get('/listAnimals',userController.listAnimals);
 		this.router.post('/listAnimalsFiltrado',userController.listAnimalsFiltrado);
