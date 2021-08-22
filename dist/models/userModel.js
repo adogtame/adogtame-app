@@ -280,6 +280,8 @@ class UserModel {
     comenzarAdopcion(adopcionData) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("idAnimal y idUsuario", adopcionData.data);
+            console.log("idAnimal cual es", adopcionData.data.id_animal);
+            const estadoCambiado = (yield this.db.query('UPDATE animal SET estado = 2 WHERE id = ?', [adopcionData.data.id_animal]))[0].affectedRows;
             const result = (yield this.db.query('INSERT INTO proceso_adopcion SET ?', [adopcionData.data]))[0].affectedRows;
             return result;
         });

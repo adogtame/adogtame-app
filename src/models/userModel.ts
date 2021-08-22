@@ -429,8 +429,12 @@ class UserModel {
 		
 		console.log("idAnimal y idUsuario", adopcionData.data);
 		
-		
 
+		console.log("idAnimal cual es", adopcionData.data.id_animal);
+		
+		const estadoCambiado = (await this.db.query('UPDATE animal SET estado = 2 WHERE id = ?', [adopcionData.data.id_animal]))[0].affectedRows;
+
+		
 		const result = (await this.db.query('INSERT INTO proceso_adopcion SET ?', [adopcionData.data]))[0].affectedRows;
 
 		
