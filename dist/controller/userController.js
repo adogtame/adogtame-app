@@ -136,6 +136,15 @@ class UserController {
             //res.send('Listado de animales!!!');
         });
     }
+    cancelarProcesoAdopcion(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const { idAnimal } = req.params;
+            const result = yield userModel_1.default.cancelarProcesoAdopcion(idAnimal);
+            console.log(result);
+            return res.json(result);
+        });
+    }
     //
     solicitudesEnviadas(req, res) {
         return __awaiter(this, void 0, void 0, function* () {

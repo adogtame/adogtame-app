@@ -454,6 +454,22 @@ class UserModel {
 	}
 
 
+
+	async cancelarProcesoAdopcion(idAnimal: string) {
+		const result = (await this.db.query('DELETE FROM proceso_adopcion WHERE id_animal = ?', [idAnimal]))[0].affectedRows;
+		
+		const estadoCambiado = (await this.db.query('UPDATE animal SET estado = 1 WHERE id = ?', [idAnimal]))[0].affectedRows;
+
+		
+		console.log(result);
+		return result;
+	}
+
+
+
+
+
+
 	//
 
 

@@ -165,6 +165,17 @@ class UserController {
     }
 
 
+
+    public async cancelarProcesoAdopcion(req: Request, res: Response) {
+        console.log(req.body);
+        
+        const { idAnimal } = req.params; 
+        
+        const result = await userModel.cancelarProcesoAdopcion(idAnimal);
+        console.log(result);
+        return res.json(result);
+    }
+
     //
 
 

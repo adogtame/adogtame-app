@@ -57,6 +57,7 @@ class UserRoutes {
         //Adopcion animal        
 		this.router.post('/comenzarAdopcion',userController.comenzarAdopcion);
 		this.router.get('/estadoAnimal/:idAnimal',userController.estadoAnimal);
+		this.router.delete('/cancelarProcesoAdopcion/:idAnimal',userController.cancelarProcesoAdopcion);
         //
 
 		//Confirmacion de registro via nodemailer
@@ -94,8 +95,8 @@ class UserRoutes {
         //Para no crear otro objeto q sea admin lo metemos en user
 
 
-
-        this.router.delete('/deleteComentario/:id',userController.deleteComentario);	
+        //Esto del comentario falta borrar
+        //this.router.delete('/deleteComentario/:id',userController.deleteComentario);	
 
 
 

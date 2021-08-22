@@ -292,6 +292,14 @@ class UserModel {
             return estado[0][0];
         });
     }
+    cancelarProcesoAdopcion(idAnimal) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = (yield this.db.query('DELETE FROM proceso_adopcion WHERE id_animal = ?', [idAnimal]))[0].affectedRows;
+            const estadoCambiado = (yield this.db.query('UPDATE animal SET estado = 1 WHERE id = ?', [idAnimal]))[0].affectedRows;
+            console.log(result);
+            return result;
+        });
+    }
     //
     //interes
     mostrarInteres(idAnimal, idInteresado) {
