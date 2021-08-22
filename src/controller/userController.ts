@@ -153,6 +153,18 @@ class UserController {
 
 
     }
+
+
+    public async estadoAnimal(req: Request, res: Response) {
+        console.log(req.body);
+        const { idAnimal } = req.params;
+        const estado = await userModel.estadoAnimal(idAnimal);
+        console.log(estado);
+        return res.json(estado);
+        //res.send('Listado de animales!!!');
+    }
+
+
     //
 
 
@@ -715,140 +727,6 @@ class UserController {
 
 
     //
-
-
-
-
-
-
-
-
-    //Cesar Jueves
-    public async addComentario(req: Request, res: Response) {
-        const comentario = req.body;
-        console.log(req.body);
-
-
-        if (comentario) {
-            const result = await userModel.crearComentario(comentario);
-            // res.redirect("./signin");
-            return res.status(200).json({ message: 'Comentario saved!!' });
-            //return res.json({ message: 'User saved!!' });
-        }
-        //return res.json({ message: 'User exists!!' });
-        return res.status(403).json({ message: 'error' });
-
-    }
-
-
-
-
-    public async listComentarios(req: Request, res: Response) {
-
-        console.log(req.body);
-        const { id } = req.params;
-        const comentarios = await userModel.listarComentarios(id);
-        console.log(comentarios);
-        return res.json(comentarios);
-
-
-        //res.send('Listado de usuarios!!!');
-    }
-
-    public async listUsuariosLikes(req: Request, res: Response) {
-
-        console.log(req.body);
-        const { id } = req.params;
-        const likes = await userModel.listUsuariosLikes(id);
-        console.log(likes);
-        return res.json(likes);
-
-
-        //res.send('Listado de usuarios!!!');
-    }
-
-    public async updateLikeDislikeComentario(req: Request, res: Response) {
-
-
-        const usuario = req.body;
-
-
-        if (usuario.like_dislike == "quitarDislike") {
-
-            console.log(req.body);
-            const { idComentario } = req.params;
-            const idUsuario = usuario.idUsuario;
-            const result = await userModel.updateDislikeQuitarComentario(idUsuario, idComentario);
-
-            return res.status(200).json({ text: 'updating comentario ' + idComentario });
-
-
-
-        }
-        else {
-
-            if (usuario.like_dislike == "quitarLike") {
-
-                console.log(req.body);
-                const { idComentario } = req.params;
-                const idUsuario = usuario.idUsuario;
-                const result = await userModel.updateLikeQuitarComentario(idUsuario, idComentario);
-
-                return res.status(200).json({ text: 'updating comentario ' + idComentario });
-
-            }
-            else {
-
-
-                if (usuario.like_dislike == "dislike") {
-
-
-
-                    console.log(req.body);
-                    const { idComentario } = req.params;
-                    console.log(req.params);
-                    console.log(idComentario);
-                    const result = await userModel.updateDislikeComentario(usuario, idComentario);
-                    //res.send('Usuario '+ req.params.id +' actualizado!!!');
-
-                    return res.status(200).json({ text: 'updating comentario ' + idComentario });
-
-                }
-                else {
-
-                    if (usuario.like_dislike == "like") {
-
-                        console.log(req.body);
-                        const { idComentario } = req.params;
-                        const result = await userModel.updateLikeComentario(usuario, idComentario);
-                        //res.send('Usuario '+ req.params.id +' actualizado!!!');
-                        return res.status(200).json({ text: 'updating comentario ' + idComentario });
-
-                    }
-                    else {
-
-                        return res.status(404).json({ text: 'MAL ' });
-
-                    }
-
-
-
-
-
-                }
-
-
-
-
-
-
-            }
-        }
-
-    }
-
-
-
 
 
 

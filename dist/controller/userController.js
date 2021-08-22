@@ -126,6 +126,16 @@ class UserController {
             return res.json(result);
         });
     }
+    estadoAnimal(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const { idAnimal } = req.params;
+            const estado = yield userModel_1.default.estadoAnimal(idAnimal);
+            console.log(estado);
+            return res.json(estado);
+            //res.send('Listado de animales!!!');
+        });
+    }
     //
     solicitudesEnviadas(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -531,85 +541,6 @@ class UserController {
         });
     }
     //
-    //Cesar Jueves
-    addComentario(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const comentario = req.body;
-            console.log(req.body);
-            if (comentario) {
-                const result = yield userModel_1.default.crearComentario(comentario);
-                // res.redirect("./signin");
-                return res.status(200).json({ message: 'Comentario saved!!' });
-                //return res.json({ message: 'User saved!!' });
-            }
-            //return res.json({ message: 'User exists!!' });
-            return res.status(403).json({ message: 'error' });
-        });
-    }
-    listComentarios(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body);
-            const { id } = req.params;
-            const comentarios = yield userModel_1.default.listarComentarios(id);
-            console.log(comentarios);
-            return res.json(comentarios);
-            //res.send('Listado de usuarios!!!');
-        });
-    }
-    listUsuariosLikes(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body);
-            const { id } = req.params;
-            const likes = yield userModel_1.default.listUsuariosLikes(id);
-            console.log(likes);
-            return res.json(likes);
-            //res.send('Listado de usuarios!!!');
-        });
-    }
-    updateLikeDislikeComentario(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const usuario = req.body;
-            if (usuario.like_dislike == "quitarDislike") {
-                console.log(req.body);
-                const { idComentario } = req.params;
-                const idUsuario = usuario.idUsuario;
-                const result = yield userModel_1.default.updateDislikeQuitarComentario(idUsuario, idComentario);
-                return res.status(200).json({ text: 'updating comentario ' + idComentario });
-            }
-            else {
-                if (usuario.like_dislike == "quitarLike") {
-                    console.log(req.body);
-                    const { idComentario } = req.params;
-                    const idUsuario = usuario.idUsuario;
-                    const result = yield userModel_1.default.updateLikeQuitarComentario(idUsuario, idComentario);
-                    return res.status(200).json({ text: 'updating comentario ' + idComentario });
-                }
-                else {
-                    if (usuario.like_dislike == "dislike") {
-                        console.log(req.body);
-                        const { idComentario } = req.params;
-                        console.log(req.params);
-                        console.log(idComentario);
-                        const result = yield userModel_1.default.updateDislikeComentario(usuario, idComentario);
-                        //res.send('Usuario '+ req.params.id +' actualizado!!!');
-                        return res.status(200).json({ text: 'updating comentario ' + idComentario });
-                    }
-                    else {
-                        if (usuario.like_dislike == "like") {
-                            console.log(req.body);
-                            const { idComentario } = req.params;
-                            const result = yield userModel_1.default.updateLikeComentario(usuario, idComentario);
-                            //res.send('Usuario '+ req.params.id +' actualizado!!!');
-                            return res.status(200).json({ text: 'updating comentario ' + idComentario });
-                        }
-                        else {
-                            return res.status(404).json({ text: 'MAL ' });
-                        }
-                    }
-                }
-            }
-        });
-    }
     //APARTADO ADMIN
     deleteComentario(req, res) {
         return __awaiter(this, void 0, void 0, function* () {

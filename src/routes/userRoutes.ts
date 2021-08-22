@@ -56,6 +56,7 @@ class UserRoutes {
         //   
         //Adopcion animal        
 		this.router.post('/comenzarAdopcion',userController.comenzarAdopcion);
+		this.router.get('/estadoAnimal/:idAnimal',userController.estadoAnimal);
         //
 
 		//Confirmacion de registro via nodemailer
@@ -82,14 +83,6 @@ class UserRoutes {
         // FIN DEL CRUD
         
 
-        //Cesar Jueves
-        this.router.post('/comentario', userController.addComentario);
-
-		this.router.get('/listComentarios/:id',userController.listComentarios);
-
-		this.router.get('/listUsuariosLikes/:id',userController.listUsuariosLikes);
-        
-		this.router.put('/updateLikeDislikeComentario/:idComentario',userController.updateLikeDislikeComentario);
 
 		this.router.get('/findUserWithMail/:mail',userController.findUserWithMail);
 

@@ -442,6 +442,14 @@ class UserModel {
 	}
 
 
+	async estadoAnimal(idAnimal: string) {
+		
+		const estado = await this.db.query('SELECT e.estado FROM estado_adopcion as e inner join animal as a on a.estado=e.id where a.id=?', [idAnimal]);
+		
+		return estado[0][0];
+	}
+
+
 	//
 
 
@@ -505,78 +513,6 @@ class UserModel {
 	}
 
 	//
-
-
-
-
-	//Cesar Jueves
-	async crearComentario(comentario: object) {
-		const result = (await this.db.query('INSERT INTO comentarios_usuarios SET ?', [comentario]))[0].affectedRows;
-		console.log(result);
-		return result;
-	}
-	
-	async listarComentarios(id: string) {//Devuelve todas las filas de la tabla usuario
-		//const db=this.connection;
-		const comentarios = await this.db.query('SELECT * FROM comentarios_usuarios WHERE idAnimal = ? order by id DESC', [id]);
-		//console.log(usuarios[0]);
-		//devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
-		return comentarios[0];
-	}
-
-	async listUsuariosLikes(id: string) {//Devuelve todas las filas de la tabla usuario
-		//const db=this.connection;
-		const comentarios = await this.db.query('SELECT * FROM usuario_comentario_like WHERE idUsuario = ? order by idComentario DESC', [id]);
-		//console.log(usuarios[0]);
-		//devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
-		return comentarios[0];
-	}
-
-	
-	async updateLikeComentario(usuario: object, id: string) {
-		
-		const result = (await this.db.query('UPDATE comentarios_usuarios SET likes = likes + 1 WHERE id = ?', [id]))[0].affectedRows;
-		
-		const result2 = (await this.db.query('INSERT INTO usuario_comentario_like SET ?', [usuario]))[0].affectedRows;
-				
-		console.log(result);
-		return result;
-	}
-
-	async updateDislikeComentario(usuario: object, id: string) {
-		
-		const result = (await this.db.query('UPDATE comentarios_usuarios SET dislikes = dislikes + 1 WHERE id = ?', [id]))[0].affectedRows;
-		
-		const result2 = (await this.db.query('INSERT INTO usuario_comentario_like SET ?', [usuario]))[0].affectedRows;
-				
-		console.log(result);
-		return result;
-	}
-
-	async updateLikeQuitarComentario(idUsuario: string, idComentario: string) {
-		
-		const result = (await this.db.query('UPDATE comentarios_usuarios SET likes = likes - 1 WHERE id = ?', [idComentario]))[0].affectedRows;
-		
-		const result2 = (await this.db.query('DELETE FROM usuario_comentario_like WHERE idUsuario = ? and idComentario = ?', [idUsuario, idComentario]))[0].affectedRows;
-			
-		
-		console.log(result);
-		return result;
-	}
-
-	async updateDislikeQuitarComentario(idUsuario: object, idComentario: string) {
-		
-		const result = (await this.db.query('UPDATE comentarios_usuarios SET dislikes = dislikes - 1 WHERE id = ?', [idComentario]))[0].affectedRows;
-		
-		const result2 = (await this.db.query('DELETE FROM usuario_comentario_like WHERE idUsuario = ? and idComentario = ?', [idUsuario, idComentario]))[0].affectedRows;
-		
-		console.log(result);
-		return result;
-	}
-
-
-
-
 
 
 
