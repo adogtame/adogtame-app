@@ -154,6 +154,26 @@ class UserController {
 
     }
 
+    public async confirmarAdopcion(req: Request, res: Response) {
+
+
+        const idUsuario = req.body.idInteresado;
+
+
+        const { idAnimal } = req.params;
+
+
+        console.log(req.body);
+        const result = await userModel.confirmarAdopcion(idAnimal, idUsuario);
+
+        console.log("El result",result);
+        return res.json(result);
+
+
+
+    }
+
+
 
     public async estadoAnimal(req: Request, res: Response) {
         console.log(req.body);
@@ -736,6 +756,22 @@ class UserController {
 
     }
 
+
+    //
+
+    public async siguiendoAnimales(req: Request, res: Response) {
+
+
+        const { idUsuario } = req.params;
+        console.log("El id del usuario", idUsuario);
+        const result = await userModel.siguiendoAnimales(idUsuario);
+
+        console.log("El result  ",result);
+        return res.json(result);
+
+
+
+    }
 
     //
 

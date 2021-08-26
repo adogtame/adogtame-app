@@ -286,6 +286,14 @@ class UserModel {
             return result;
         });
     }
+    confirmarAdopcion(idAnimal, idUsuario) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("idAnimal y idUsuario", idAnimal, idUsuario);
+            const estadoCambiado = (yield this.db.query('UPDATE animal SET estado = 3 WHERE id = ?', [idAnimal]))[0].affectedRows;
+            const result = (yield this.db.query('UPDATE proceso_adopcion SET fecha_fin = CURRENT_TIMESTAMP WHERE id_usuario=? AND id_animal=?', [idUsuario, idAnimal]))[0].affectedRows;
+            return result;
+        });
+    }
     estadoAnimal(idAnimal) {
         return __awaiter(this, void 0, void 0, function* () {
             const estado = yield this.db.query('SELECT e.estado FROM estado_adopcion as e inner join animal as a on a.estado=e.id where a.id=?', [idAnimal]);
@@ -333,6 +341,38 @@ class UserModel {
             const encontrado = yield this.db.query('SELECT u.id, u.nombre, u.apellido, u.email, u.nro_celular FROM usuario as u inner join animal_interesado as i on i.idInteresado=u.id WHERE idAnimal = ?', [idAnimal]);
             //SELECT * FROM animal
             console.log("q onda el result del model   ", encontrado[0]);
+            return encontrado[0];
+        });
+    }
+    //
+    siguiendoAnimales(idUsuario) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("idUsuario", idUsuario);
+            const encontrado = yield this.db.query('SELECT 1 as est, a1.id, a1.nombre, e1.estado from animal as a1 inner join estado_adopcion as e1 on a1.estado=e1.id inner join proceso_adopcion as pa1 ON a1.id=pa1.id_animal where pa1.id_usuario=? UNION SELECT 0 as est, a2.id, a2.nombre, e2.estado from animal as a2 inner join estado_adopcion as e2 on a2.estado=e2.id inner join animal_interesado as ai2	ON a2.id=ai2.idAnimal where ai2.idInteresado=? AND a2.id NOT IN (SELECT a1.id from animal as a1 inner join proceso_adopcion as pa1 ON a1.id=pa1.id_animal where pa1.id_usuario=?)', [idUsuario, idUsuario, idUsuario]);
+            /*
+            //El codigo de arriba pero para q se lea//
+    
+    
+            SELECT 1 as est, a1.id, a1.nombre, e1.estado from animal as a1
+            inner join estado_adopcion as e1 on a1.estado=e1.id
+            inner join proceso_adopcion as pa1
+            ON a1.id=pa1.id_animal
+            where pa1.id_usuario=?
+            UNION
+            SELECT 0 as est, a2.id, a2.nombre, e2.estado from animal as a2
+            inner join estado_adopcion as e2 on a2.estado=e2.id
+            inner join animal_interesado as ai2
+            ON a2.id=ai2.idAnimal
+            where ai2.idInteresado=?
+            AND a2.id NOT IN (SELECT a1.id from animal as a1
+            inner join proceso_adopcion as pa1
+            ON a1.id=pa1.id_animal
+            where pa1.id_usuario=?)
+            
+            
+            */
+            //SELECT * FROM animal
+            console.log("animales a los q sigue   ", encontrado[0]);
             return encontrado[0];
         });
     }

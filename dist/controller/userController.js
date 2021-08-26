@@ -126,6 +126,16 @@ class UserController {
             return res.json(result);
         });
     }
+    confirmarAdopcion(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const idUsuario = req.body.idInteresado;
+            const { idAnimal } = req.params;
+            console.log(req.body);
+            const result = yield userModel_1.default.confirmarAdopcion(idAnimal, idUsuario);
+            console.log("El result", result);
+            return res.json(result);
+        });
+    }
     estadoAnimal(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(req.body);
@@ -545,6 +555,16 @@ class UserController {
             const { idAnimal } = req.params;
             console.log("El id del animal", idAnimal);
             const result = yield userModel_1.default.cargarInteresados(idAnimal);
+            console.log("El result  ", result);
+            return res.json(result);
+        });
+    }
+    //
+    siguiendoAnimales(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idUsuario } = req.params;
+            console.log("El id del usuario", idUsuario);
+            const result = yield userModel_1.default.siguiendoAnimales(idUsuario);
             console.log("El result  ", result);
             return res.json(result);
         });

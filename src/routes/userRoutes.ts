@@ -52,10 +52,14 @@ class UserRoutes {
 		this.router.post('/quitarInteres/:idAnimal',userController.quitarInteres);
 		this.router.post('/cargarInteres/:idAnimal',userController.cargarInteres);
 		this.router.get('/cargarInteresados/:idAnimal',userController.cargarInteresados);
+
+        //
+		this.router.get('/siguiendoAnimales/:idUsuario',userController.siguiendoAnimales);
         
         //   
         //Adopcion animal        
 		this.router.post('/comenzarAdopcion',userController.comenzarAdopcion);
+		this.router.post('/confirmarAdopcion/:idAnimal',userController.confirmarAdopcion);
 		this.router.get('/estadoAnimal/:idAnimal',userController.estadoAnimal);
 		this.router.delete('/cancelarProcesoAdopcion/:idAnimal',userController.cancelarProcesoAdopcion);
         //

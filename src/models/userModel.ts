@@ -444,6 +444,24 @@ class UserModel {
 	
 
 	}
+	
+	async confirmarAdopcion(idAnimal: string, idUsuario: string) {
+		
+		console.log("idAnimal y idUsuario", idAnimal, idUsuario);		
+
+		
+		const estadoCambiado = (await this.db.query('UPDATE animal SET estado = 3 WHERE id = ?', [idAnimal]))[0].affectedRows;
+
+		
+		const result = (await this.db.query('UPDATE proceso_adopcion SET fecha_fin = CURRENT_TIMESTAMP WHERE id_usuario=? AND id_animal=?', [idUsuario, idAnimal]))[0].affectedRows;
+
+		
+		
+		
+		return result;
+	
+
+	}
 
 
 	async estadoAnimal(idAnimal: string) {
@@ -534,6 +552,51 @@ class UserModel {
 
 	//
 
+
+	async siguiendoAnimales(idUsuario: string) {
+		
+		console.log("idUsuario",idUsuario);
+		
+		const encontrado = await this.db.query('SELECT 1 as est, a1.id, a1.nombre, e1.estado from animal as a1 inner join estado_adopcion as e1 on a1.estado=e1.id inner join proceso_adopcion as pa1 ON a1.id=pa1.id_animal where pa1.id_usuario=? UNION SELECT 0 as est, a2.id, a2.nombre, e2.estado from animal as a2 inner join estado_adopcion as e2 on a2.estado=e2.id inner join animal_interesado as ai2	ON a2.id=ai2.idAnimal where ai2.idInteresado=? AND a2.id NOT IN (SELECT a1.id from animal as a1 inner join proceso_adopcion as pa1 ON a1.id=pa1.id_animal where pa1.id_usuario=?)', [idUsuario,idUsuario,idUsuario]);
+	
+		
+		/*
+		//El codigo de arriba pero para q se lea//
+
+
+		SELECT 1 as est, a1.id, a1.nombre, e1.estado from animal as a1
+		inner join estado_adopcion as e1 on a1.estado=e1.id
+		inner join proceso_adopcion as pa1 
+		ON a1.id=pa1.id_animal 
+		where pa1.id_usuario=?
+		UNION
+		SELECT 0 as est, a2.id, a2.nombre, e2.estado from animal as a2
+		inner join estado_adopcion as e2 on a2.estado=e2.id
+		inner join animal_interesado as ai2
+		ON a2.id=ai2.idAnimal
+		where ai2.idInteresado=?
+		AND a2.id NOT IN (SELECT a1.id from animal as a1
+		inner join proceso_adopcion as pa1 
+		ON a1.id=pa1.id_animal 
+		where pa1.id_usuario=?)
+		
+		
+		*/
+
+
+
+		
+		//SELECT * FROM animal
+		console.log("animales a los q sigue   ",encontrado[0]);
+
+		return encontrado[0];
+	
+
+
+
+	}
+
+	//
 
 
 

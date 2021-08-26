@@ -42,9 +42,12 @@ class UserRoutes {
         this.router.post('/quitarInteres/:idAnimal', userController_1.default.quitarInteres);
         this.router.post('/cargarInteres/:idAnimal', userController_1.default.cargarInteres);
         this.router.get('/cargarInteresados/:idAnimal', userController_1.default.cargarInteresados);
+        //
+        this.router.get('/siguiendoAnimales/:idUsuario', userController_1.default.siguiendoAnimales);
         //   
         //Adopcion animal        
         this.router.post('/comenzarAdopcion', userController_1.default.comenzarAdopcion);
+        this.router.post('/confirmarAdopcion/:idAnimal', userController_1.default.confirmarAdopcion);
         this.router.get('/estadoAnimal/:idAnimal', userController_1.default.estadoAnimal);
         this.router.delete('/cancelarProcesoAdopcion/:idAnimal', userController_1.default.cancelarProcesoAdopcion);
         //
