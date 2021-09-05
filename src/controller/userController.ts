@@ -296,7 +296,8 @@ class UserController {
         console.log(animales);
         return res.json(animales);
         //res.send('Listado de animales!!!');
-    }
+    } 
+
 
     public async listarAnimalesAdoptados(req: Request, res: Response) {
         console.log(req.body);
@@ -311,15 +312,10 @@ class UserController {
         console.log("q aaaaa", filtro);
         var incluyeTipo:any=[];
         var excluyeTipo:any=[];
-
         var incluyeTamano:any=[];
         var excluyeTamano:any=[];
-
         if(filtro.perroF==true){
-
-            if(filtro.perroE==true){
-
-                
+            if(filtro.perroE==true){            
                 excluyeTipo.push("perro");
 
                 if(filtro.gatoF==false && filtro.chicoF==false && filtro.medianoF==false && filtro.grandeF==false){
