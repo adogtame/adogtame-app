@@ -246,6 +246,14 @@ class UserController {
             //res.send('Listado de animales!!!');
         });
     }
+    listarAnimalesAdoptados(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const animales = yield userModel_1.default.listarAnimalesAdoptados();
+            console.log(animales);
+            return res.json(animales);
+        });
+    }
     listAnimalsFiltrado(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(req.body);

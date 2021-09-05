@@ -32,11 +32,12 @@ class UserModel {
 		return animales[0];
 	}
 
+	async listarAnimalesAdoptados() {
+		const animales = await this.db.query('SELECT * FROM animal where estado = 3');
+		return animales[0];
+	}
 
 	//Notificaciones
-
-	
-		
 		async notificacionesListarInteresadosDeAnimalNoVistos(id: string) {//Devuelve todas las filas de la tabla usuario
 			//const db=this.connection;
 			const animales = await this.db.query('SELECT u.nombre as nombreI, u.apellido as apellidoI, ai.idInteresado, ai.idAnimal, ai.fecha_interes FROM animal_interesado as ai inner join animal as a ON a.id = ai.idAnimal inner join usuario as u on u.id=ai.idInteresado WHERE a.idDador = ? and ai.visto = 0', [id]);
@@ -44,16 +45,12 @@ class UserModel {
 			//devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
 			return animales[0];
 		}
-	
-		
-	
-
 	//
 
 
 
-
-	async listAnimalsFiltrado(incluyeTipo: any, excluyeTipo: any, incluyeTamano: any, excluyeTamano: any) {//Devuelve todas las filas de la tabla usuario
+	async listAnimalsFiltrado(incluyeTipo: any, excluyeTipo: any, incluyeTamano: any, excluyeTamano: any) {
+		//Devuelve todas las filas de la tabla usuario
 		//const db=this.connection;
 		var animales:any =[];
 		console.log("Tipo i",incluyeTipo);
@@ -62,79 +59,37 @@ class UserModel {
 		console.log("Tamano e",excluyeTamano);
 
 		if(incluyeTipo.length==0){
-
-
 			console.log("incluyeTipo null");
-
 			if(excluyeTipo.length==0){
-
-
-				console.log("excluyeTipo null");
-				
-
+				console.log("excluyeTipo null");			
 				if(incluyeTamano.length==0){
-
-
 					console.log("incluyeTamano null");
-
 					if(excluyeTamano.length==0){
-
 						console.log("Todas null");
-
 						animales = await this.db.query('SELECT * FROM animal');
-
 					}
-					else
-					{
-						
+					else{						
 						console.log("excluyeTamano tiene");
-						animales = await this.db.query('SELECT * FROM animal WHERE tamano NOT IN (?)', [excluyeTamano]);
-				
-
+						animales = await this.db.query('SELECT * FROM animal WHERE tamano NOT IN (?)', [excluyeTamano]);			
 					}
-
 				}
-				else
-				{
-					
+				else{					
 					console.log("incluyeTamano tiene");
-
 					if(excluyeTamano.length==0){
-
-
 						console.log("excluyeTamano null");
-
-						animales = await this.db.query('SELECT * FROM animal WHERE tamano IN (?)', [incluyeTamano]);
-				
-
+						animales = await this.db.query('SELECT * FROM animal WHERE tamano IN (?)', [incluyeTamano]);				
 					}
-					else
-					{
-						
+					else{						
 						console.log("excluyeTamano tiene");
-
 						animales = await this.db.query('SELECT * FROM animal WHERE tamano IN (?) AND id NOT IN (SELECT id FROM animal WHERE tamano IN (?))', [incluyeTamano, excluyeTamano]);
-				
-
 					}
-
 				}
-			
-			
-			
+						
 			
 			}
-			else
-			{
-
-				console.log("excluyeTipo tiene");
-
-
-				
-
+			else{
+				console.log("excluyeTipo tiene")				
 				if(incluyeTamano.length==0){
-
-
 					console.log("incluyeTamano null");
 
 					if(excluyeTamano.length==0){
@@ -145,9 +100,7 @@ class UserModel {
 				
 
 					}
-					else
-					{
-
+					else{
 						console.log("excluyeTamano tiene");
 						animales = await this.db.query('SELECT * FROM animal WHERE tipo NOT IN (?) AND tamano NOT IN (?)', [excluyeTipo, excluyeTamano]);
 				
@@ -392,8 +345,6 @@ class UserModel {
 
 	async crearAnimal(animal: object) {
 		const result = (await this.db.query('INSERT INTO animal SET ?', [animal]))[0].affectedRows;
-
-		
 		const result2 = (await this.db.query('SELECT id FROM animal order by id desc limit 1'))[0][0];
 		const { id } = result2;
 		console.log("El result ",result2);
@@ -425,42 +376,21 @@ class UserModel {
 
 
 	//Adopcion animal
-	async comenzarAdopcion(adopcionData: any) {
-		
-		console.log("idAnimal y idUsuario", adopcionData.data);
-		
-
-		console.log("idAnimal cual es", adopcionData.data.id_animal);
-		
-		const estadoCambiado = (await this.db.query('UPDATE animal SET estado = 2 WHERE id = ?', [adopcionData.data.id_animal]))[0].affectedRows;
-
-		
-		const result = (await this.db.query('INSERT INTO proceso_adopcion SET ?', [adopcionData.data]))[0].affectedRows;
-
-		
-		
-		
-		return result;
-	
+	async comenzarAdopcion(adopcionData: any) {		
+		console.log("idAnimal y idUsuario", adopcionData.data);		
+		console.log("idAnimal cual es", adopcionData.data.id_animal);		
+		const estadoCambiado = (await this.db.query('UPDATE animal SET estado = 2 WHERE id = ?', [adopcionData.data.id_animal]))[0].affectedRows;		
+		const result = (await this.db.query('INSERT INTO proceso_adopcion SET ?', [adopcionData.data]))[0].affectedRows;						
+		return result;	
 
 	}
 	
-	async confirmarAdopcion(idAnimal: string, idUsuario: string) {
+	async confirmarAdopcion(idAnimal: string, idUsuario: string) {		
+		console.log("idAnimal y idUsuario", idAnimal, idUsuario);				
+		const estadoCambiado = (await this.db.query('UPDATE animal SET estado = 3 WHERE id = ?', [idAnimal]))[0].affectedRows;		
+		const result = (await this.db.query('UPDATE proceso_adopcion SET fecha_fin = CURRENT_TIMESTAMP WHERE id_usuario=? AND id_animal=?', [idUsuario, idAnimal]))[0].affectedRows;				
 		
-		console.log("idAnimal y idUsuario", idAnimal, idUsuario);		
-
-		
-		const estadoCambiado = (await this.db.query('UPDATE animal SET estado = 3 WHERE id = ?', [idAnimal]))[0].affectedRows;
-
-		
-		const result = (await this.db.query('UPDATE proceso_adopcion SET fecha_fin = CURRENT_TIMESTAMP WHERE id_usuario=? AND id_animal=?', [idUsuario, idAnimal]))[0].affectedRows;
-
-		
-		
-		
-		return result;
-	
-
+		return result;	
 	}
 
 

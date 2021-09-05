@@ -43,6 +43,12 @@ class UserModel {
             return animales[0];
         });
     }
+    listarAnimalesAdoptados() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const animales = yield this.db.query('SELECT * FROM animal where estado = 3');
+            return animales[0];
+        });
+    }
     //Notificaciones
     notificacionesListarInteresadosDeAnimalNoVistos(id) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -56,6 +62,7 @@ class UserModel {
     //
     listAnimalsFiltrado(incluyeTipo, excluyeTipo, incluyeTamano, excluyeTamano) {
         return __awaiter(this, void 0, void 0, function* () {
+            //Devuelve todas las filas de la tabla usuario
             //const db=this.connection;
             var animales = [];
             console.log("Tipo i", incluyeTipo);

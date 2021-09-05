@@ -298,6 +298,13 @@ class UserController {
         //res.send('Listado de animales!!!');
     }
 
+    public async listarAnimalesAdoptados(req: Request, res: Response) {
+        console.log(req.body);
+        const animales = await userModel.listarAnimalesAdoptados();
+        console.log(animales);
+        return res.json(animales);
+    }
+
     public async listAnimalsFiltrado(req: Request, res: Response) {
         console.log(req.body);
         const filtro  = req.body.filtro;
