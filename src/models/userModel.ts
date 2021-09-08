@@ -37,6 +37,12 @@ class UserModel {
 		return animales[0];
 	}
 
+	async fechaAdoptados() {
+		const fechaAdoptado = await this.db.query('SELECT * FROM proceso_adopcion');
+		return fechaAdoptado[0];
+	}
+
+
 	//Notificaciones
 		async notificacionesListarInteresadosDeAnimalNoVistos(id: string) {//Devuelve todas las filas de la tabla usuario
 			//const db=this.connection;

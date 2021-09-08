@@ -49,6 +49,12 @@ class UserModel {
             return animales[0];
         });
     }
+    fechaAdoptados() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const fechaAdoptado = yield this.db.query('SELECT * FROM proceso_adopcion');
+            return fechaAdoptado[0];
+        });
+    }
     //Notificaciones
     notificacionesListarInteresadosDeAnimalNoVistos(id) {
         return __awaiter(this, void 0, void 0, function* () {

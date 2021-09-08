@@ -254,6 +254,14 @@ class UserController {
             return res.json(animales);
         });
     }
+    fechaAdoptados(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const fechaAdoptado = yield userModel_1.default.fechaAdoptados();
+            console.log(fechaAdoptado);
+            return res.json(fechaAdoptado);
+        });
+    }
     listAnimalsFiltrado(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(req.body);
