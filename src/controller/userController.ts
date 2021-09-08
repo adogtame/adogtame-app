@@ -304,6 +304,7 @@ class UserController {
         const animales = await userModel.listarAnimalesAdoptados();
         console.log(animales);
         return res.json(animales);
+        
     }
 
     public async fechaAdoptados(req: Request, res: Response) {
