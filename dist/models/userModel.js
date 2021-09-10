@@ -59,10 +59,43 @@ class UserModel {
     notificacionesListarInteresadosDeAnimalNoVistos(id) {
         return __awaiter(this, void 0, void 0, function* () {
             //const db=this.connection;
-            const animales = yield this.db.query('SELECT u.nombre as nombreI, u.apellido as apellidoI, ai.idInteresado, ai.idAnimal, ai.fecha_interes FROM animal_interesado as ai inner join animal as a ON a.id = ai.idAnimal inner join usuario as u on u.id=ai.idInteresado WHERE a.idDador = ? and ai.visto = 0', [id]);
+            const notificaciones = yield this.db.query('SELECT * FROM ( SELECT  0 as est,u.nombre as nombreI, u.apellido as apellidoI, ai.idInteresado as interesado, ai.idAnimal as animal, ai.fecha_interes as fecha FROM animal_interesado as ai inner join animal as a ON a.id = ai.idAnimal inner join usuario as u on u.id=ai.idInteresado WHERE a.idDador = ? UNION SELECT 1 as est, u.nombre as nombreI, u.apellido as apellidoI, a.idDador as interesado, pa.id_animal as animal, pa.fecha_inicio as fecha FROM animal as a inner join proceso_adopcion as pa ON a.id = pa.id_animal inner join usuario as u on u.id=a.idDador WHERE pa.id_usuario= ? and pa.fecha_fin is null UNION SELECT 2 as est, u.nombre as nombreI, u.apellido as apellidoI, pa.id_usuario as interesado, pa.id_animal as animal, pa.fecha_fin as fecha FROM proceso_adopcion as pa inner join animal as a ON a.id = pa.id_animal inner join usuario as u on u.id=pa.id_usuario WHERE a.idDador = ? and pa.fecha_fin is not null ) as notificaciones order by fecha desc', [id, id, id]);
+            /*El sql q  esta en una sola linea pero separado para q se entienda
+            
+
+
+
+        
+
+            SELECT * FROM (
+
+
+            SELECT  0 as est,u.nombre as nombreI, u.apellido as apellidoI, ai.idInteresado as interesado, ai.idAnimal as animal, ai.fecha_interes as fecha
+            FROM animal_interesado as ai
+            inner join animal as a ON a.id = ai.idAnimal
+            inner join usuario as u on u.id=ai.idInteresado
+            WHERE a.idDador = ?
+            UNION
+            SELECT 1 as est, u.nombre as nombreI, u.apellido as apellidoI, a.idDador as interesado, pa.id_animal as animal, pa.fecha_inicio as fecha
+            FROM animal as a
+            inner join proceso_adopcion as pa ON a.id = pa.id_animal
+            inner join usuario as u on u.id=a.idDador
+            WHERE pa.id_usuario= ? and pa.fecha_fin is null
+            UNION
+            SELECT 2 as est, u.nombre as nombreI, u.apellido as apellidoI, pa.id_usuario as interesado, pa.id_animal as animal, pa.fecha_fin as fecha
+            FROM proceso_adopcion as pa
+            inner join animal as a ON a.id = pa.id_animal
+            inner join usuario as u on u.id=pa.id_usuario
+            WHERE a.idDador = ? and pa.fecha_fin is not null
+
+
+                    
+            ) as notificaciones order by fecha desc
+            
+            */
             //console.log(usuarios[0]);
             //devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
-            return animales[0];
+            return notificaciones[0];
         });
     }
     //
