@@ -56,7 +56,7 @@ class UserModel {
         });
     }
     //Notificaciones
-    notificacionesListarInteresadosDeAnimalNoVistos(id) {
+    notificacionesListar(id) {
         return __awaiter(this, void 0, void 0, function* () {
             //const db=this.connection;
             const notificaciones = yield this.db.query('SELECT * FROM ( SELECT  0 as est,u.nombre as nombreI, u.apellido as apellidoI, ai.idInteresado as interesado, ai.idAnimal as animal, ai.fecha_interes as fecha FROM animal_interesado as ai inner join animal as a ON a.id = ai.idAnimal inner join usuario as u on u.id=ai.idInteresado WHERE a.idDador = ? UNION SELECT 1 as est, u.nombre as nombreI, u.apellido as apellidoI, a.idDador as interesado, pa.id_animal as animal, pa.fecha_inicio as fecha FROM animal as a inner join proceso_adopcion as pa ON a.id = pa.id_animal inner join usuario as u on u.id=a.idDador WHERE pa.id_usuario= ? and pa.fecha_fin is null UNION SELECT 2 as est, u.nombre as nombreI, u.apellido as apellidoI, pa.id_usuario as interesado, pa.id_animal as animal, pa.fecha_fin as fecha FROM proceso_adopcion as pa inner join animal as a ON a.id = pa.id_animal inner join usuario as u on u.id=pa.id_usuario WHERE a.idDador = ? and pa.fecha_fin is not null ) as notificaciones order by fecha desc', [id, id, id]);
@@ -96,6 +96,55 @@ class UserModel {
             //console.log(usuarios[0]);
             //devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
             return notificaciones[0];
+        });
+    }
+    //Notificaciones
+    notificacionesConteo(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //const db=this.connection;
+            const conteo = yield this.db.query('SELECT (SELECT COUNT(*) as cuenta FROM animal_interesado as ai INNER JOIN animal as a ON ai.idAnimal=a.id WHERE ai.visto=0 AND a.idDador=? ) + (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id WHERE pa.visto=0 AND a.idDador=? ) AS SumCount', [id, id]);
+            /*
+            
+            SELECT (SELECT COUNT(*) as cuenta FROM animal_interesado as ai
+            INNER JOIN animal as a ON ai.idAnimal=a.id
+            WHERE ai.visto=0 AND a.idDador=? ) +
+            (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa
+            INNER JOIN animal as a ON pa.id_animal=a.id
+            WHERE pa.visto=0 AND a.idDador=? ) AS SumCount
+    
+            */
+            return conteo[0][0];
+        });
+    }
+    notificacionesVistas(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //const db=this.connection;
+            const result = yield this.db.query('', [id, id]);
+            /*
+    
+            El tema es q el de la derecha del or me esta cambiando los interesados por el ai.visto, osea q en el caso q vaya a la derecha no tendria qcambiarme el ai.visto
+    
+            UPDATE proceso_adopcion as pa
+            INNER JOIN animal as a ON pa.id_animal=a.id
+            INNER JOIN animal_interesado as ai ON ai.idAnimal=a.id
+            SET pa.visto='0', ai.visto='0'
+            WHERE (pa.visto=1 AND a.idDador=5 AND ai.visto=1) OR (pa.id_usuario=5 AND pa.visto=1 AND ai.visto=1 AND pa.fecha_fin is null)
+    
+            UPDATE animal_interesado as ai
+            SET ai.visto=1
+            INNER JOIN animal as a ON ai.idAnimal=a.id
+            WHERE ai.visto=0 AND a.idDador=5
+    
+    
+            UPDATE proceso_adopcion as pa
+            SET pa.visto=1
+            INNER JOIN animal as a ON pa.id_animal=a.id
+            WHERE pa.visto=0 AND a.idDador=5
+    
+    
+    
+            */
+            return result[0];
         });
     }
     //
