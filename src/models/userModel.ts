@@ -100,17 +100,29 @@ class UserModel {
 
 	async notificacionesConteo(id: string) {//Devuelve todas las filas de la tabla usuario
 		//const db=this.connection;
-		const conteo = await this.db.query('SELECT (SELECT COUNT(*) as cuenta FROM animal_interesado as ai INNER JOIN animal as a ON ai.idAnimal=a.id WHERE ai.visto=0 AND a.idDador=? ) + (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id WHERE pa.visto=0 AND a.idDador=? ) AS SumCount', [id, id]);
+		const conteo = await this.db.query('SELECT (SELECT COUNT(*) as cuenta FROM animal_interesado as ai INNER JOIN animal as a ON ai.idAnimal=a.id WHERE ai.visto=0 AND a.idDador=? ) + (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id WHERE pa.visto=0 AND a.idDador=? AND pa.fecha_fin is not null ) + (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id WHERE pa.visto=0 AND pa.id_usuario=? AND pa.fecha_fin is null ) AS SumCount', [id, id, id]);
 		
 
 		/*
 		
+
+		
+
+
+
 		SELECT (SELECT COUNT(*) as cuenta FROM animal_interesado as ai 
-		INNER JOIN animal as a ON ai.idAnimal=a.id
-		WHERE ai.visto=0 AND a.idDador=? ) +
+		INNER JOIN animal as a ON ai.idAnimal=a.id 
+		WHERE ai.visto=0 AND a.idDador=? ) 
+		+ 
 		(SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa 
-		INNER JOIN animal as a ON pa.id_animal=a.id
-		WHERE pa.visto=0 AND a.idDador=? ) AS SumCount
+		INNER JOIN animal as a ON pa.id_animal=a.id 
+		WHERE pa.visto=0 AND a.idDador=? AND pa.fecha_fin is not null ) 
+		+
+		(SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa 
+		INNER JOIN animal as a ON pa.id_animal=a.id 
+		WHERE pa.visto=0 AND pa.id_usuario=? AND pa.fecha_fin is null )
+		AS SumCount
+		
 
 		*/
 
