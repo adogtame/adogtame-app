@@ -119,32 +119,27 @@ class UserModel {
     notificacionesVistas(id) {
         return __awaiter(this, void 0, void 0, function* () {
             //const db=this.connection;
-            const result = yield this.db.query('', [id, id]);
+            const result1 = yield this.db.query('UPDATE animal_interesado as ai INNER JOIN animal as a ON ai.idAnimal=a.id SET ai.visto=1 WHERE ai.visto=0 AND a.idDador=?', [id]);
+            const result2 = yield this.db.query('UPDATE proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id SET pa.visto=1 WHERE (pa.visto=0 AND a.idDador=? AND pa.fecha_fin is not null) OR  (pa.visto=0 AND pa.id_usuario=? AND pa.fecha_fin is null)', [id, id]);
             /*
+            
+            
     
-            El tema es q el de la derecha del or me esta cambiando los interesados por el ai.visto, osea q en el caso q vaya a la derecha no tendria qcambiarme el ai.visto
-    
-            UPDATE proceso_adopcion as pa
-            INNER JOIN animal as a ON pa.id_animal=a.id
-            INNER JOIN animal_interesado as ai ON ai.idAnimal=a.id
-            SET pa.visto='0', ai.visto='0'
-            WHERE (pa.visto=1 AND a.idDador=5 AND ai.visto=1) OR (pa.id_usuario=5 AND pa.visto=1 AND ai.visto=1 AND pa.fecha_fin is null)
     
             UPDATE animal_interesado as ai
-            SET ai.visto=1
             INNER JOIN animal as a ON ai.idAnimal=a.id
-            WHERE ai.visto=0 AND a.idDador=5
+            SET ai.visto=1
+            WHERE ai.visto=0 AND a.idDador=?
     
     
             UPDATE proceso_adopcion as pa
-            SET pa.visto=1
             INNER JOIN animal as a ON pa.id_animal=a.id
-            WHERE pa.visto=0 AND a.idDador=5
-    
+            SET pa.visto=1
+            WHERE (pa.visto=0 AND a.idDador=? AND pa.fecha_fin is not null) OR  (pa.visto=0 AND pa.id_usuario=? AND pa.fecha_fin is null)
     
     
             */
-            return result[0];
+            return result1[0];
         });
     }
     //
