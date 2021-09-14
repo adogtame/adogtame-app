@@ -59,7 +59,7 @@ class UserModel {
     notificacionesListar(id) {
         return __awaiter(this, void 0, void 0, function* () {
             //const db=this.connection;
-            const notificaciones = yield this.db.query('SELECT * FROM ( SELECT  0 as est,u.nombre as nombreI, u.apellido as apellidoI, ai.idInteresado as interesado, ai.idAnimal as animal, ai.fecha_interes as fecha FROM animal_interesado as ai inner join animal as a ON a.id = ai.idAnimal inner join usuario as u on u.id=ai.idInteresado WHERE a.idDador = ? UNION SELECT 1 as est, u.nombre as nombreI, u.apellido as apellidoI, a.idDador as interesado, pa.id_animal as animal, pa.fecha_inicio as fecha FROM animal as a inner join proceso_adopcion as pa ON a.id = pa.id_animal inner join usuario as u on u.id=a.idDador WHERE pa.id_usuario= ? and pa.fecha_fin is null UNION SELECT 2 as est, u.nombre as nombreI, u.apellido as apellidoI, pa.id_usuario as interesado, pa.id_animal as animal, pa.fecha_fin as fecha FROM proceso_adopcion as pa inner join animal as a ON a.id = pa.id_animal inner join usuario as u on u.id=pa.id_usuario WHERE a.idDador = ? and pa.fecha_fin is not null ) as notificaciones order by fecha desc', [id, id, id]);
+            const notificaciones = yield this.db.query('SELECT * FROM ( SELECT  0 as est,u.nombre as nombreI, u.apellido as apellidoI, ai.idInteresado as interesado, ai.idAnimal as animal, ai.fecha_interes as fecha FROM animal_interesado as ai inner join animal as a ON a.id = ai.idAnimal inner join usuario as u on u.id=ai.idInteresado WHERE a.idDador = ? UNION SELECT 1 as est, u.nombre as nombreI, u.apellido as apellidoI, a.idDador as interesado, pa.id_animal as animal, pa.fecha_inicio as fecha FROM animal as a inner join proceso_adopcion as pa ON a.id = pa.id_animal inner join usuario as u on u.id=a.idDador WHERE pa.id_usuario= ? UNION SELECT 2 as est, u.nombre as nombreI, u.apellido as apellidoI, pa.id_usuario as interesado, pa.id_animal as animal, pa.fecha_fin as fecha FROM proceso_adopcion as pa inner join animal as a ON a.id = pa.id_animal inner join usuario as u on u.id=pa.id_usuario WHERE a.idDador = ? and pa.fecha_fin is not null ) as notificaciones order by fecha desc', [id, id, id]);
             /*El sql q  esta en una sola linea pero separado para q se entienda
             
 
@@ -80,7 +80,7 @@ class UserModel {
             FROM animal as a
             inner join proceso_adopcion as pa ON a.id = pa.id_animal
             inner join usuario as u on u.id=a.idDador
-            WHERE pa.id_usuario= ? and pa.fecha_fin is null
+            WHERE pa.id_usuario= ?
             UNION
             SELECT 2 as est, u.nombre as nombreI, u.apellido as apellidoI, pa.id_usuario as interesado, pa.id_animal as animal, pa.fecha_fin as fecha
             FROM proceso_adopcion as pa
@@ -102,7 +102,7 @@ class UserModel {
     notificacionesConteo(id) {
         return __awaiter(this, void 0, void 0, function* () {
             //const db=this.connection;
-            const conteo = yield this.db.query('SELECT (SELECT COUNT(*) as cuenta FROM animal_interesado as ai INNER JOIN animal as a ON ai.idAnimal=a.id WHERE ai.visto=0 AND a.idDador=? ) + (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id WHERE pa.visto=0 AND a.idDador=? AND pa.fecha_fin is not null ) + (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id WHERE pa.visto=0 AND pa.id_usuario=? AND pa.fecha_fin is null ) AS SumCount', [id, id, id]);
+            const conteo = yield this.db.query('SELECT (SELECT COUNT(*) as cuenta FROM animal_interesado as ai INNER JOIN animal as a ON ai.idAnimal=a.id WHERE ai.visto=0 AND a.idDador=? ) + (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id WHERE pa.vistoFinalizado=0 AND a.idDador=? AND pa.fecha_fin is not null ) + (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id WHERE pa.vistoPendiente=0 AND pa.id_usuario=? AND pa.fecha_fin is null ) AS SumCount', [id, id, id]);
             /*
             
     
@@ -116,11 +116,11 @@ class UserModel {
             +
             (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa
             INNER JOIN animal as a ON pa.id_animal=a.id
-            WHERE pa.visto=0 AND a.idDador=? AND pa.fecha_fin is not null )
+            WHERE pa.vistoFinalizado=0 AND a.idDador=? AND pa.fecha_fin is not null )
             +
             (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa
             INNER JOIN animal as a ON pa.id_animal=a.id
-            WHERE pa.visto=0 AND pa.id_usuario=? AND pa.fecha_fin is null )
+            WHERE pa.vistoPendiente=0 AND pa.id_usuario=? AND pa.fecha_fin is null )
             AS SumCount
             
     
@@ -132,7 +132,8 @@ class UserModel {
         return __awaiter(this, void 0, void 0, function* () {
             //const db=this.connection;
             const result1 = yield this.db.query('UPDATE animal_interesado as ai INNER JOIN animal as a ON ai.idAnimal=a.id SET ai.visto=1 WHERE ai.visto=0 AND a.idDador=?', [id]);
-            const result2 = yield this.db.query('UPDATE proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id SET pa.visto=1 WHERE (pa.visto=0 AND a.idDador=? AND pa.fecha_fin is not null) OR  (pa.visto=0 AND pa.id_usuario=? AND pa.fecha_fin is null)', [id, id]);
+            const result2 = yield this.db.query('UPDATE proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id SET pa.vistoFinalizado=1 WHERE pa.vistoFinalizado=0 AND a.idDador=? AND pa.fecha_fin is not null', [id]);
+            const result3 = yield this.db.query('UPDATE proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id SET pa.vistoPendiente=1 WHERE pa.vistoPendiente=0 AND pa.id_usuario=? AND pa.fecha_fin is null', [id]);
             /*
             
             
@@ -143,12 +144,15 @@ class UserModel {
             SET ai.visto=1
             WHERE ai.visto=0 AND a.idDador=?
     
+            UPDATE proceso_adopcion as pa
+            INNER JOIN animal as a ON pa.id_animal=a.id
+            SET pa.vistoFinalizado=1
+            WHERE (pa.vistoFinalizado=0 AND pa.id_usuario=? AND pa.fecha_fin is null)
     
             UPDATE proceso_adopcion as pa
             INNER JOIN animal as a ON pa.id_animal=a.id
-            SET pa.visto=1
-            WHERE (pa.visto=0 AND a.idDador=? AND pa.fecha_fin is not null) OR  (pa.visto=0 AND pa.id_usuario=? AND pa.fecha_fin is null)
-    
+            SET pa.vistoPendiente=1
+            WHERE pa.vistoPendiente=0 AND a.idDador=? AND pa.fecha_fin is not null
     
             */
             return result1[0];
