@@ -58,6 +58,8 @@ class UserRoutes {
         this.router.get('/listAnimals', userController_1.default.listAnimals);
         this.router.get('/listarAnimalesAdoptados', userController_1.default.listarAnimalesAdoptados);
         this.router.get('/fechaAdoptados', userController_1.default.fechaAdoptados);
+        this.router.get('/cantidadInteresados/:cantidad', userController_1.default.cantidadInteresados);
+        this.router.get('/vacunasAnimal/:vacuna', userController_1.default.vacunasAnimal);
         this.router.post('/listAnimalsFiltrado', userController_1.default.listAnimalsFiltrado);
         this.router.get('/listAnimalsUser/:id', userController_1.default.listAnimalsUser);
         this.router.get('/find/:id', userController_1.default.find);

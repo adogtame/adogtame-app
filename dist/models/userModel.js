@@ -389,7 +389,6 @@ class UserModel {
             return encontrado[0];
         });
     }
-    //
     //APARTADO ADMIN
     eliminarComentario(id) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -397,6 +396,20 @@ class UserModel {
             const RES = (yield this.db.query('DELETE FROM comentarios_usuarios WHERE ID = ?', [id]))[0].affectedRows;
             console.log(RES);
             return RES;
+        });
+    }
+    /* Busco la cantidad de interesados que tiene un animal */
+    cantidadInteresados(cantidad) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const cantidadInteresados = yield this.db.query('SELECT * FROM animal_interesado WHERE idAnimal = ?', [cantidad]);
+            return cantidadInteresados[0];
+        });
+    }
+    /* Busco la cantidad de interesados que tiene un animal */
+    vacunasAnimal(vacuna) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const vacunas = yield this.db.query('SELECT * FROM animal_vacunas where idAnimal = ?', [vacuna]);
+            return vacunas[0][0];
         });
     }
 }

@@ -519,26 +519,14 @@ class UserModel {
 		
 		*/
 
-
-
-		
 		//SELECT * FROM animal
 		console.log("animales a los q sigue   ",encontrado[0]);
 
 		return encontrado[0];
-	
-
-
 
 	}
 
-	//
-
-
-
 	//APARTADO ADMIN
-
-	
 	async eliminarComentario(id: string) {
 		const RES2 = (await this.db.query('DELETE FROM usuario_comentario_like WHERE idComentario = ?', [id]))[0].affectedRows;
 		const RES = (await this.db.query('DELETE FROM comentarios_usuarios WHERE ID = ?', [id]))[0].affectedRows;
@@ -547,9 +535,18 @@ class UserModel {
 		return RES;
 	}
 
+	/* Busco la cantidad de interesados que tiene un animal */
+	async cantidadInteresados(cantidad: string) {		
+		const cantidadInteresados = await this.db.query('SELECT * FROM animal_interesado WHERE idAnimal = ?', [cantidad]);
+		return cantidadInteresados[0];
+	}
+	/* Busco la cantidad de interesados que tiene un animal */
+	async vacunasAnimal(vacuna: string) {		
+		const vacunas = await this.db.query('SELECT * FROM animal_vacunas where idAnimal = ?', [vacuna]);
+		return vacunas[0][0];
+	}
 
-
-
+	
 
 }
 

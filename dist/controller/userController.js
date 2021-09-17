@@ -598,6 +598,26 @@ class UserController {
             res.status(200).json({ text: "Comentario eliminado correctamente" });
         });
     }
+    cantidadInteresados(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const { cantidad } = req.params;
+            console.log("animal idd ", cantidad);
+            const cantidadInteresados = yield userModel_1.default.cantidadInteresados(cantidad);
+            console.log(cantidadInteresados);
+            return res.json(cantidadInteresados);
+        });
+    }
+    vacunasAnimal(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const { vacuna } = req.params;
+            console.log("animal id ", vacuna);
+            const vacunas = yield userModel_1.default.vacunasAnimal(vacuna);
+            console.log(vacunas);
+            return res.json(vacunas);
+        });
+    }
 }
 const userController = new UserController();
 exports.default = userController;

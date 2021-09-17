@@ -304,6 +304,7 @@ class UserController {
         const animales = await userModel.listarAnimalesAdoptados();
         console.log(animales);
         return res.json(animales);
+        
     }
 
     public async fechaAdoptados(req: Request, res: Response) {
@@ -733,12 +734,7 @@ class UserController {
     
 
     public async cargarInteres(req: Request, res: Response) {
-
-
         const idUsuario = req.body.idUsuario;
-
-
-
         console.log(req.body);
         console.log("El id del Usuario", idUsuario);
         const { idAnimal } = req.params;
@@ -747,8 +743,6 @@ class UserController {
 
         console.log("El pinche result",result);
         return res.json(result);
-
-
 
     }
 
@@ -808,8 +802,23 @@ class UserController {
 
 
 
+    public async cantidadInteresados(req: Request, res: Response) {
+        console.log(req.body);
+        const { cantidad } = req.params;
+        console.log("animal idd ", cantidad);
+        const cantidadInteresados = await userModel.cantidadInteresados(cantidad);
+        console.log(cantidadInteresados);
+        return res.json(cantidadInteresados);
+    }
 
-
+        public async vacunasAnimal(req: Request, res: Response) {
+        console.log(req.body);
+        const { vacuna } = req.params;
+        console.log("animal id ", vacuna);
+        const vacunas = await userModel.vacunasAnimal(vacuna);
+        console.log(vacunas);
+        return res.json(vacunas);
+    }
 
 
 }
