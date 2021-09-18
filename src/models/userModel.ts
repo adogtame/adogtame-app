@@ -43,14 +43,131 @@ class UserModel {
 	}
 
 
-	//Notificaciones
-		async notificacionesListarInteresadosDeAnimalNoVistos(id: string) {//Devuelve todas las filas de la tabla usuario
+		//Notificaciones
+		async notificacionesListar(id: string) {//Devuelve todas las filas de la tabla usuario
 			//const db=this.connection;
-			const animales = await this.db.query('SELECT u.nombre as nombreI, u.apellido as apellidoI, ai.idInteresado, ai.idAnimal, ai.fecha_interes FROM animal_interesado as ai inner join animal as a ON a.id = ai.idAnimal inner join usuario as u on u.id=ai.idInteresado WHERE a.idDador = ? and ai.visto = 0', [id]);
+			const notificaciones = await this.db.query('SELECT * FROM ( SELECT  0 as est,u.nombre as nombreI, u.apellido as apellidoI, ai.idInteresado as interesado, ai.idAnimal as animal, ai.fecha_interes as fecha FROM animal_interesado as ai inner join animal as a ON a.id = ai.idAnimal inner join usuario as u on u.id=ai.idInteresado WHERE a.idDador = ? UNION SELECT 1 as est, u.nombre as nombreI, u.apellido as apellidoI, a.idDador as interesado, pa.id_animal as animal, pa.fecha_inicio as fecha FROM animal as a inner join proceso_adopcion as pa ON a.id = pa.id_animal inner join usuario as u on u.id=a.idDador WHERE pa.id_usuario= ? UNION SELECT 2 as est, u.nombre as nombreI, u.apellido as apellidoI, pa.id_usuario as interesado, pa.id_animal as animal, pa.fecha_fin as fecha FROM proceso_adopcion as pa inner join animal as a ON a.id = pa.id_animal inner join usuario as u on u.id=pa.id_usuario WHERE a.idDador = ? and pa.fecha_fin is not null ) as notificaciones order by fecha desc', [id, id, id]);
+			
+
+			/*El sql q  esta en una sola linea pero separado para q se entienda
+			
+
+
+
+		
+
+			SELECT * FROM (
+
+
+			SELECT  0 as est,u.nombre as nombreI, u.apellido as apellidoI, ai.idInteresado as interesado, ai.idAnimal as animal, ai.fecha_interes as fecha 
+			FROM animal_interesado as ai 
+			inner join animal as a ON a.id = ai.idAnimal 
+			inner join usuario as u on u.id=ai.idInteresado 
+			WHERE a.idDador = ?
+			UNION
+			SELECT 1 as est, u.nombre as nombreI, u.apellido as apellidoI, a.idDador as interesado, pa.id_animal as animal, pa.fecha_inicio as fecha 
+			FROM animal as a 
+			inner join proceso_adopcion as pa ON a.id = pa.id_animal 
+			inner join usuario as u on u.id=a.idDador 
+			WHERE pa.id_usuario= ?
+			UNION
+			SELECT 2 as est, u.nombre as nombreI, u.apellido as apellidoI, pa.id_usuario as interesado, pa.id_animal as animal, pa.fecha_fin as fecha 
+			FROM proceso_adopcion as pa 
+			inner join animal as a ON a.id = pa.id_animal 
+			inner join usuario as u on u.id=pa.id_usuario 
+			WHERE a.idDador = ? and pa.fecha_fin is not null
+
+
+					
+			) as notificaciones order by fecha desc
+			
+			*/
+			
+			
+			
+			
 			//console.log(usuarios[0]);
 			//devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
-			return animales[0];
+			return notificaciones[0];
+	
+	
+	
+	
 		}
+
+
+	//Notificaciones
+
+	async notificacionesConteo(id: string) {//Devuelve todas las filas de la tabla usuario
+		//const db=this.connection;
+		const conteo = await this.db.query('SELECT (SELECT COUNT(*) as cuenta FROM animal_interesado as ai INNER JOIN animal as a ON ai.idAnimal=a.id WHERE ai.visto=0 AND a.idDador=? ) + (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id WHERE pa.vistoFinalizado=0 AND a.idDador=? AND pa.fecha_fin is not null ) + (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id WHERE pa.vistoPendiente=0 AND pa.id_usuario=? AND pa.fecha_fin is null ) AS SumCount', [id, id, id]);
+		
+
+		/*
+		
+
+		
+
+
+
+		SELECT (SELECT COUNT(*) as cuenta FROM animal_interesado as ai 
+		INNER JOIN animal as a ON ai.idAnimal=a.id 
+		WHERE ai.visto=0 AND a.idDador=? ) 
+		+ 
+		(SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa 
+		INNER JOIN animal as a ON pa.id_animal=a.id 
+		WHERE pa.vistoFinalizado=0 AND a.idDador=? AND pa.fecha_fin is not null ) 
+		+
+		(SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa 
+		INNER JOIN animal as a ON pa.id_animal=a.id 
+		WHERE pa.vistoPendiente=0 AND pa.id_usuario=? AND pa.fecha_fin is null )
+		AS SumCount
+		
+
+		*/
+
+		return conteo[0][0];
+	}
+
+
+	async notificacionesVistas(id: string) {//Devuelve todas las filas de la tabla usuario
+		//const db=this.connection;
+		const result1 = await this.db.query('UPDATE animal_interesado as ai INNER JOIN animal as a ON ai.idAnimal=a.id SET ai.visto=1 WHERE ai.visto=0 AND a.idDador=?', [id]);
+		const result2 = await this.db.query('UPDATE proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id SET pa.vistoFinalizado=1 WHERE pa.vistoFinalizado=0 AND a.idDador=? AND pa.fecha_fin is not null', [id]);
+		const result3 = await this.db.query('UPDATE proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id SET pa.vistoPendiente=1 WHERE pa.vistoPendiente=0 AND pa.id_usuario=? AND pa.fecha_fin is null', [id]);
+		
+
+		/*
+		
+		
+
+
+		UPDATE animal_interesado as ai
+		INNER JOIN animal as a ON ai.idAnimal=a.id
+		SET ai.visto=1 
+		WHERE ai.visto=0 AND a.idDador=?
+
+		UPDATE proceso_adopcion as pa
+		INNER JOIN animal as a ON pa.id_animal=a.id
+		SET pa.vistoFinalizado=1
+		WHERE (pa.vistoFinalizado=0 AND pa.id_usuario=? AND pa.fecha_fin is null)
+
+		UPDATE proceso_adopcion as pa
+		INNER JOIN animal as a ON pa.id_animal=a.id
+		SET pa.vistoPendiente=1
+		WHERE pa.vistoPendiente=0 AND a.idDador=? AND pa.fecha_fin is not null
+
+		*/
+
+		return result1[0];
+	}
+
+
+
+
+
+
+
 	//
 
 

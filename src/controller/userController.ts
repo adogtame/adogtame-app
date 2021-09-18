@@ -268,12 +268,30 @@ class UserController {
 
     //Notificaciones
 
-        public async notificacionesListarInteresadosDeAnimalNoVistos(req: Request, res: Response) {
+        public async notificacionesListar(req: Request, res: Response) {
             console.log(req.body);
             const { id } = req.params;
-            const animales = await userModel.notificacionesListarInteresadosDeAnimalNoVistos(id);
-            console.log(animales);
-            return res.json(animales);
+            const notificaciones = await userModel.notificacionesListar(id);
+            console.log(notificaciones);
+            return res.json(notificaciones);
+            
+        } 
+
+        public async notificacionesConteo(req: Request, res: Response) {
+            console.log(req.body);
+            const { id } = req.params;
+            const conteo = await userModel.notificacionesConteo(id);
+            console.log(conteo);
+            return res.json(conteo);
+            
+        }
+
+        public async notificacionesVistas(req: Request, res: Response) {
+            console.log(req.body);
+            const { id } = req.params;
+            const vistas = await userModel.notificacionesVistas(id);
+            console.log(vistas);
+            return res.json(vistas);
             
         }
     //
