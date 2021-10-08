@@ -126,12 +126,14 @@ class UserController {
         res.render("partials/home", { mi_session: true });
     }
 
-
     public async adoptados(req: Request, res: Response) {
         console.log(req.body);
         res.render("partials/adoptados");
     }
-
+    public async informes(req: Request, res: Response) {
+        console.log(req.body);
+        res.render("partials/informes");
+    }
 
     //adopcion animal
     public async comenzarAdopcion(req: Request, res: Response) {
@@ -829,7 +831,7 @@ class UserController {
         return res.json(cantidadInteresados);
     }
 
-        public async vacunasAnimal(req: Request, res: Response) {
+    public async vacunasAnimal(req: Request, res: Response) {
         console.log(req.body);
         const { vacuna } = req.params;
         console.log("animal id ", vacuna);
@@ -838,6 +840,44 @@ class UserController {
         return res.json(vacunas);
     }
 
+    public async cantidadUsuariosRegistrados(req: Request, res: Response) {
+        console.log(req.body);
+        const usuariosRegistrados = await userModel.cantidadUsuariosRegistrados();
+        console.log(usuariosRegistrados);
+        return res.json(usuariosRegistrados);
+    }
+    public async cantidadAnimalesRegistrados(req: Request, res: Response) {
+        console.log(req.body);
+        const animalesRegistrados = await userModel.cantidadAnimalesRegistrados();
+        console.log(animalesRegistrados);
+        return res.json(animalesRegistrados);
+    }
+    public async cantidadAnimalesAdoptados(req: Request, res: Response) {
+        console.log(req.body);
+        const animalesAdoptados = await userModel.cantidadAnimalesAdoptados();
+        console.log(animalesAdoptados);
+        return res.json(animalesAdoptados);
+    }
+    public async cantidadAnimalesEnAdopcion(req: Request, res: Response) {
+        console.log(req.body);
+        const animalesEnAdopcion = await userModel.cantidadAnimalesEnAdopcion();
+        console.log(animalesEnAdopcion);
+        return res.json(animalesEnAdopcion);
+    }
+
+    public async promedioAnimalesAdoptados(req: Request, res: Response) {
+        console.log(req.body);
+        const promedio = await userModel.promedioAnimalesAdoptados();
+        console.log(promedio);
+        return res.json(promedio);
+    }
+
+    public async modificarDatosAnimal(req: Request, res: Response) {
+        console.log(req.body);
+        const { id } = req.params;
+        const result = await userModel.modificarDatosAnimal(req.body, id);
+        return res.json({ text: 'updating animal ' + id });
+    }
 
 }
 

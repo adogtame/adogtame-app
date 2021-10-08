@@ -657,14 +657,47 @@ class UserModel {
 		const cantidadInteresados = await this.db.query('SELECT * FROM animal_interesado WHERE idAnimal = ?', [cantidad]);
 		return cantidadInteresados[0];
 	}
-	/* Busco la cantidad de interesados que tiene un animal */
+	/* Busco las vacunas que tiene un animal */
 	async vacunasAnimal(vacuna: string) {		
 		const vacunas = await this.db.query('SELECT * FROM animal_vacunas where idAnimal = ?', [vacuna]);
 		return vacunas[0][0];
 	}
 
-	
+	async cantidadUsuariosRegistrados() {		
+		const usuariosRegistrados = await this.db.query('SELECT COUNT(*) as us FROM usuario');
+		return usuariosRegistrados[0][0];
+	}
 
+	async cantidadAnimalesRegistrados() {		
+		const animalesRegistrados = await this.db.query('SELECT COUNT(*) as an FROM animal');
+		return animalesRegistrados[0][0];
+	}
+
+	async cantidadAnimalesAdoptados() {		
+		const usuariosAdoptados = await this.db.query('SELECT COUNT(*) as ana FROM animal where estado = 3');
+		return usuariosAdoptados[0][0];
+	}
+
+	async cantidadAnimalesEnAdopcion() {		
+		const usuariosEnAdopcion = await this.db.query('SELECT COUNT(*) as ane FROM animal where estado = 1 or estado = 2');
+		return usuariosEnAdopcion[0][0];
+	}
+
+
+	async promedioAnimalesAdoptados() {		
+		const promedio = await this.db.query('select count(*) / (select count(*) from animal where estado = 3) as prom from animal');
+		return promedio[0][0];
+	}
+
+	/* 
+	Modifico los datos del animal 
+	Devuelve 1 si logro actualizar el usuario indicado por id
+	*/
+	async modificarDatosAnimal(animal: object, id: string) {
+		const result = (await this.db.query('UPDATE animal SET ? WHERE id = ?', [animal, id]))[0].affectedRows;
+		console.log(result);
+		return result;
+	}
 }
 
 //Exportamos el enrutador con 
