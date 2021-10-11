@@ -33,12 +33,18 @@ class UserRoutes {
         this.router.get('/adoptados', userController_1.default.adoptados);
         this.router.get('/solicitudesEnviadas', userController_1.default.solicitudesEnviadas);
         this.router.get('/solicitudesRecibidas', userController_1.default.solicitudesRecibidas);
+        /* Informes */
+        this.router.get('/informes', userController_1.default.informes);
+        this.router.get('/cantidadUsuariosRegistrados', userController_1.default.cantidadUsuariosRegistrados);
+        this.router.get('/cantidadAnimalesRegistrados', userController_1.default.cantidadAnimalesRegistrados);
+        this.router.get('/cantidadAnimalesAdoptados', userController_1.default.cantidadAnimalesAdoptados);
+        this.router.get('/cantidadAnimalesEnAdopcion', userController_1.default.cantidadAnimalesEnAdopcion);
+        this.router.get('/promedioAnimalesAdoptados', userController_1.default.promedioAnimalesAdoptados);
         //Notificaciones
         //Buscar los id de animal de los animales del usuario logueado y interesados de ese animal
         this.router.get('/notificacionesListar/:id', userController_1.default.notificacionesListar);
         this.router.get('/notificacionesConteo/:id', userController_1.default.notificacionesConteo);
         this.router.get('/notificacionesVistas/:id', userController_1.default.notificacionesVistas);
-        //
         //Interes
         this.router.post('/mostrarInteres/:idAnimal', userController_1.default.mostrarInteres);
         this.router.post('/quitarInteres/:idAnimal', userController_1.default.quitarInteres);
@@ -52,10 +58,8 @@ class UserRoutes {
         this.router.post('/confirmarAdopcion/:idAnimal', userController_1.default.confirmarAdopcion);
         this.router.get('/estadoAnimal/:idAnimal', userController_1.default.estadoAnimal);
         this.router.delete('/cancelarProcesoAdopcion/:idAnimal', userController_1.default.cancelarProcesoAdopcion);
-        //
         //Confirmacion de registro via nodemailer
         this.router.get('/confirmar/:token', userController_1.default.confirmarRegistro);
-        // 
         this.router.get('/list', userController_1.default.list);
         this.router.get('/listAnimals', userController_1.default.listAnimals);
         this.router.get('/listarAnimalesAdoptados', userController_1.default.listarAnimalesAdoptados);
@@ -75,11 +79,12 @@ class UserRoutes {
         this.router.post('/dToken', userController_1.default.dToken);
         // FIN DEL CRUD
         this.router.get('/findUserWithMail/:mail', userController_1.default.findUserWithMail);
+        // Modificar datos del animal
+        this.router.put('/modificarDatosAnimal/:id', userController_1.default.modificarDatosAnimal);
         //APARTADO ADMIN
         //Para no crear otro objeto q sea admin lo metemos en user
         //Esto del comentario falta borrar
         //this.router.delete('/deleteComentario/:id',userController.deleteComentario);	
-        //
     }
 }
 //Exportamos el enrutador con 

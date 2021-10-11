@@ -498,11 +498,29 @@ class UserModel {
             return cantidadInteresados[0];
         });
     }
-    /* Busco la cantidad de interesados que tiene un animal */
+    /* Busco las vacunas que tiene un animal */
     vacunasAnimal(vacuna) {
         return __awaiter(this, void 0, void 0, function* () {
             const vacunas = yield this.db.query('SELECT * FROM animal_vacunas where idAnimal = ?', [vacuna]);
             return vacunas[0][0];
+        });
+    }
+    cantidadUsuariosRegistrados() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const usuariosRegistrados = yield this.db.query('SELECT COUNT(*) as us FROM usuario');
+            return usuariosRegistrados[0][0];
+        });
+    }
+    cantidadAnimalesRegistrados() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const animalesRegistrados = yield this.db.query('SELECT COUNT(*) as an FROM animal');
+            return animalesRegistrados[0][0];
+        });
+    }
+    cantidadAnimalesAdoptados() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const usuariosAdoptados = yield this.db.query('SELECT COUNT(*) as ana FROM animal where estado = 3');
+            return usuariosAdoptados[0][0];
         });
     }
     //Atualizar datos (Modificar / updates)
@@ -510,6 +528,29 @@ class UserModel {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("usuarioData", usuarioData, "id", id);
             const result = (yield this.db.query('UPDATE usuario SET ? WHERE ID = ?', [usuarioData, id]))[0].affectedRows;
+            console.log(result);
+            return result;
+        });
+    }
+    cantidadAnimalesEnAdopcion() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const usuariosEnAdopcion = yield this.db.query('SELECT COUNT(*) as ane FROM animal where estado = 1 or estado = 2');
+            return usuariosEnAdopcion[0][0];
+        });
+    }
+    promedioAnimalesAdoptados() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const promedio = yield this.db.query('select count(*) / (select count(*) from animal where estado = 3) as prom from animal');
+            return promedio[0][0];
+        });
+    }
+    /*
+    Modifico los datos del animal
+    Devuelve 1 si logro actualizar el usuario indicado por id
+    */
+    modificarDatosAnimal(animal, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = (yield this.db.query('UPDATE animal SET ? WHERE id = ?', [animal, id]))[0].affectedRows;
             console.log(result);
             return result;
         });

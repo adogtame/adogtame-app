@@ -113,6 +113,12 @@ class UserController {
             res.render("partials/adoptados");
         });
     }
+    informes(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            res.render("partials/informes");
+        });
+    }
     //adopcion animal
     comenzarAdopcion(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -646,6 +652,54 @@ class UserController {
             const vacunas = yield userModel_1.default.vacunasAnimal(vacuna);
             console.log(vacunas);
             return res.json(vacunas);
+        });
+    }
+    cantidadUsuariosRegistrados(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const usuariosRegistrados = yield userModel_1.default.cantidadUsuariosRegistrados();
+            console.log(usuariosRegistrados);
+            return res.json(usuariosRegistrados);
+        });
+    }
+    cantidadAnimalesRegistrados(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const animalesRegistrados = yield userModel_1.default.cantidadAnimalesRegistrados();
+            console.log(animalesRegistrados);
+            return res.json(animalesRegistrados);
+        });
+    }
+    cantidadAnimalesAdoptados(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const animalesAdoptados = yield userModel_1.default.cantidadAnimalesAdoptados();
+            console.log(animalesAdoptados);
+            return res.json(animalesAdoptados);
+        });
+    }
+    cantidadAnimalesEnAdopcion(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const animalesEnAdopcion = yield userModel_1.default.cantidadAnimalesEnAdopcion();
+            console.log(animalesEnAdopcion);
+            return res.json(animalesEnAdopcion);
+        });
+    }
+    promedioAnimalesAdoptados(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const promedio = yield userModel_1.default.promedioAnimalesAdoptados();
+            console.log(promedio);
+            return res.json(promedio);
+        });
+    }
+    modificarDatosAnimal(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const { id } = req.params;
+            const result = yield userModel_1.default.modificarDatosAnimal(req.body, id);
+            return res.json({ text: 'updating animal ' + id });
         });
     }
 }
