@@ -505,6 +505,15 @@ class UserModel {
             return vacunas[0][0];
         });
     }
+    //Atualizar datos (Modificar / updates)
+    updateDataUsuario(usuarioData, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("usuarioData", usuarioData, "id", id);
+            const result = (yield this.db.query('UPDATE usuario SET ? WHERE ID = ?', [usuarioData, id]))[0].affectedRows;
+            console.log(result);
+            return result;
+        });
+    }
 }
 //Exportamos el enrutador con 
 const userModel = new UserModel();

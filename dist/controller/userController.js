@@ -604,6 +604,18 @@ class UserController {
         });
     }
     //
+    //Atualizar datos (Modificar / updates)
+    updateDataUsuario(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const idUsuario = req.params.id;
+            var usuarioCambios = req.body;
+            console.log("idUsuario", idUsuario);
+            console.log("usuarioCambios q hay", usuarioCambios);
+            const result = yield userModel_1.default.updateDataUsuario(usuarioCambios, idUsuario);
+            res.status(200).json({ text: "usuario actualizado correctamente" });
+        });
+    }
     //APARTADO ADMIN
     deleteComentario(req, res) {
         return __awaiter(this, void 0, void 0, function* () {

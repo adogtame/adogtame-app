@@ -69,6 +69,8 @@ class UserRoutes {
         this.router.post('/add', userController_1.default.addUser);
         this.router.put('/update/:id', userController_1.default.update);
         this.router.delete('/delete/:id', userController_1.default.delete);
+        //Atualizar datos (Modificar / updates)
+        this.router.put('/updateDataUsuario/:id', userController_1.default.updateDataUsuario);
         //
         this.router.post('/dToken', userController_1.default.dToken);
         // FIN DEL CRUD

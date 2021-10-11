@@ -801,6 +801,26 @@ class UserController {
 
 
 
+    //Atualizar datos (Modificar / updates)
+    public async updateDataUsuario(req: Request, res: Response) {
+		
+        console.log(req.body);
+		const idUsuario = req.params.id;    
+		var usuarioCambios:any=req.body;
+
+        console.log("idUsuario",idUsuario);
+        console.log("usuarioCambios q hay",usuarioCambios);
+
+		const result = await userModel.updateDataUsuario(usuarioCambios, idUsuario);
+
+		res.status(200).json({ text: "usuario actualizado correctamente" });
+
+
+	}
+
+
+
+
 
 
 

@@ -665,6 +665,29 @@ class UserModel {
 
 	
 
+
+
+
+	//Atualizar datos (Modificar / updates)
+	
+	async updateDataUsuario(usuarioData: object, id: string) {
+		console.log("usuarioData",usuarioData,"id",id);
+		const result = (await this.db.query('UPDATE usuario SET ? WHERE ID = ?', [usuarioData, id]))[0].affectedRows;
+		console.log(result);
+		return result;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 //Exportamos el enrutador con 

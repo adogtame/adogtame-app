@@ -88,6 +88,11 @@ class UserRoutes {
 		this.router.put('/update/:id',userController.update);
 		this.router.delete('/delete/:id',userController.delete);
 
+
+        //Atualizar datos (Modificar / updates)
+
+        this.router.put('/updateDataUsuario/:id',userController.updateDataUsuario);
+
         //
 		this.router.post('/dToken',userController.dToken);
 
