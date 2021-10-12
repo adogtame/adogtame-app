@@ -65,7 +65,6 @@ class UserRoutes {
         this.router.get('/listarAnimalesAdoptados', userController_1.default.listarAnimalesAdoptados);
         this.router.get('/fechaAdoptados', userController_1.default.fechaAdoptados);
         this.router.get('/cantidadInteresados/:cantidad', userController_1.default.cantidadInteresados);
-        this.router.get('/vacunasAnimal/:vacuna', userController_1.default.vacunasAnimal);
         this.router.post('/listAnimalsFiltrado', userController_1.default.listAnimalsFiltrado);
         this.router.get('/listAnimalsUser/:id', userController_1.default.listAnimalsUser);
         this.router.get('/find/:id', userController_1.default.find);
@@ -75,12 +74,14 @@ class UserRoutes {
         this.router.delete('/delete/:id', userController_1.default.delete);
         //Atualizar datos (Modificar / updates)
         this.router.put('/updateDataUsuario/:id', userController_1.default.updateDataUsuario);
+        // Modificar datos del animal
+        this.router.put('/modificarDatosAnimal/:id', userController_1.default.modificarDatosAnimal);
+        this.router.put('/modificarVacunasAnimal/:id', userController_1.default.modificarVacunasAnimal);
+        this.router.get('/traerVacunasAnimal/:id', userController_1.default.traerVacunasAnimal);
         //
         this.router.post('/dToken', userController_1.default.dToken);
         // FIN DEL CRUD
         this.router.get('/findUserWithMail/:mail', userController_1.default.findUserWithMail);
-        // Modificar datos del animal
-        this.router.put('/modificarDatosAnimal/:id', userController_1.default.modificarDatosAnimal);
         //APARTADO ADMIN
         //Para no crear otro objeto q sea admin lo metemos en user
         //Esto del comentario falta borrar

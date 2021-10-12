@@ -658,9 +658,17 @@ class UserModel {
 		return cantidadInteresados[0];
 	}
 	/* Busco las vacunas que tiene un animal */
-	async vacunasAnimal(vacuna: string) {		
-		const vacunas = await this.db.query('SELECT * FROM animal_vacunas where idAnimal = ?', [vacuna]);
+	async traerVacunasAnimal(id: string) {		
+		const vacunas = await this.db.query('SELECT * FROM animal_vacunas where idAnimal = ?', [id]);
 		return vacunas[0][0];
+	}
+
+
+	async modificarVacunasAnimal(vacunas: object, id: string) {	
+		console.log("vacunas",vacunas,"id",id);	
+		const result = await this.db.query('UPDATE animal_vacunas SET ? WHERE idAnimal = ?', [vacunas, id])[0].affectedRows;
+		console.log(result);
+		return result;
 	}
 
 	async cantidadUsuariosRegistrados() {		
@@ -689,7 +697,15 @@ class UserModel {
 		console.log(result);
 		return result;
 	}
-
+	/* 
+	Modifico los datos del animal 
+	Devuelve 1 si logro actualizar el usuario indicado por id
+	*/
+	async modificarDatosAnimal(animal: object, id: string) {
+		const result = (await this.db.query('UPDATE animal SET ? WHERE id = ?', [animal, id]))[0].affectedRows;
+		console.log(result);
+		return result;
+	}
 
     async buscarToken(token: string) {
 		const encontrado: any = await this.db.query('SELECT * FROM usuario WHERE resetToken = ?', [token]);
@@ -718,15 +734,7 @@ class UserModel {
 		return promedio[0][0];
 	}
 
-	/* 
-	Modifico los datos del animal 
-	Devuelve 1 si logro actualizar el usuario indicado por id
-	*/
-	async modificarDatosAnimal(animal: object, id: string) {
-		const result = (await this.db.query('UPDATE animal SET ? WHERE id = ?', [animal, id]))[0].affectedRows;
-		console.log(result);
-		return result;
-	}
+
 }
 
 //Exportamos el enrutador con 
