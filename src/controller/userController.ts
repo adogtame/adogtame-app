@@ -690,7 +690,7 @@ class UserController {
             return res.status(400).json({message: 'Algo salio mal, por favor contactese con el equipo de soporte para mas informacion'});
         }
 
-        res.json({message, info: emailStatus});
+        res.json({message, info: emailStatus, test: verificationLink});
     }
 
     public async newPassword(req: Request, res: Response) {
