@@ -622,6 +622,17 @@ class UserController {
             res.status(200).json({ text: "usuario actualizado correctamente" });
         });
     }
+    modificarDatosAnimal(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const idAnimal = req.params.id;
+            var animalCambios = req.body;
+            console.log("idAnimal", idAnimal);
+            console.log("animalCambios q hay", animalCambios);
+            const result = yield userModel_1.default.modificarDatosAnimal(animalCambios, idAnimal);
+            return res.json({ text: 'updating animal ' + idAnimal });
+        });
+    }
     //APARTADO ADMIN
     deleteComentario(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -644,14 +655,25 @@ class UserController {
             return res.json(cantidadInteresados);
         });
     }
-    vacunasAnimal(req, res) {
+    traerVacunasAnimal(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(req.body);
-            const { vacuna } = req.params;
-            console.log("animal id ", vacuna);
-            const vacunas = yield userModel_1.default.vacunasAnimal(vacuna);
+            const { id } = req.params;
+            console.log("animal id ", id);
+            const vacunas = yield userModel_1.default.traerVacunasAnimal(id);
             console.log(vacunas);
             return res.json(vacunas);
+        });
+    }
+    modificarVacunasAnimal(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const { id } = req.params;
+            const vacunas = req.body;
+            console.log("animal id ", id, "vacunas cambios", vacunas);
+            const result = yield userModel_1.default.modificarVacunasAnimal(vacunas, id);
+            console.log(result);
+            return res.json(result);
         });
     }
     cantidadUsuariosRegistrados(req, res) {
@@ -692,14 +714,6 @@ class UserController {
             const promedio = yield userModel_1.default.promedioAnimalesAdoptados();
             console.log(promedio);
             return res.json(promedio);
-        });
-    }
-    modificarDatosAnimal(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body);
-            const { id } = req.params;
-            const result = yield userModel_1.default.modificarDatosAnimal(req.body, id);
-            return res.json({ text: 'updating animal ' + id });
         });
     }
 }

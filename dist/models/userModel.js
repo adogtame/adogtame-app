@@ -499,10 +499,18 @@ class UserModel {
         });
     }
     /* Busco las vacunas que tiene un animal */
-    vacunasAnimal(vacuna) {
+    traerVacunasAnimal(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const vacunas = yield this.db.query('SELECT * FROM animal_vacunas where idAnimal = ?', [vacuna]);
+            const vacunas = yield this.db.query('SELECT * FROM animal_vacunas where idAnimal = ?', [id]);
             return vacunas[0][0];
+        });
+    }
+    modificarVacunasAnimal(vacunas, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("vacunas", vacunas, "id", id);
+            const result = yield this.db.query('UPDATE animal_vacunas SET ? WHERE idAnimal = ?', [vacunas, id])[0].affectedRows;
+            console.log(result);
+            return result;
         });
     }
     cantidadUsuariosRegistrados() {
@@ -532,6 +540,17 @@ class UserModel {
             return result;
         });
     }
+    /*
+    Modifico los datos del animal
+    Devuelve 1 si logro actualizar el usuario indicado por id
+    */
+    modificarDatosAnimal(animal, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = (yield this.db.query('UPDATE animal SET ? WHERE id = ?', [animal, id]))[0].affectedRows;
+            console.log(result);
+            return result;
+        });
+    }
     cantidadAnimalesEnAdopcion() {
         return __awaiter(this, void 0, void 0, function* () {
             const usuariosEnAdopcion = yield this.db.query('SELECT COUNT(*) as ane FROM animal where estado = 1 or estado = 2');
@@ -542,17 +561,6 @@ class UserModel {
         return __awaiter(this, void 0, void 0, function* () {
             const promedio = yield this.db.query('select count(*) / (select count(*) from animal where estado = 3) as prom from animal');
             return promedio[0][0];
-        });
-    }
-    /*
-    Modifico los datos del animal
-    Devuelve 1 si logro actualizar el usuario indicado por id
-    */
-    modificarDatosAnimal(animal, id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = (yield this.db.query('UPDATE animal SET ? WHERE id = ?', [animal, id]))[0].affectedRows;
-            console.log(result);
-            return result;
         });
     }
 }

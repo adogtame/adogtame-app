@@ -76,7 +76,7 @@ class UserRoutes {
         this.router.get('/listarAnimalesAdoptados',userController.listarAnimalesAdoptados);
         this.router.get('/fechaAdoptados',userController.fechaAdoptados);
         this.router.get('/cantidadInteresados/:cantidad',userController.cantidadInteresados);
-        this.router.get('/vacunasAnimal/:vacuna',userController.vacunasAnimal);
+ 
 		this.router.post('/listAnimalsFiltrado',userController.listAnimalsFiltrado);
 		this.router.get('/listAnimalsUser/:id',userController.listAnimalsUser);
 		this.router.get('/find/:id',userController.find);
@@ -87,18 +87,17 @@ class UserRoutes {
 
 
         //Atualizar datos (Modificar / updates)
-
         this.router.put('/updateDataUsuario/:id',userController.updateDataUsuario);
-
+        // Modificar datos del animal
+        this.router.put('/modificarDatosAnimal/:id',userController.modificarDatosAnimal);        
+        this.router.put('/modificarVacunasAnimal/:id',userController.modificarVacunasAnimal);
+        this.router.get('/traerVacunasAnimal/:id',userController.traerVacunasAnimal);
         //
 		this.router.post('/dToken',userController.dToken);
         // FIN DEL CRUD
 		this.router.get('/findUserWithMail/:mail',userController.findUserWithMail);
 
 
-        // Modificar datos del animal
-
-        this.router.put('/modificarDatosAnimal/:id',userController.modificarDatosAnimal);
 
         
         //APARTADO ADMIN

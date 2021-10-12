@@ -821,6 +821,17 @@ class UserController {
 	}
 
 
+    public async modificarDatosAnimal(req: Request, res: Response) {
+      
+        console.log(req.body);
+		const idAnimal = req.params.id;    
+		var animalCambios:any=req.body;
+
+        console.log("idAnimal",idAnimal);
+        console.log("animalCambios q hay",animalCambios);
+        const result = await userModel.modificarDatosAnimal(animalCambios, idAnimal);
+        return res.json({ text: 'updating animal ' + idAnimal });
+    }
 
 
 
@@ -851,14 +862,29 @@ class UserController {
         return res.json(cantidadInteresados);
     }
 
-    public async vacunasAnimal(req: Request, res: Response) {
+
+
+    public async traerVacunasAnimal(req: Request, res: Response) {
         console.log(req.body);
-        const { vacuna } = req.params;
-        console.log("animal id ", vacuna);
-        const vacunas = await userModel.vacunasAnimal(vacuna);
+        const { id } = req.params;
+        console.log("animal id ", id);
+        const vacunas = await userModel.traerVacunasAnimal(id);
         console.log(vacunas);
         return res.json(vacunas);
     }
+
+    public async modificarVacunasAnimal(req: Request, res: Response) {
+        console.log(req.body);
+        const { id } = req.params;
+        const vacunas =req.body;
+        console.log("animal id ", id, "vacunas cambios", vacunas);
+        const result = await userModel.modificarVacunasAnimal(vacunas, id);
+        console.log(result);
+        return res.json(result);
+    }
+
+    
+
 
     public async cantidadUsuariosRegistrados(req: Request, res: Response) {
         console.log(req.body);
@@ -892,12 +918,6 @@ class UserController {
         return res.json(promedio);
     }
 
-    public async modificarDatosAnimal(req: Request, res: Response) {
-        console.log(req.body);
-        const { id } = req.params;
-        const result = await userModel.modificarDatosAnimal(req.body, id);
-        return res.json({ text: 'updating animal ' + id });
-    }
 
 }
 
