@@ -661,7 +661,7 @@ class UserController {
             //Buscar user en base de datos
             user = await userModel.buscarEmail(email);
             const token: string = jwt.sign(
-                { _id: user.id, email: user.email},
+                { _id: user.id },
                 "secretKey",
                 {
                     expiresIn: '1h',
