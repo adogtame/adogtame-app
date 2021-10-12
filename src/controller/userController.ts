@@ -668,7 +668,7 @@ class UserController {
                 }
             );
 
-            verificationLink = `http://adogtameweb.herokuapp.com/usuarios/new-password/${token}`;
+            verificationLink = `http://adogtame-backend.herokuapp.com/user/new-password/${token}`;
             user.resetToken = token;
         } catch (error) {
             //En caso de no haberlo encontrado en la BD, arrojar el mensaje de la variable "message"
