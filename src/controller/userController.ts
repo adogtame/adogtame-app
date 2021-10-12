@@ -668,6 +668,8 @@ class UserController {
                 }
             );
 
+            console.log('token => ', token);
+
             verificationLink = `http://adogtame-backend.herokuapp.com/user/new-password/${token}`;
             user.resetToken = token;
         } catch (error) {
