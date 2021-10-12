@@ -503,6 +503,75 @@ class UserController {
             return res.status(403).json({ message: 'User exists!!' });
         });
     }
+    recoverPassword(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { email } = req.body;
+            if (!(email)) {
+                return res.status(400).json({ message: 'Email de usuario requerido!' });
+            }
+            const message = 'Se ha enviado un e-mail a la casilla de correo electronico indicada, por favor,' +
+                'revise su bandeja de entrada para poder restaurar su contraseña.';
+            let verificationLink;
+            let emailStatus = 'OK';
+            let user;
+            //const userRepository = buscarEmail(Users);
+            try {
+                //Buscar user en base de datos
+                user = yield userModel_1.default.buscarEmail(email);
+                const token = jsonwebtoken_1.default.sign({ _id: user.id, email: user.email }, "secretKey", {
+                    expiresIn: '1h',
+                });
+                verificationLink = `http://adogtameweb.herokuapp.com/usuarios/new-password/${token}`;
+                user.resetToken = token;
+            }
+            catch (error) {
+                //En caso de no haberlo encontrado en la BD, arrojar el mensaje de la variable "message"
+                return res.json({ message });
+            }
+            //TO DO: SendEmail
+            try {
+            }
+            catch (error) {
+                emailStatus = String(error);
+                return res.status(400).json({ message: 'Algo salio mal, por favor contactese con el equipo de soporte para mas informacion' });
+            }
+            try {
+                yield userModel_1.default.updateDataUsuario(user, user.id);
+            }
+            catch (error) {
+                emailStatus = String(error);
+                return res.status(400).json({ message: 'Algo salio mal, por favor contactese con el equipo de soporte para mas informacion' });
+            }
+            res.json({ message, info: emailStatus });
+        });
+    }
+    newPassword(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { newPassword } = req.body;
+            const resetToken = req.headers['reset'];
+            if (!(resetToken && newPassword)) {
+                res.status(400).json({ message: 'Todos los campos son requeridos' });
+            }
+            let jwtPayload;
+            let user;
+            try {
+                jwtPayload = jsonwebtoken_1.default.verify(resetToken, 'secretKey123');
+                user = yield userModel_1.default.buscarToken(resetToken);
+            }
+            catch (error) {
+                return res.status(401).json({ message: 'Algo salio mal, por favor contactese con soporte para mas informacion' });
+            }
+            user.password = newPassword;
+            try {
+                user.hashPassword();
+                yield userModel_1.default.updateDataUsuario(user, user.id);
+            }
+            catch (error) {
+                return res.status(401).json({ message: 'Algo salio mal, por favor contactese con soporte para mas informacion' });
+            }
+            res.json({ message: 'Tu contraseña ha sido cambiada!' });
+        });
+    }
     confirmarRegistro(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

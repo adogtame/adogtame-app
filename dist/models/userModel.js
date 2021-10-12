@@ -551,6 +551,15 @@ class UserModel {
             return result;
         });
     }
+    buscarToken(token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const encontrado = yield this.db.query('SELECT * FROM usuario WHERE resetToken = ?', [token]);
+            //Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
+            if (encontrado.length > 1)
+                return encontrado[0][0];
+            return null;
+        });
+    }
     cantidadAnimalesEnAdopcion() {
         return __awaiter(this, void 0, void 0, function* () {
             const usuariosEnAdopcion = yield this.db.query('SELECT COUNT(*) as ane FROM animal where estado = 1 or estado = 2');
