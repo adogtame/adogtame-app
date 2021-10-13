@@ -42,6 +42,7 @@ class UserRoutes {
         this.router.get('/cantidadAnimalesAdoptados',userController.cantidadAnimalesAdoptados);
         this.router.get('/cantidadAnimalesEnAdopcion',userController.cantidadAnimalesEnAdopcion);
         this.router.get('/promedioAnimalesAdoptados',userController.promedioAnimalesAdoptados);
+        
         //Notificaciones
 
         //Buscar los id de animal de los animales del usuario logueado y interesados de ese animal
@@ -74,6 +75,7 @@ class UserRoutes {
 		this.router.get('/list',userController.list);
 		this.router.get('/listAnimals',userController.listAnimals);
         this.router.get('/listarAnimalesAdoptados',userController.listarAnimalesAdoptados);
+        this.router.get('/listarAnimalesSinAdoptar',userController.listarAnimalesSinAdoptar);
         this.router.get('/fechaAdoptados',userController.fechaAdoptados);
         this.router.get('/cantidadInteresados/:cantidad',userController.cantidadInteresados);
  

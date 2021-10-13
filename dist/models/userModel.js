@@ -49,6 +49,12 @@ class UserModel {
             return animales[0];
         });
     }
+    listarAnimalesSinAdoptar() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const animales = yield this.db.query('SELECT * FROM animal where estado = 1 or estado = 2');
+            return animales[0];
+        });
+    }
     fechaAdoptados() {
         return __awaiter(this, void 0, void 0, function* () {
             const fechaAdoptado = yield this.db.query('SELECT * FROM proceso_adopcion');
