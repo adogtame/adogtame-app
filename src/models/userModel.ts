@@ -37,6 +37,11 @@ class UserModel {
 		return animales[0];
 	}
 
+	async listarAnimalesSinAdoptar() {
+		const animales = await this.db.query('SELECT * FROM animal where estado = 1 or estado = 2');
+		return animales[0];
+	}
+
 	async fechaAdoptados() {
 		const fechaAdoptado = await this.db.query('SELECT * FROM proceso_adopcion');
 		return fechaAdoptado[0];
