@@ -585,10 +585,10 @@ class UserController {
                 service: 'gmail',
                 auth: {
                     type: "OAuth2",
-                    user: "christianbogarin@gmail.com",
-                    clientId: "813392039318-bgaesokpjaiefg7h4go6gs8nuhgb1ur5.apps.googleusercontent.com",
-                    clientSecret: "RDDrDR1rgfGI_cfG0e3lKz_4",
-                    refreshToken: "1//04eaSkZEEfe51CgYIARAAGAQSNwF-L9IrmoTr0gCqboJQ5De8cYJxX3O02e7qNJi7Aunqp0R06T5I5LKncOfk3qOtfXSrmhiNZ8E"
+                    user: "adogtamesa@gmail.com",
+                    clientId: "548268239241-t5g8ugpitk66mpa4bfkbkr9bl17g1rrf.apps.googleusercontent.com",
+                    clientSecret: "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",
+                    refreshToken: "1//04hGKoGFV1yfvCgYIARAAGAQSNwF-L9Iron4w1NxZrseNqQ8Y63gbTZKoOfTp7Z-jKyzaybZL0aNoFZG92bziopSY_wfgQ4xfIGQ"
                 }
             });
 
@@ -616,7 +616,7 @@ class UserController {
 						<a href="${url}">${url}</a>
 						<img src="https://st2.depositphotos.com/1606449/7516/i/950/depositphotos_75163555-stock-photo-cats-and-dogs-hanging-paws.jpg"/>
 						<p><h3><b>Adogtame S.A.</b></h3><br/>
-						<b>Nuestro sitio web:</b> <a href="https://adogtame-frontend.herokuapp.com/">Adogtame Web</a><br/>
+						<b>Nuestro sitio web:</b> <a href="https://adogtameweb.herokuapp.com/">Adogtame Web</a><br/>
 						<b>Nuestras redes:</b> <img src="http://assets.stickpng.com/images/580b57fcd9996e24bc43c521.png" width="32" heigth="32"/>
 						<img src="https://images.vexels.com/media/users/3/223136/isolated/lists/984f500cf9de4519b02b354346eb72e0-facebook-icon-redes-sociales.png" width="32" height="32"/>
 						<img src="https://image.similarpng.com/very-thumbnail/2020/06/Logo-Twitter-icon-transparent-PNG.png" width="32" height="32"/><br/>
@@ -643,9 +643,10 @@ class UserController {
     }
 
     public async recoverPassword(req: Request, res: Response) {
+        console.log('adogtame-app req => ',req.body);
         const {email} = req.body;
         if(!(email)) {
-            return res.status(400).json({message: 'Email de usuario requerido!'});
+            return res.status(400).json({message: email+'Email de usuario requerido!'});
         }
 
         const message = 'Se ha enviado un e-mail a la casilla de correo electronico indicada, por favor,'+
@@ -661,7 +662,7 @@ class UserController {
             //Buscar user en base de datos
             user = await userModel.buscarEmail(email);
             const token: string = jwt.sign(
-                { _id: user.id },
+                { _id: user.id, email: user.email },
                 "secretKey",
                 {
                     expiresIn: '1h',
@@ -670,19 +671,54 @@ class UserController {
 
             console.log('token => ', token);
 
-            verificationLink = `http://adogtame-backend.herokuapp.com/user/new-password/${token}`;
+            verificationLink = `https://adogtameweb.herokuapp.com/usuarios/new-password/${token}`;
             user.resetToken = token;
         } catch (error) {
             //En caso de no haberlo encontrado en la BD, arrojar el mensaje de la variable "message"
-            return res.json({message});
+            return res.json({message: 'Algo ha salido mal'});
         }
 
         //TO DO: SendEmail
         try {
-            
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    type: "OAuth2",
+                    user: "adogtamesa@gmail.com",
+                    clientId: "548268239241-t5g8ugpitk66mpa4bfkbkr9bl17g1rrf.apps.googleusercontent.com",
+                    clientSecret: "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",
+                    refreshToken: "1//04hGKoGFV1yfvCgYIARAAGAQSNwF-L9Iron4w1NxZrseNqQ8Y63gbTZKoOfTp7Z-jKyzaybZL0aNoFZG92bziopSY_wfgQ4xfIGQ"
+                }
+            });
+
+            const url = verificationLink;
+            var contentHTML = `
+						<h1>Restablece tu contraseña - Adogtame App</h1>
+						<h2>Hola ${user.nombre}!</h2>
+						
+                        <p>Hemos recibido una solicitud de cambio de contraseña, si no has sido tú, te pedimos por favor que desestimes este e-mail.</p>
+						<p>De lo contrario, por favor haz click en el siguiente link, o copialo en la barra de direcciones de tu navegador
+						para completar el proceso de cambio de contraseña:</p>
+						<a href="${url}">${url}</a>
+						<img src="https://st2.depositphotos.com/1606449/7516/i/950/depositphotos_75163555-stock-photo-cats-and-dogs-hanging-paws.jpg"/>
+						<p><h3><b>Adogtame S.A.</b></h3><br/>
+						<b>Nuestro sitio web:</b> <a href="https://adogtameweb.herokuapp.com/">Adogtame Web</a><br/>
+						<b>Nuestras redes:</b> <img src="http://assets.stickpng.com/images/580b57fcd9996e24bc43c521.png" width="32" heigth="32"/>
+						<img src="https://images.vexels.com/media/users/3/223136/isolated/lists/984f500cf9de4519b02b354346eb72e0-facebook-icon-redes-sociales.png" width="32" height="32"/>
+						<img src="https://image.similarpng.com/very-thumbnail/2020/06/Logo-Twitter-icon-transparent-PNG.png" width="32" height="32"/><br/>
+						<b>Contacto:</b> adogtamesa@gmail.com - (54) 11 9999 5555
+						</p>
+					`;
+
+            const info = await transporter.sendMail({
+                from: "'Adogtame App' <adogtamesa@gmail.com>",
+                to: email,
+                subject: "Restablecer contraseña en Adogtame Web",
+                html: contentHTML
+            });
         } catch (error) {
             emailStatus = String(error);
-            return res.status(400).json({message: 'Algo salio mal, por favor contactese con el equipo de soporte para mas informacion'});
+            return res.status(400).json({message: 'Algo salio mal, por favor contactese con el equipo de soporte para mas informacion 1'});
         }
 
         try {
@@ -697,7 +733,9 @@ class UserController {
 
     public async newPassword(req: Request, res: Response) {
         const {newPassword} = req.body;
+        console.log('newPassword ',newPassword);
         const resetToken = req.headers['reset'] as string;
+        console.log('resetToken ', resetToken);
         
         if(!(resetToken && newPassword)) {
             res.status(400).json({message: 'Todos los campos son requeridos'});
@@ -705,24 +743,24 @@ class UserController {
 
         let jwtPayload;
         let user;
+        let result;
 
         try {
-            jwtPayload = jwt.verify(resetToken, 'secretKey123');
+            jwtPayload = jwt.verify(resetToken, 'secretKey');
             user = await userModel.buscarToken(resetToken);
         } catch (error) {
-            return res.status(401).json({message: 'Algo salio mal, por favor contactese con soporte para mas informacion'});
+            return res.status(401).json({message: 'Algo salio mal, por favor contactese con soporte para mas informacion 1'});
         }
 
         user.password = newPassword;
         
         try {
-            user.hashPassword();
-            await userModel.updateDataUsuario(user, user.id);
+            result = await userModel.updateDataUsuario(user, user.id);
         } catch (error) {
             return res.status(401).json({message: 'Algo salio mal, por favor contactese con soporte para mas informacion'});
         }
 
-        res.json({message: 'Tu contraseña ha sido cambiada!'});
+        return res.status(200).json({message: result});
     }
 
     public async confirmarRegistro(req: Request, res: Response) {

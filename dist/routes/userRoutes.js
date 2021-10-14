@@ -24,8 +24,9 @@ class UserRoutes {
         this.router.get('/signupAnimal', userController_1.default.signupAnimal);
         this.router.post('/signupAnimal', userController_1.default.addAnimal);
         //Recuperar contraseña
-        this.router.put('/password-recovery', userController_1.default.recoverPassword);
-        this.router.put('/new-password', userController_1.default.newPassword);
+        this.router.post('/password-recovery', userController_1.default.recoverPassword);
+        this.router.get('/password-recovery', userController_1.default.recoverPassword);
+        this.router.post('/new-password/:token', userController_1.default.newPassword);
         // Home del usuario
         this.router.get('/home', userController_1.default.home);
         this.router.get('/control', userController_1.default.control);

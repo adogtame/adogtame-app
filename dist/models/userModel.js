@@ -61,15 +61,7 @@ class UserModel {
             //const db=this.connection;
             const notificaciones = yield this.db.query('SELECT * FROM ( SELECT  0 as est,u.nombre as nombreI, u.apellido as apellidoI, ai.idInteresado as interesado, ai.idAnimal as animal, ai.fecha_interes as fecha FROM animal_interesado as ai inner join animal as a ON a.id = ai.idAnimal inner join usuario as u on u.id=ai.idInteresado WHERE a.idDador = ? UNION SELECT 1 as est, u.nombre as nombreI, u.apellido as apellidoI, a.idDador as interesado, pa.id_animal as animal, pa.fecha_inicio as fecha FROM animal as a inner join proceso_adopcion as pa ON a.id = pa.id_animal inner join usuario as u on u.id=a.idDador WHERE pa.id_usuario= ? UNION SELECT 2 as est, u.nombre as nombreI, u.apellido as apellidoI, pa.id_usuario as interesado, pa.id_animal as animal, pa.fecha_fin as fecha FROM proceso_adopcion as pa inner join animal as a ON a.id = pa.id_animal inner join usuario as u on u.id=pa.id_usuario WHERE a.idDador = ? and pa.fecha_fin is not null ) as notificaciones order by fecha desc', [id, id, id]);
             /*El sql q  esta en una sola linea pero separado para q se entienda
-            
-
-
-
-        
-
             SELECT * FROM (
-
-
             SELECT  0 as est,u.nombre as nombreI, u.apellido as apellidoI, ai.idInteresado as interesado, ai.idAnimal as animal, ai.fecha_interes as fecha
             FROM animal_interesado as ai
             inner join animal as a ON a.id = ai.idAnimal
@@ -87,11 +79,7 @@ class UserModel {
             inner join animal as a ON a.id = pa.id_animal
             inner join usuario as u on u.id=pa.id_usuario
             WHERE a.idDador = ? and pa.fecha_fin is not null
-
-
-                    
             ) as notificaciones order by fecha desc
-            
             */
             //console.log(usuarios[0]);
             //devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
@@ -104,12 +92,6 @@ class UserModel {
             //const db=this.connection;
             const conteo = yield this.db.query('SELECT (SELECT COUNT(*) as cuenta FROM animal_interesado as ai INNER JOIN animal as a ON ai.idAnimal=a.id WHERE ai.visto=0 AND a.idDador=? ) + (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id WHERE pa.vistoFinalizado=0 AND a.idDador=? AND pa.fecha_fin is not null ) + (SELECT COUNT(*)  as cuenta FROM  proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id WHERE pa.vistoPendiente=0 AND pa.id_usuario=? AND pa.fecha_fin is null ) AS SumCount', [id, id, id]);
             /*
-            
-    
-            
-    
-    
-    
             SELECT (SELECT COUNT(*) as cuenta FROM animal_interesado as ai
             INNER JOIN animal as a ON ai.idAnimal=a.id
             WHERE ai.visto=0 AND a.idDador=? )
@@ -122,8 +104,6 @@ class UserModel {
             INNER JOIN animal as a ON pa.id_animal=a.id
             WHERE pa.vistoPendiente=0 AND pa.id_usuario=? AND pa.fecha_fin is null )
             AS SumCount
-            
-    
             */
             return conteo[0][0];
         });
@@ -135,10 +115,6 @@ class UserModel {
             const result2 = yield this.db.query('UPDATE proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id SET pa.vistoFinalizado=1 WHERE pa.vistoFinalizado=0 AND a.idDador=? AND pa.fecha_fin is not null', [id]);
             const result3 = yield this.db.query('UPDATE proceso_adopcion as pa INNER JOIN animal as a ON pa.id_animal=a.id SET pa.vistoPendiente=1 WHERE pa.vistoPendiente=0 AND pa.id_usuario=? AND pa.fecha_fin is null', [id]);
             /*
-            
-            
-    
-    
             UPDATE animal_interesado as ai
             INNER JOIN animal as a ON ai.idAnimal=a.id
             SET ai.visto=1
@@ -153,12 +129,10 @@ class UserModel {
             INNER JOIN animal as a ON pa.id_animal=a.id
             SET pa.vistoPendiente=1
             WHERE pa.vistoPendiente=0 AND a.idDador=? AND pa.fecha_fin is not null
-    
             */
             return result1[0];
         });
     }
-    //
     listAnimalsFiltrado(incluyeTipo, excluyeTipo, incluyeTamano, excluyeTamano) {
         return __awaiter(this, void 0, void 0, function* () {
             //Devuelve todas las filas de la tabla usuario
@@ -414,7 +388,6 @@ class UserModel {
             return result;
         });
     }
-    //
     //interes
     mostrarInteres(idAnimal, idInteresado) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -450,15 +423,12 @@ class UserModel {
             return encontrado[0];
         });
     }
-    //
     siguiendoAnimales(idUsuario) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("idUsuario", idUsuario);
             const encontrado = yield this.db.query('SELECT 1 as est, a1.id, a1.nombre, e1.estado from animal as a1 inner join estado_adopcion as e1 on a1.estado=e1.id inner join proceso_adopcion as pa1 ON a1.id=pa1.id_animal where pa1.id_usuario=? UNION SELECT 0 as est, a2.id, a2.nombre, e2.estado from animal as a2 inner join estado_adopcion as e2 on a2.estado=e2.id inner join animal_interesado as ai2	ON a2.id=ai2.idAnimal where ai2.idInteresado=? AND a2.id NOT IN (SELECT a1.id from animal as a1 inner join proceso_adopcion as pa1 ON a1.id=pa1.id_animal where pa1.id_usuario=?)', [idUsuario, idUsuario, idUsuario]);
             /*
             //El codigo de arriba pero para q se lea//
-    
-    
             SELECT 1 as est, a1.id, a1.nombre, e1.estado from animal as a1
             inner join estado_adopcion as e1 on a1.estado=e1.id
             inner join proceso_adopcion as pa1
@@ -474,8 +444,6 @@ class UserModel {
             inner join proceso_adopcion as pa1
             ON a1.id=pa1.id_animal
             where pa1.id_usuario=?)
-            
-            
             */
             //SELECT * FROM animal
             console.log("animales a los q sigue   ", encontrado[0]);
