@@ -728,15 +728,15 @@ class UserController {
             emailStatus = String(error);
             return res.status(400).json({message: 'Algo salio mal, por favor contactese con el equipo de soporte para mas informacion 1'});
         }
-
+        let result;
         try {
-            await userModel.updateDataUsuario(user, user.id);
+            result = await userModel.updateDataUsuario(user, user.id);
         } catch (error) {
             emailStatus = String(error);
             return res.status(400).json({message: 'Algo salio mal, por favor contactese con el equipo de soporte para mas informacion'});
         }
 
-        res.json({message, info: emailStatus, test: verificationLink});
+        res.status(200).json({message: result});
     }
 
     public async newPassword(req: Request, res: Response) {
