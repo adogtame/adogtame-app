@@ -67,7 +67,7 @@ class UserController {
         //const { token } = req.params;
         const token = req.body.token;
         console.log(token);
-        // const decoded = jwtDecode<JwtPayload>(token); // Returns with the JwtPayload type
+        // const decoded = jwtDecode<JwtPayload>(token); //Returns with the JwtPayload type
         // console.log(decoded);
         const decoded = jsonwebtoken_1.default.verify(token, "secretKey");
         var userId = decoded;
@@ -460,8 +460,23 @@ class UserController {
             const { nombre, email, nro_celular } = req.body;
             delete usuario.repassword;
             console.log(req.body);
-            const busqueda = yield userModel_1.default.buscarNombre(usuario.nombre);
-            if (!busqueda) {
+            try {
+                const busqueda = yield userModel_1.default.buscarEmail(usuario.email);
+                console.log('busqueda => ', busqueda);
+            }
+            catch (error) {
+                return res.status(403).json({ message: 44 });
+            }
+            let user;
+            try {
+                user = yield userModel_1.default.crear(usuario);
+                console.log('user => ', user);
+            }
+            catch (error) {
+                console.log('Error al crear usuario');
+                return res.status(403).json({ message: 'Error al intentar crear usuario' + error });
+            }
+            try {
                 const transporter = nodemailer_1.default.createTransport({
                     service: 'gmail',
                     auth: {
@@ -472,8 +487,6 @@ class UserController {
                         refreshToken: "1//04hGKoGFV1yfvCgYIARAAGAQSNwF-L9Iron4w1NxZrseNqQ8Y63gbTZKoOfTp7Z-jKyzaybZL0aNoFZG92bziopSY_wfgQ4xfIGQ"
                     }
                 });
-                const result = yield userModel_1.default.crear(usuario);
-                // res.redirect("./signin");
                 const user = yield userModel_1.default.buscarEmail(usuario.email);
                 console.log('Servidor user => ', user);
                 const token = jsonwebtoken_1.default.sign({ _id: user.id }, "secretKey", {
@@ -507,8 +520,9 @@ class UserController {
                 return res.status(200).json({ message: user, token: token });
                 //return res.json({ message: 'User saved!!' });
             }
-            //return res.json({ message: 'User exists!!' });
-            return res.status(403).json({ message: 'User exists!!' });
+            catch (error) {
+                return res.status(403).json({ message: 'Algo salio mal' });
+            }
         });
     }
     recoverPassword(req, res) {

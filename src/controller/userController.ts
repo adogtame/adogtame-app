@@ -586,9 +586,22 @@ class UserController {
         const { nombre, email, nro_celular } = req.body;
         delete usuario.repassword;
         console.log(req.body);
-        const busqueda = await userModel.buscarNombre(usuario.nombre);
-        if (!busqueda) {
+        try {
+            const busqueda = await userModel.buscarEmail(usuario.email);
+            console.log('busqueda => ', busqueda);
+        } catch (error) {
+            return res.status(403).json({message: 44});
+        }
 
+        let user;
+        try {
+            user = await userModel.crear(usuario);
+            console.log('user => ', user);
+        } catch (error) {
+            console.log('Error al crear usuario');
+            return res.status(403).json({message: 'Error al intentar crear usuario'+error});
+        }
+        try {
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
@@ -599,9 +612,6 @@ class UserController {
                     refreshToken: "1//04hGKoGFV1yfvCgYIARAAGAQSNwF-L9Iron4w1NxZrseNqQ8Y63gbTZKoOfTp7Z-jKyzaybZL0aNoFZG92bziopSY_wfgQ4xfIGQ"
                 }
             });
-
-            const result = await userModel.crear(usuario);
-            // res.redirect("./signin");
 
             const user = await userModel.buscarEmail(usuario.email);
             console.log('Servidor user => ', user);
@@ -644,10 +654,9 @@ class UserController {
             console.log('token result => ', token);
             return res.status(200).json({ message: user, token: token });
             //return res.json({ message: 'User saved!!' });
+        } catch (error) {
+            return res.status(403).json({ message: 'Algo salio mal' });
         }
-        //return res.json({ message: 'User exists!!' });
-        return res.status(403).json({ message: 'User exists!!' });
-
     }
 
     public async recoverPassword(req: Request, res: Response) {
