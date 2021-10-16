@@ -72,7 +72,7 @@ class UserController {
         //const { token } = req.params;
         const token = req.body.token;
         console.log(token);
-        // const decoded = jwtDecode<JwtPayload>(token); // Returns with the JwtPayload type
+        // const decoded = jwtDecode<JwtPayload>(token); //Returns with the JwtPayload type
         // console.log(decoded);
 
 
