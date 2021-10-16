@@ -31,7 +31,7 @@ class UserController {
             console.log("Este es el password", password);
             console.log("Este es el result", result);
             if (!result) {
-                return res.status(404).json({ message: "Usuario no registrado, no esta supuestamente" });
+                return res.status(404).json({ message: "Usuario no registrado" });
                 //req.flash('error_session', 'Usuario y/o Password Incorrectos');
                 //res.redirect("./signin");
             }
