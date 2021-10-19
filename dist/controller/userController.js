@@ -463,9 +463,12 @@ class UserController {
             try {
                 const busqueda = yield userModel_1.default.buscarEmail(usuario.email);
                 console.log('busqueda => ', busqueda);
+                if (busqueda) {
+                    return res.status(403).json({ message: 44 });
+                }
             }
             catch (error) {
-                return res.status(403).json({ message: 44 });
+                return res.status(403).json({ message: 'Ha ocurrido un error' + error });
             }
             let user;
             try {
