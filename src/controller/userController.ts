@@ -550,6 +550,21 @@ class UserController {
         //res.send('Listado de animales!!!');
     }
 
+    public async listAnimalsUserAdoptados(req: Request, res: Response) {
+        console.log(req.body);
+        const { id } = req.params;
+        const animales = await userModel.listarAnimalesUserAdoptados(id);
+        console.log(animales);
+        return res.json(animales);
+    }
+
+    public async listAnimalsUserEnAdopcion(req: Request, res: Response) {
+        console.log(req.body);
+        const { id } = req.params;
+        const animales = await userModel.listarAnimalesUserEnAdopcion(id);
+        console.log(animales);
+        return res.json(animales);
+    }
 
 
     public async find(req: Request, res: Response) {

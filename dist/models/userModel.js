@@ -269,6 +269,18 @@ class UserModel {
             return animales[0];
         });
     }
+    listarAnimalesUserAdoptados(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const animales = yield this.db.query('SELECT * FROM animal WHERE estado = 3 and idDador = ?', [id]);
+            return animales[0];
+        });
+    }
+    listarAnimalesUserEnAdopcion(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const animales = yield this.db.query('SELECT * FROM animal WHERE estado = 1 and idDador = ?', [id]);
+            return animales[0];
+        });
+    }
     //Devuelve un objeto cuya fila en la tabla usuarios coincide con id.
     //Si no la encuentra devuelve null
     buscarId(id) {

@@ -235,7 +235,16 @@ class UserModel {
 		//devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
 		return animales[0];
 	}
+	async listarAnimalesUserAdoptados(id: string) {
+		const animales = await this.db.query('SELECT * FROM animal WHERE estado = 3 and idDador = ?', [id]);
+		return animales[0];
+	}
 
+	async listarAnimalesUserEnAdopcion(id: string) {
+		const animales = await this.db.query('SELECT * FROM animal WHERE estado = 1 and idDador = ?', [id]); 
+		return animales[0];
+	}
+	
 	//Devuelve un objeto cuya fila en la tabla usuarios coincide con id.
 	//Si no la encuentra devuelve null
 	async buscarId(id: string) {
