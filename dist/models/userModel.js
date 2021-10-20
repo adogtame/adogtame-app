@@ -475,7 +475,7 @@ class UserModel {
     /* Busco las vacunas que tiene un animal */
     traerVacunasAnimal(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const vacunas = yield this.db.query('SELECT * FROM animal_vacunas where idAnimal = ?', [id]);
+            const vacunas = yield this.db.query('SELECT Moquillo, Polivalente, Primovacunacion, Rabia, Castrado FROM animal_vacunas where idAnimal = ?', [id]);
             return vacunas[0][0];
         });
     }

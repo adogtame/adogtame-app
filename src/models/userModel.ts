@@ -421,7 +421,7 @@ class UserModel {
 	}
 	/* Busco las vacunas que tiene un animal */
 	async traerVacunasAnimal(id: string) {		
-		const vacunas = await this.db.query('SELECT * FROM animal_vacunas where idAnimal = ?', [id]);
+		const vacunas = await this.db.query('SELECT Moquillo, Polivalente, Primovacunacion, Rabia, Castrado FROM animal_vacunas where idAnimal = ?', [id]);
 		return vacunas[0][0];
 	}
 
