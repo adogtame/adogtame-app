@@ -1032,7 +1032,7 @@ class UserController {
     public async modificarVacunasAnimal(req: Request, res: Response) {
         console.log(req.body);
         const { id } = req.params;
-        const vacunas =req.body;
+        const vacunas = req.body;
         console.log("animal id ", id, "vacunas cambios", vacunas);
         const result = await userModel.modificarVacunasAnimal(vacunas, id);
         console.log(result);

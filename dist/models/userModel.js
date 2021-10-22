@@ -494,7 +494,7 @@ class UserModel {
     modificarVacunasAnimal(vacunas, id) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("vacunas", vacunas, "id", id);
-            const result = yield this.db.query('UPDATE animal_vacunas SET ? WHERE idAnimal = ?', [vacunas, id])[0].affectedRows;
+            const result = (yield this.db.query('UPDATE animal_vacunas SET ? WHERE idAnimal = ?', [vacunas, id]))[0].affectedRows;
             console.log(result);
             return result;
         });

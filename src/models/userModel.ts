@@ -436,7 +436,7 @@ class UserModel {
 
 	async modificarVacunasAnimal(vacunas: object, id: string) {	
 		console.log("vacunas",vacunas,"id",id);	
-		const result = await this.db.query('UPDATE animal_vacunas SET ? WHERE idAnimal = ?', [vacunas, id])[0].affectedRows;
+		const result = (await this.db.query('UPDATE animal_vacunas SET ? WHERE idAnimal = ?', [vacunas, id]))[0].affectedRows;
 		console.log(result);
 		return result;
 	}
