@@ -297,121 +297,265 @@ class UserController {
     listAnimalsFiltrado(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(req.body);
-            const filtro = req.body.filtro;
-            console.log("q aaaaa", filtro);
-            var incluyeTipo = [];
-            var excluyeTipo = [];
-            var incluyeTamano = [];
-            var excluyeTamano = [];
-            if (filtro.perroF == true) {
-                if (filtro.perroE == true) {
-                    excluyeTipo.push("perro");
-                    if (filtro.gatoF == false && filtro.chicoF == false && filtro.medianoF == false && filtro.grandeF == false) {
-                        excluyeTipo.push("gato");
-                        excluyeTamano.push("chico");
-                        excluyeTamano.push("mediano");
-                        excluyeTamano.push("grande");
+            const filtroIncluye = req.body.filtroIncluye;
+            const filtroExcluye = req.body.filtroExcluye;
+            var incluye = [];
+            var excluye = [];
+            const propiedades = { tipo: 2, edad: 2, tamano: 3 };
+            //Tomo el de excluye porq es lo mismo, los dos tienen las mismas keys 
+            //lo distinto son los valores de true y false de cada key
+            var keys = Object.keys(filtroExcluye);
+            for (var i = 0; i < keys.length; i++) {
+                var keyChangeI = false;
+                var keyChangeE = false;
+                for (var y = 0; y < propiedades[`${keys[i]}`]; y++) {
+                    var excluyeFiltro = {};
+                    var incluyeFiltro = {};
+                    excluyeFiltro = filtroExcluye[`${keys[i]}`];
+                    incluyeFiltro = filtroIncluye[`${keys[i]}`];
+                    var keysFiltro = Object.keys(excluyeFiltro);
+                    if (excluyeFiltro[Object.keys(excluyeFiltro)[y]] == true) {
+                        //--gato, grande, mediano
+                        if (keyChangeE == true) {
+                            excluye[`${keys[i]}`] = [excluye[`${keys[i]}`], `${keysFiltro[y]}`];
+                            //console.log("excluye 2", excluye);
+                        }
+                        else {
+                            excluye[`${keys[i]}`] = `${keysFiltro[y]}`;
+                            //console.log("excluye 1", excluye);
+                            keyChangeE = true;
+                        }
+                    }
+                    else {
+                        if (incluyeFiltro[Object.keys(incluyeFiltro)[y]] == true) {
+                            //--perro
+                            if (keyChangeI == true) {
+                                incluye[`${keys[i]}`] = [incluye[`${keys[i]}`], `${keysFiltro[y]}`];
+                                //console.log("incluye 2", incluye);
+                            }
+                            else {
+                                incluye[`${keys[i]}`] = `${keysFiltro[y]}`;
+                                //console.log("incluye 1", incluye);
+                                keyChangeI = true;
+                            }
+                        }
                     }
                 }
-                else {
-                    incluyeTipo.push("perro");
-                }
             }
-            else {
-                if (filtro.perroE == true) {
-                    excluyeTipo.push("perro");
-                }
-            }
-            if (filtro.gatoF == true) {
-                if (filtro.gatoE == true) {
-                    excluyeTipo.push("gato");
-                    if (filtro.perroF == false && filtro.chicoF == false && filtro.medianoF == false && filtro.grandeF == false) {
-                        excluyeTipo.push("perro");
-                        excluyeTamano.push("chico");
-                        excluyeTamano.push("mediano");
-                        excluyeTamano.push("grande");
-                    }
-                }
-                else {
-                    incluyeTipo.push("gato");
-                }
-            }
-            else {
-                if (filtro.gatoE == true) {
-                    excluyeTipo.push("gato");
-                }
-            }
-            if (filtro.chicoF == true) {
-                if (filtro.chicoE == true) {
-                    excluyeTamano.push("chico");
-                    if (filtro.perroF == false && filtro.gatoF == false && filtro.medianoF == false && filtro.grandeF == false) {
-                        excluyeTipo.push("perro");
-                        excluyeTipo.push("gato");
-                        excluyeTamano.push("mediano");
-                        excluyeTamano.push("grande");
-                    }
-                }
-                else {
-                    incluyeTamano.push("chico");
-                }
-            }
-            else {
-                if (filtro.chicoE == true) {
-                    excluyeTamano.push("chico");
-                }
-            }
-            if (filtro.medianoF == true) {
-                if (filtro.medianoE == true) {
-                    excluyeTamano.push("mediano");
-                    if (filtro.perroF == false && filtro.gatoF == false && filtro.chicoF == false && filtro.grandeF == false) {
-                        excluyeTipo.push("perro");
-                        excluyeTipo.push("gato");
-                        excluyeTamano.push("chico");
-                        excluyeTamano.push("grande");
-                    }
-                }
-                else {
-                    incluyeTamano.push("mediano");
-                }
-            }
-            else {
-                if (filtro.medianoE == true) {
-                    excluyeTamano.push("mediano");
-                }
-            }
-            if (filtro.grandeF == true) {
-                if (filtro.grandeE == true) {
-                    excluyeTamano.push("grande");
-                    if (filtro.perroF == false && filtro.gatoF == false && filtro.chicoF == false && filtro.medianoF == false) {
-                        excluyeTipo.push("perro");
-                        excluyeTipo.push("gato");
-                        excluyeTamano.push("chico");
-                        excluyeTamano.push("mediano");
-                    }
-                }
-                else {
-                    incluyeTamano.push("grande");
-                }
-            }
-            else {
-                if (filtro.grandeE == true) {
-                    excluyeTamano.push("grande");
-                }
-            }
-            // if(filtro.gatoE==false && filtro.perroE==false){
-            //     excluye.push("Vacio");
-            // }
-            // if(filtro.gatoF==false && filtro.perroF==false){
-            //     incluye.push("Vacio");
-            // }
-            console.log(incluyeTipo);
-            console.log(excluyeTipo);
-            console.log(incluyeTamano);
-            console.log(excluyeTamano);
-            const animales = yield userModel_1.default.listAnimalsFiltrado(incluyeTipo, excluyeTipo, incluyeTamano, excluyeTamano);
+            const animales = yield userModel_1.default.listAnimalsFiltrado(incluye, excluye);
             console.log(animales);
             return res.json(animales);
             //res.send('Listado de animales!!!');
+            /*
+    
+            filtroIncluye={tipo:{perro:false, gato:false}, edad:{cria:false, adulto:false},
+            tamano:{grande:false, mediano:false, chico:false}}
+    
+            filtroExcluye={tipo:{perro:false, gato:false}, edad:{cria:false, adulto:false},
+            tamano:{grande:false, mediano:false, chico:false}}
+    
+    
+            /*
+    
+    
+    
+    
+    
+    
+    
+    
+            if(filtro.perroF==true){
+                if(filtro.perroE==true){
+                    excluyeTipo.push("perro");
+    
+                    if(filtro.gatoF==false && filtro.chicoF==false && filtro.medianoF==false && filtro.grandeF==false){
+                    
+                        excluyeTipo.push("gato");
+                        excluyeTamano.push("chico");
+                        excluyeTamano.push("mediano");
+                        excluyeTamano.push("grande");
+                    }
+    
+                }
+                else
+                {
+                    incluyeTipo.push("perro");
+                }
+                
+            }
+            else
+            {
+    
+                if(filtro.perroE==true){
+    
+                    
+                    excluyeTipo.push("perro");
+    
+                }
+    
+    
+            }
+    
+            if(filtro.gatoF==true){
+                
+                if(filtro.gatoE==true){
+    
+                    excluyeTipo.push("gato");
+    
+                    if(filtro.perroF==false && filtro.chicoF==false && filtro.medianoF==false && filtro.grandeF==false){
+                    
+                        excluyeTipo.push("perro");
+                        excluyeTamano.push("chico");
+                        excluyeTamano.push("mediano");
+                        excluyeTamano.push("grande");
+                    }
+    
+       
+    
+                }
+                else
+                {
+    
+                    incluyeTipo.push("gato");
+                }
+                
+            }
+            else
+            {
+                if(filtro.gatoE==true){
+    
+                    excluyeTipo.push("gato");
+                    
+                }
+                
+            }
+        
+    
+    
+            if(filtro.chicoF==true){
+                
+                if(filtro.chicoE==true){
+    
+                    excluyeTamano.push("chico");
+    
+                    if(filtro.perroF==false && filtro.gatoF==false && filtro.medianoF==false && filtro.grandeF==false){
+                    
+                        excluyeTipo.push("perro");
+                        excluyeTipo.push("gato");
+                        excluyeTamano.push("mediano");
+                        excluyeTamano.push("grande");
+                    }
+    
+                }
+                else
+                {
+    
+                    incluyeTamano.push("chico");
+                }
+                
+            }
+            else
+            {
+                if(filtro.chicoE==true){
+    
+                    excluyeTamano.push("chico");
+                    
+                }
+                
+            }
+    
+    
+    
+            if(filtro.medianoF==true){
+                
+                if(filtro.medianoE==true){
+    
+                    excluyeTamano.push("mediano");
+    
+                    if(filtro.perroF==false && filtro.gatoF==false && filtro.chicoF==false && filtro.grandeF==false){
+                    
+                        excluyeTipo.push("perro");
+                        excluyeTipo.push("gato");
+                        excluyeTamano.push("chico");
+                        excluyeTamano.push("grande");
+                    }
+    
+                }
+                else
+                {
+    
+                    incluyeTamano.push("mediano");
+                }
+                
+            }
+            else
+            {
+                if(filtro.medianoE==true){
+    
+                    excluyeTamano.push("mediano");
+                    
+                }
+                
+            }
+    
+    
+    
+            if(filtro.grandeF==true){
+                
+                if(filtro.grandeE==true){
+    
+                    excluyeTamano.push("grande");
+    
+                    if(filtro.perroF==false && filtro.gatoF==false && filtro.chicoF==false && filtro.medianoF==false){
+                    
+                        excluyeTipo.push("perro");
+                        excluyeTipo.push("gato");
+                        excluyeTamano.push("chico");
+                        excluyeTamano.push("mediano");
+                    }
+    
+                }
+                else
+                {
+    
+                    incluyeTamano.push("grande");
+                }
+                
+            }
+            else
+            {
+                if(filtro.grandeE==true){
+    
+                    excluyeTamano.push("grande");
+                    
+                }
+                
+            }
+            // if(filtro.gatoE==false && filtro.perroE==false){
+    
+            //     excluye.push("Vacio");
+                
+            // }
+    
+            // if(filtro.gatoF==false && filtro.perroF==false){
+    
+            //     incluye.push("Vacio");
+                
+            // }
+            console.log(incluyeTipo);
+            console.log(excluyeTipo);
+    
+            console.log(incluyeTamano);
+            console.log(excluyeTamano);
+            const animales = await userModel.listAnimalsFiltrado(incluyeTipo, excluyeTipo, incluyeTamano, excluyeTamano);
+            console.log(animales);
+            return res.json(animales);
+            //res.send('Listado de animales!!!');
+    
+    
+    
+    
+            /**/
         });
     }
     listAnimalsUser(req, res) {

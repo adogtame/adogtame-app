@@ -139,125 +139,196 @@ class UserModel {
             return result1[0];
         });
     }
-    listAnimalsFiltrado(incluyeTipo, excluyeTipo, incluyeTamano, excluyeTamano) {
+    listAnimalsFiltrado(incluye, excluye) {
         return __awaiter(this, void 0, void 0, function* () {
             //Devuelve todas las filas de la tabla usuario
             //const db=this.connection;
             var animales = [];
-            console.log("Tipo i", incluyeTipo);
-            console.log("Tipo e", excluyeTipo);
-            console.log("Tamano i", incluyeTamano);
-            console.log("Tamano e", excluyeTamano);
-            if (incluyeTipo.length == 0) {
+            console.log("modal");
+            console.log("incluye", incluye);
+            console.log("excluye", excluye);
+            var keysIncluye = Object.keys(incluye);
+            var keysExcluye = Object.keys(excluye);
+            var incluyeIN = "";
+            var excluyeIN = "";
+            var excluyeNOTIN = "";
+            var inORexWHERE = "";
+            var inANDex = "";
+            var sqlQuery = "";
+            var noAdoptados = "";
+            var queryKeyInlcuye = "";
+            var queryKeyExcluye = "";
+            var and = "";
+            var or = "OR";
+            if (keysIncluye.length > 0) {
+                //inORexWHERE="WHERE"
+                noAdoptados = " AND estado = 1 or estado = 2";
+                incluyeIN = " IN (?)";
+                for (var i = 0; i < keysIncluye.length; i++) {
+                    if (i > 0) {
+                        and = " AND ";
+                        queryKeyInlcuye = `${queryKeyInlcuye}${and}${keysIncluye[i]}${incluyeIN}`;
+                    }
+                    else {
+                        queryKeyInlcuye = `${keysIncluye[i]}${incluyeIN}`;
+                    }
+                }
+            }
+            if (keysExcluye.length > 0) {
+                //inORexWHERE=" WHERE "
+                noAdoptados = " AND estado = 1 or estado = 2";
+                excluyeNOTIN = "id NOT IN (SELECT id FROM animal WHERE ";
+                excluyeIN = " IN (?)";
+                for (var y = 0; y < keysExcluye.length; y++) {
+                    if (y > 0) {
+                        or = " OR ";
+                        queryKeyExcluye = `${queryKeyExcluye}${or}${keysExcluye[y]}${excluyeIN}`;
+                    }
+                    else {
+                        queryKeyExcluye = `${keysExcluye[y]}${excluyeIN}`;
+                    }
+                }
+                queryKeyExcluye = `${excluyeNOTIN}${queryKeyExcluye})`;
+            }
+            if (keysIncluye.length > 0 && keysExcluye.length > 0) {
+                inANDex = " AND ";
+            }
+            if (keysIncluye.length == 0 && keysExcluye.length == 0) {
+                noAdoptados = " AND estado = 1 or estado = 2";
+            }
+            //where estado = 1 or estado = 2
+            inORexWHERE = " WHERE ";
+            sqlQuery = `SELECT * FROM animal ${inORexWHERE}${queryKeyInlcuye}${inANDex}${queryKeyExcluye}${noAdoptados}`;
+            console.log(sqlQuery);
+            var incluyeItera = keysIncluye.length;
+            var excluyeItera = keysExcluye.length;
+            var sumaKeys = incluyeItera + excluyeItera;
+            var arrayDB = [];
+            for (var i = 0; i < sumaKeys; i++) {
+                if (incluyeItera > 0) {
+                    arrayDB.push(incluye[`${keysIncluye[i]}`]);
+                    incluyeItera--;
+                }
+                if (incluyeItera == 0 && excluyeItera > 0) {
+                    arrayDB.push(excluye[`${keysExcluye[i]}`]);
+                    excluyeItera--;
+                }
+            }
+            console.log("arrayDB", arrayDB);
+            console.log(`${sqlQuery}`, arrayDB);
+            animales = yield this.db.query(`${sqlQuery}`, arrayDB);
+            return animales[0];
+            /*
+            animales = await this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND tamano IN (?) AND id NOT IN (SELECT id FROM animal WHERE tipo IN (?) OR tamano IN (?))', [incluyeTipo, incluyeTamano, excluyeTipo, excluyeTamano]);
+                        
+    
+            /*
+    
+            console.log("Tipo i",incluyeTipo);
+            console.log("Tipo e",excluyeTipo);
+            console.log("Tamano i",incluyeTamano);
+            console.log("Tamano e",excluyeTamano);
+            
+    
+            if(incluyeTipo.length==0){
                 console.log("incluyeTipo null");
-                if (excluyeTipo.length == 0) {
+                if(excluyeTipo.length==0){
                     console.log("excluyeTipo null");
-                    if (incluyeTamano.length == 0) {
+                    if(incluyeTamano.length==0){
                         console.log("incluyeTamano null");
-                        if (excluyeTamano.length == 0) {
+                        if(excluyeTamano.length==0){
                             console.log("Todas null");
-                            animales = yield this.db.query('SELECT * FROM animal');
-                        }
-                        else {
+                            animales = await this.db.query('SELECT * FROM animal');
+                        } else {
                             console.log("excluyeTamano tiene");
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tamano NOT IN (?)', [excluyeTamano]);
+                            animales = await this.db.query('SELECT * FROM animal WHERE tamano NOT IN (?)', [excluyeTamano]);
                         }
-                    }
-                    else {
+                    } else {
                         console.log("incluyeTamano tiene");
-                        if (excluyeTamano.length == 0) {
+                        if(excluyeTamano.length==0){
                             console.log("excluyeTamano null");
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tamano IN (?)', [incluyeTamano]);
-                        }
-                        else {
+                            animales = await this.db.query('SELECT * FROM animal WHERE tamano IN (?)', [incluyeTamano]);
+                        } else {
                             console.log("excluyeTamano tiene");
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tamano IN (?) AND id NOT IN (SELECT id FROM animal WHERE tamano IN (?))', [incluyeTamano, excluyeTamano]);
+                            animales = await this.db.query('SELECT * FROM animal WHERE tamano IN (?) AND id NOT IN (SELECT id FROM animal WHERE tamano IN (?))', [incluyeTamano, excluyeTamano]);
                         }
                     }
-                }
-                else {
-                    console.log("excluyeTipo tiene");
-                    if (incluyeTamano.length == 0) {
+                } else {
+                    console.log("excluyeTipo tiene")
+                    if(incluyeTamano.length==0){
                         console.log("incluyeTamano null");
-                        if (excluyeTamano.length == 0) {
+                        if(excluyeTamano.length==0){
                             console.log("excluyeTamano null");
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tipo NOT IN (?)', [excluyeTipo]);
-                        }
-                        else {
+                            animales = await this.db.query('SELECT * FROM animal WHERE tipo NOT IN (?)', [excluyeTipo]);
+                        } else {
                             console.log("excluyeTamano tiene");
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tipo NOT IN (?) AND tamano NOT IN (?)', [excluyeTipo, excluyeTamano]);
+                            animales = await this.db.query('SELECT * FROM animal WHERE tipo NOT IN (?) AND tamano NOT IN (?)', [excluyeTipo, excluyeTamano]);
                         }
-                    }
-                    else {
+                    } else {
                         console.log("incluyeTamano tiene");
-                        if (excluyeTamano.length == 0) {
+                        if(excluyeTamano.length==0){
                             console.log("excluyeTamano null");
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tipo NOT IN (?) AND tamano IN (?)', [excluyeTipo, incluyeTamano]);
-                        }
-                        else {
+                            animales = await this.db.query('SELECT * FROM animal WHERE tipo NOT IN (?) AND tamano IN (?)', [excluyeTipo, incluyeTamano]);
+                        } else {
                             console.log("excluyeTamano tiene");
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tipo NOT IN (?) AND tamano IN (?) AND id NOT IN (SELECT id FROM animal WHERE tamano IN (?))', [excluyeTipo, incluyeTamano, excluyeTamano]);
+                            animales = await this.db.query('SELECT * FROM animal WHERE tipo NOT IN (?) AND tamano IN (?) AND id NOT IN (SELECT id FROM animal WHERE tamano IN (?))', [excluyeTipo, incluyeTamano, excluyeTamano]);
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 console.log("IncluyeTipo tiene");
-                if (excluyeTipo.length == 0) {
+                if(excluyeTipo.length==0){
                     console.log("excluyeTipo null");
-                    if (incluyeTamano.length == 0) {
+                    if(incluyeTamano.length==0){
                         console.log("incluyeTamano null");
-                        if (excluyeTamano.length == 0) {
+                        if(excluyeTamano.length==0){
                             console.log("excluyeTamano null");
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tipo IN (?)', [incluyeTipo]);
-                        }
-                        else {
+                            animales = await this.db.query('SELECT * FROM animal WHERE tipo IN (?)', [incluyeTipo]);
+                        } else {
                             console.log("excluyeTamano tiene");
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND tamano NOT IN (?)', [incluyeTipo, excluyeTamano]);
+                            animales = await this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND tamano NOT IN (?)', [incluyeTipo, excluyeTamano]);
                         }
-                    }
-                    else {
+                    } else {
                         console.log("incluyeTamano tiene");
-                        if (excluyeTamano.length == 0) {
+                        if(excluyeTamano.length==0){
                             console.log("excluyeTamano null");
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND tamano IN (?)', [incluyeTipo, incluyeTamano]);
-                        }
-                        else {
+                            animales = await this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND tamano IN (?)', [incluyeTipo, incluyeTamano]);
+                        } else {
                             console.log("excluyeTamano tiene");
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND tamano IN (?) AND id NOT IN (SELECT id FROM animal WHERE tamano IN (?))', [incluyeTipo, incluyeTamano, excluyeTamano]);
+                            animales = await this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND tamano IN (?) AND id NOT IN (SELECT id FROM animal WHERE tamano IN (?))', [incluyeTipo, incluyeTamano, excluyeTamano]);
                         }
                     }
-                }
-                else {
+                } else {
                     console.log("excluyeTipo tiene");
-                    if (incluyeTamano.length == 0) {
+                    if(incluyeTamano.length==0){
                         console.log("incluyeTamano null");
-                        if (excluyeTamano.length == 0) {
+                        if(excluyeTamano.length==0){
                             console.log("excluyeTamano null");
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND id NOT IN (SELECT id FROM animal WHERE tipo IN (?))', [incluyeTipo, excluyeTipo]);
+                            animales = await this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND id NOT IN (SELECT id FROM animal WHERE tipo IN (?))', [incluyeTipo, excluyeTipo]);
+                        } else {
+                            animales = await this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND id NOT IN (SELECT id FROM animal WHERE tipo IN (?)) AND tamano NOT IN (?)', [incluyeTipo, excluyeTipo, excluyeTamano]);
                         }
-                        else {
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND id NOT IN (SELECT id FROM animal WHERE tipo IN (?)) AND tamano NOT IN (?)', [incluyeTipo, excluyeTipo, excluyeTamano]);
-                        }
-                    }
-                    else {
+                    } else {
                         console.log("incluyeTamano tiene");
-                        if (excluyeTamano.length == 0) {
+                        if(excluyeTamano.length==0){
                             console.log("excluyeTamano null");
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND id NOT IN (SELECT id FROM animal WHERE tipo IN (?)) AND tamano IN (?)', [incluyeTipo, excluyeTipo, incluyeTamano]);
-                        }
-                        else {
+                            animales = await this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND id NOT IN (SELECT id FROM animal WHERE tipo IN (?)) AND tamano IN (?)', [incluyeTipo, excluyeTipo, incluyeTamano]);
+    
+                        } else {
                             console.log("todas tienen");
-                            animales = yield this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND tamano IN (?) AND id NOT IN (SELECT id FROM animal WHERE tipo IN (?) OR tamano IN (?))', [incluyeTipo, incluyeTamano, excluyeTipo, excluyeTamano]);
+                            animales = await this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND tamano IN (?) AND id NOT IN (SELECT id FROM animal WHERE tipo IN (?) OR tamano IN (?))', [incluyeTipo, incluyeTamano, excluyeTipo, excluyeTamano]);
                         }
                     }
                 }
             }
+            /*
+    
             console.log(animales[0]);
-            //	
+            //
             //console.log(usuarios[0]);
             //devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
             return animales[0];
+            /**/
         });
     }
     listarAnimalesUser(id) {

@@ -121,14 +121,167 @@ class UserModel {
 		*/
 		return result1[0];
 	}
-	async listAnimalsFiltrado(incluyeTipo: any, excluyeTipo: any, incluyeTamano: any, excluyeTamano: any) {
+
+	async listAnimalsFiltrado(incluye: any, excluye: any) {
 		//Devuelve todas las filas de la tabla usuario
 		//const db=this.connection;
 		var animales:any =[];
+
+
+
+		console.log("modal");
+		console.log("incluye", incluye);
+		console.log("excluye", excluye);
+
+
+        var keysIncluye = Object.keys(incluye);
+        var keysExcluye = Object.keys(excluye);
+		
+		var incluyeIN = "";
+		var excluyeIN = "";
+		var excluyeNOTIN = "";
+		var inORexWHERE = "";
+		var inANDex = "";
+		var sqlQuery = "";
+
+		var noAdoptados="";
+
+		var queryKeyInlcuye = "";		
+		var queryKeyExcluye = "";
+		
+		var and = "";
+		var or = "OR";
+
+		if(keysIncluye.length>0){
+
+			//inORexWHERE="WHERE"
+			noAdoptados=" AND estado = 1 or estado = 2"
+			incluyeIN=" IN (?)";
+
+			for(var i=0; i<keysIncluye.length; i++){
+
+
+				if(i>0){
+
+					and = " AND ";
+
+					queryKeyInlcuye=`${queryKeyInlcuye}${and}${keysIncluye[i]}${incluyeIN}`;
+				}
+				else
+				{
+
+					queryKeyInlcuye=`${keysIncluye[i]}${incluyeIN}`;
+
+				}
+
+
+
+			}
+
+		}
+
+		if(keysExcluye.length>0){
+
+			//inORexWHERE=" WHERE "
+			noAdoptados=" AND estado = 1 or estado = 2"
+			excluyeNOTIN="id NOT IN (SELECT id FROM animal WHERE ";
+			excluyeIN=" IN (?)";
+
+			for(var y=0; y<keysExcluye.length; y++){
+
+
+				if(y>0){
+
+					or = " OR ";
+
+					queryKeyExcluye=`${queryKeyExcluye}${or}${keysExcluye[y]}${excluyeIN}`;
+				}
+				else
+				{
+
+					queryKeyExcluye=`${keysExcluye[y]}${excluyeIN}`;
+				}
+
+
+
+			}
+
+
+
+			queryKeyExcluye=`${excluyeNOTIN}${queryKeyExcluye})`;
+
+		}
+
+		if(keysIncluye.length>0 && keysExcluye.length>0){
+			inANDex=" AND ";
+			
+
+		}
+
+		if(keysIncluye.length==0 && keysExcluye.length==0){
+			
+			noAdoptados=" AND estado = 1 or estado = 2";
+
+		}
+
+		//where estado = 1 or estado = 2
+
+		inORexWHERE=" WHERE ";
+
+		sqlQuery=`SELECT * FROM animal ${inORexWHERE}${queryKeyInlcuye}${inANDex}${queryKeyExcluye}${noAdoptados}`;
+
+
+		
+		console.log(sqlQuery);
+	
+		
+		var incluyeItera= keysIncluye.length;
+		var excluyeItera= keysExcluye.length;
+		var sumaKeys = incluyeItera + excluyeItera;
+
+		var arrayDB = [];
+
+		
+		for(var i=0; i< sumaKeys; i++){
+
+			if(incluyeItera>0){
+
+				arrayDB.push(incluye[`${keysIncluye[i]}`]);
+
+				incluyeItera--;
+			}
+
+			if(incluyeItera==0 && excluyeItera>0){
+
+				arrayDB.push(excluye[`${keysExcluye[i]}`]);
+
+				excluyeItera--;
+
+			}
+
+		}
+
+
+		console.log("arrayDB", arrayDB);
+
+
+		console.log(`${sqlQuery}`, arrayDB);
+
+		
+		animales = await this.db.query(`${sqlQuery}`, arrayDB);
+		
+		return animales[0];
+		/*
+		animales = await this.db.query('SELECT * FROM animal WHERE tipo IN (?) AND tamano IN (?) AND id NOT IN (SELECT id FROM animal WHERE tipo IN (?) OR tamano IN (?))', [incluyeTipo, incluyeTamano, excluyeTipo, excluyeTamano]);
+					
+
+		/*
+
 		console.log("Tipo i",incluyeTipo);
 		console.log("Tipo e",excluyeTipo);
 		console.log("Tamano i",incluyeTamano);
 		console.log("Tamano e",excluyeTamano);
+		
 
 		if(incluyeTipo.length==0){
 			console.log("incluyeTipo null");
@@ -221,11 +374,17 @@ class UserModel {
 				}
 			}
 		}
+		/*
+
 		console.log(animales[0]);
 		//	
 		//console.log(usuarios[0]);
 		//devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
 		return animales[0];
+		/**/
+
+
+
 	}
 
 	async listarAnimalesUser(id: string) {//Devuelve todas las filas de la tabla usuario

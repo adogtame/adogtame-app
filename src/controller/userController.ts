@@ -346,12 +346,131 @@ class UserController {
 
     public async listAnimalsFiltrado(req: Request, res: Response) {
         console.log(req.body);
-        const filtro  = req.body.filtro;
-        console.log("q aaaaa", filtro);
-        var incluyeTipo:any=[];
-        var excluyeTipo:any=[];
-        var incluyeTamano:any=[];
-        var excluyeTamano:any=[];
+
+
+        const filtroIncluye  = req.body.filtroIncluye;
+        const filtroExcluye  = req.body.filtroExcluye;
+        
+
+        var incluye:any=[];
+        var excluye:any=[];
+        
+        const propiedades: any={tipo: 2, edad: 2, tamano: 3};
+        
+        //Tomo el de excluye porq es lo mismo, los dos tienen las mismas keys 
+        //lo distinto son los valores de true y false de cada key
+        
+        var keys = Object.keys(filtroExcluye);
+
+        for(var i=0; i<keys.length; i++){
+
+
+            var keyChangeI = false;
+            var keyChangeE = false;
+
+
+            for(var y=0; y<propiedades[`${keys[i]}`]; y++){
+
+
+                var excluyeFiltro: any={}
+                var incluyeFiltro: any={}
+                excluyeFiltro = filtroExcluye[`${keys[i]}`];
+                incluyeFiltro = filtroIncluye[`${keys[i]}`];
+
+
+                var keysFiltro = Object.keys(excluyeFiltro);
+
+
+                if(excluyeFiltro[Object.keys(excluyeFiltro)[y]]==true){
+                   
+                    
+                    //--gato, grande, mediano
+
+
+                    if(keyChangeE==true){
+
+                        excluye[`${keys[i]}`]= [excluye[`${keys[i]}`],`${keysFiltro[y]}`];
+                        //console.log("excluye 2", excluye);
+
+                    }
+                    else
+                    {
+
+
+                        excluye[`${keys[i]}`]=`${keysFiltro[y]}`;
+                        //console.log("excluye 1", excluye);
+                        keyChangeE=true;
+
+                    }
+
+
+
+
+                }
+                else
+                {
+
+                    if(incluyeFiltro[Object.keys(incluyeFiltro)[y]]==true){
+                   
+                        //--perro
+
+                        if(keyChangeI==true){
+
+                            incluye[`${keys[i]}`]= [incluye[`${keys[i]}`],`${keysFiltro[y]}`];
+                            //console.log("incluye 2", incluye);
+                        }
+                        else
+                        {
+
+
+                            incluye[`${keys[i]}`]=`${keysFiltro[y]}`;
+                            //console.log("incluye 1", incluye);
+                            keyChangeI=true;
+
+
+
+                        }
+
+
+
+                    }
+
+
+                }
+
+
+
+
+            }
+
+        }
+
+        const animales = await userModel.listAnimalsFiltrado(incluye, excluye);
+        console.log(animales);
+        return res.json(animales);
+        //res.send('Listado de animales!!!');
+
+
+
+
+        /*
+
+        filtroIncluye={tipo:{perro:false, gato:false}, edad:{cria:false, adulto:false}, 
+        tamano:{grande:false, mediano:false, chico:false}}
+
+        filtroExcluye={tipo:{perro:false, gato:false}, edad:{cria:false, adulto:false}, 
+        tamano:{grande:false, mediano:false, chico:false}}
+
+
+        /*
+
+
+
+
+
+
+
+
         if(filtro.perroF==true){
             if(filtro.perroE==true){            
                 excluyeTipo.push("perro");
@@ -539,6 +658,11 @@ class UserController {
         console.log(animales);
         return res.json(animales);
         //res.send('Listado de animales!!!');
+
+
+
+
+        /**/
     }
 
     public async listAnimalsUser(req: Request, res: Response) {
