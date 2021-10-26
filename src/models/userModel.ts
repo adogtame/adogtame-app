@@ -150,7 +150,7 @@ class UserModel {
 		var queryKeyExcluye = "";
 		
 		var and = "";
-		var or = "OR";
+		var or = "";
 
 		if(keysIncluye.length>0){
 
