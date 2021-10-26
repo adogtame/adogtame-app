@@ -159,7 +159,7 @@ class UserModel {
             var queryKeyInlcuye = "";
             var queryKeyExcluye = "";
             var and = "";
-            var or = "OR";
+            var or = "";
             if (keysIncluye.length > 0) {
                 //inORexWHERE="WHERE"
                 noAdoptados = " AND estado = 1 or estado = 2";
