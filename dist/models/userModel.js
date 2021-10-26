@@ -194,7 +194,7 @@ class UserModel {
                 inANDex = " AND ";
             }
             if (keysIncluye.length == 0 && keysExcluye.length == 0) {
-                noAdoptados = " AND estado = 1 or estado = 2";
+                noAdoptados = " estado = 1 or estado = 2";
             }
             //where estado = 1 or estado = 2
             inORexWHERE = " WHERE ";
