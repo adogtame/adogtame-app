@@ -389,18 +389,18 @@ class UserModel {
 
 	async listarAnimalesUser(id: string) {//Devuelve todas las filas de la tabla usuario
 		//const db=this.connection;
-		const animales = await this.db.query('SELECT * FROM animal WHERE idDador = ?', [id]);
+		const animales = await this.db.query('SELECT id, nombre FROM animal WHERE idDador = ?', [id]);
 		//console.log(usuarios[0]);
 		//devuelve tabla mas propiedades. Solo debemos devolver tabla. Posicion 0 del array devuelto.
 		return animales[0];
 	}
 	async listarAnimalesUserAdoptados(id: string) {
-		const animales = await this.db.query('SELECT * FROM animal WHERE estado = 3 and idDador = ?', [id]);
+		const animales = await this.db.query('SELECT id, nombre FROM animal WHERE idDador = ? and estado = 3', [id]);
 		return animales[0];
 	}
 
 	async listarAnimalesUserEnAdopcion(id: string) {
-		const animales = await this.db.query('SELECT * FROM animal WHERE estado = 1 and idDador = ?', [id]); 
+		const animales = await this.db.query('SELECT id, nombre FROM animal WHERE idDador = ? and estado = 1 or estado = 2', [id]); 
 		return animales[0];
 	}
 	
