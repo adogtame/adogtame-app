@@ -415,7 +415,7 @@ class UserModel {
 	}
 
 	async buscarIdAnimal(id: string) {
-		const encontrado: any = await this.db.query('SELECT * FROM animal WHERE id = ?', [id]);
+		const encontrado: any = await this.db.query('SELECT id, idDador, nombre, sexo, tipo, DATE_FORMAT(fNac, "%Y-%m-%d") as fNac, tamano, peso, estado FROM animal WHERE id = ?', [id]);
 		//Ojo la consulta devuelve una tabla de una fila. (Array de array) Hay que desempaquetar y obtener la unica fila al enviar
 		if (encontrado.length > 1)
 			return encontrado[0][0];
