@@ -726,9 +726,10 @@ class UserController {
         delete usuario.repassword;
         console.log(req.body);
         try {
-            const busqueda = await userModel.buscarEmail(usuario.email);
-            console.log('busqueda => ', busqueda);
-            if(busqueda){
+            const emailExiste = await userModel.buscarEmail(usuario.email);
+            console.log('emailExiste => ', emailExiste);
+            if(emailExiste){
+				console.log('dentro de emailExiste');
                 return res.status(403).json({message: 44});
             }
         } catch (error) {
@@ -751,7 +752,7 @@ class UserController {
                     user: "adogtamesa@gmail.com",
                     clientId: "548268239241-t5g8ugpitk66mpa4bfkbkr9bl17g1rrf.apps.googleusercontent.com",
                     clientSecret: "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",
-                    refreshToken: "1//04hGKoGFV1yfvCgYIARAAGAQSNwF-L9Iron4w1NxZrseNqQ8Y63gbTZKoOfTp7Z-jKyzaybZL0aNoFZG92bziopSY_wfgQ4xfIGQ"
+                    refreshToken: "1//04IBPVJJF2IvuCgYIARAAGAQSNwF-L9IrCVT-Yb6lhPFPMf8wVGw2dY2z16BLN5364yDGvq6Hbx1DFU98b2UbreGX5g3Uj9RbR9Q"
                 }
             });
 
@@ -765,6 +766,8 @@ class UserController {
                     expiresIn: '1d',
                 }
             );
+
+			console.log('token => ', token);
 
             const url = `http://adogtameweb.herokuapp.com/usuarios/verificar/${token}`;
             var contentHTML = `
@@ -797,6 +800,7 @@ class UserController {
             return res.status(200).json({ message: user, token: token });
             //return res.json({ message: 'User saved!!' });
         } catch (error) {
+			console.log('algo salio mal, error:', error);
             return res.status(403).json({ message: 'Algo salio mal' });
         }
     }
