@@ -417,6 +417,7 @@ class UserModel {
             const { id } = result2;
             console.log("El result ", result2);
             console.log("El id", id);
+            const result3 = (yield this.db.query('INSERT INTO animal_vacunas SET idAnimal = ?, 	Moquillo = 0, Primovacunacion= 0, Polivalente= 0, Rabia= 0, Castrado= 0  ', [id]))[0].affectedRows;
             return id;
         });
     }
